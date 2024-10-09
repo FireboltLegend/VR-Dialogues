@@ -23,7 +23,7 @@ public class TTS : MonoBehaviour
             return;
         }
 
-        var credentials = new BasicAWSCredentials("AKIA2NK3X4NVQCGYVBEE ", "yF5jkrnJ2uEMcI/PkbsON4EYaPshsXo2NYPbbXSs");
+        var credentials = new BasicAWSCredentials("AKIA2NK3X4NVQCGYVBEE", "yF5jkrnJ2uEMcI/PkbsON4EYaPshsXo2NYPbbXSs");
         var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
         var request = new SynthesizeSpeechRequest()
         {
