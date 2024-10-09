@@ -66,10 +66,10 @@ public class TTS : MonoBehaviour
         var audioFilePath = $"{Application.persistentDataPath}/audio.mp3";
         using (var www = UnityWebRequestMultimedia.GetAudioClip(audioFilePath, AudioType.MPEG))
         {
-            var request = www.SendWebRequest();
+            var webrequest = www.SendWebRequest();
 
             // Wait for request completion
-            while (!request.isDone)
+            while (!webrequest.isDone)
             {
                 await Task.Yield();
             }
