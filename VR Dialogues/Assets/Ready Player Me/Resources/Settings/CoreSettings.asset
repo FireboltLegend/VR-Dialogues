@@ -15,5 +15,5 @@ MonoBehaviour:
   Subdomain: vr-dialogues
   AppId: 66e60db6441bcf35e82258b0
   EnableLogging: 0
-  EnableAnalytics: 0
+  EnableAnalytics: 1
   BodyType: 1
