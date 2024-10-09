@@ -2,21 +2,26 @@ using Amazon;
 using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class TTS : MonoBehaviour
 {
-
-    [SerializeField] private AudioSource audioSource; 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private Dropdown voiceDropdown;
 
     private async void Start()
     {
         string filePath = $"{Application.dataPath}/dialogue.txt";
         string textToSynthesize = File.ReadAllText(filePath);
-
+        //List<string> voiceOptions = Enum.GetNames(typeof(VoiceId)).ToList();
+        //PopulateVoiceDropdown(voiceOptions);
         if (string.IsNullOrEmpty(textToSynthesize))
         {
             Debug.LogError("Either the dialogue is empty or not found!");
@@ -48,6 +53,12 @@ public class TTS : MonoBehaviour
                 audioSource.Play();
             }
         }
+    }
+
+    private void PopulateVoiceDropdown(List<string> voiceOptions)
+    {
+        voiceDropdown.ClearOptions();
+        voiceDropdown.AddOptions(voiceOptions);
     }
 
     private void WriteIntoFile(Stream stream)
