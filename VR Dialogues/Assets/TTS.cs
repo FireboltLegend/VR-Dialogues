@@ -39,8 +39,8 @@ public class TTS : MonoBehaviour
         {
             Text = textToSynthesize,
             Engine = Engine.Neural,
-            VoiceId = (VoiceId)Enum.Parse(typeof(VoiceId), voice.ToString()),
-            LanguageCode = languagecode == PollyLanguageCodes.None ? string.Empty : languagecode.ToString(),
+            VoiceId = voice.ToString(),
+            LanguageCode = languagecode == PollyLanguageCodes.None ? string.Empty : GetLanguageCode(languagecode),
             OutputFormat = OutputFormat.Mp3
         };
 
@@ -74,4 +74,18 @@ public class TTS : MonoBehaviour
             }
         }
     }
+    private string GetLanguageCode(PollyLanguageCodes languageCode)
+    {
+        switch (languageCode)
+        {
+            case PollyLanguageCodes.en_US:
+                return "en-US";
+            case PollyLanguageCodes.es_MX:
+                return "es-MX";
+            // Add other mappings here
+            default:
+                return languageCode.ToString().Replace('_', '-'); // Fallback to convert underscores to hyphens
+        }
+    }
+
 }
