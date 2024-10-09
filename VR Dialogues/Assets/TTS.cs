@@ -25,7 +25,6 @@ public class TTS : MonoBehaviour
         string filePath = $"{Application.dataPath}/dialogue.txt";
         string textToSynthesize = File.ReadAllText(filePath);
 
-
         if (string.IsNullOrEmpty(textToSynthesize))
         {
             Debug.LogError("Either the dialogue is empty or not found!");
@@ -40,20 +39,53 @@ public class TTS : MonoBehaviour
             Text = textToSynthesize,
             Engine = Engine.Neural,
             VoiceId = voice.ToString(),
-            LanguageCode = languagecode == PollyLanguageCodes.None ? string.Empty : GetLanguageCode(languagecode),
-            OutputFormat = OutputFormat.Mp3
+            LanguageCode = languagecode == PollyLanguageCodes.None ? string.Empty : languagecode.ToString().Replace('_', '-'),
+            OutputFormat = OutputFormat.Mp3  // Switch to WAV if MP3 fails
         };
 
-        var response = await client.SynthesizeSpeechAsync(request);
+        SynthesizeSpeechResponse response;
+        try
+        {
+            response = await client.SynthesizeSpeechAsync(request);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Polly failed: " + e.Message);
+            return;
+        }
+
+        if (response == null || response.AudioStream == null)
+        {
+            Debug.LogError("Failed to get valid Polly response.");
+            return;
+        }
+
         WriteIntoFile(response.AudioStream);
 
-        using (var uwrq = UnityWebRequestMultimedia.GetAudioClip($"{Application.persistentDataPath}/audio.mp3", AudioType.MPEG))
+        // Await the download process correctly
+        var audioFilePath = $"{Application.persistentDataPath}/audio.mp3";
+        using (var www = UnityWebRequestMultimedia.GetAudioClip(audioFilePath, AudioType.MPEG))
         {
-            var sentWebRqHandler = uwrq.SendWebRequest();
+            var request = www.SendWebRequest();
 
-            while (!sentWebRqHandler.isDone) await Task.Yield();
+            // Wait for request completion
+            while (!request.isDone)
             {
-                var audioClip = DownloadHandlerAudioClip.GetContent(uwrq);
+                await Task.Yield();
+            }
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Audio download failed: " + www.error);
+            }
+            else
+            {
+                AudioClip audioClip = DownloadHandlerAudioClip.GetContent(www);
+                if (audioClip == null)
+                {
+                    Debug.LogError("Failed to load AudioClip.");
+                    return;
+                }
 
                 audioSource.clip = audioClip;
                 audioSource.Play();
@@ -63,7 +95,8 @@ public class TTS : MonoBehaviour
 
     private void WriteIntoFile(Stream stream)
     {
-        using (var fileStream = new FileStream($"{Application.persistentDataPath}/audio.mp3", FileMode.Create))
+        var filePath = $"{Application.persistentDataPath}/audio.mp3";
+        using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
         {
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;
@@ -74,18 +107,4 @@ public class TTS : MonoBehaviour
             }
         }
     }
-    private string GetLanguageCode(PollyLanguageCodes languageCode)
-    {
-        switch (languageCode)
-        {
-            case PollyLanguageCodes.en_US:
-                return "en-US";
-            case PollyLanguageCodes.es_MX:
-                return "es-MX";
-            // Add other mappings here
-            default:
-                return languageCode.ToString().Replace('_', '-'); // Fallback to convert underscores to hyphens
-        }
-    }
-
 }
