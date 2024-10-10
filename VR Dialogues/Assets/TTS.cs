@@ -102,7 +102,6 @@ public class TTS : MonoBehaviour
                     yield break;
                 }
 
-                Debug.Log("Audio Clip Loaded: " + (audioClip != null));
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
