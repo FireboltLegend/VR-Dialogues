@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8396687618289066766, guid: c63605f16e5b24d2d831b67635824e90, type: 3}
       propertyPath: m_Name
-      value: 66dfb2e3185dd1b5b56f9891 Variant
+      value: Boy Avatar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -75,9 +75,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8396687618289066766, guid: c63605f16e5b24d2d831b67635824e90, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4257763728935113940}
-    - targetCorrespondingSourceObject: {fileID: 8396687618289066766, guid: c63605f16e5b24d2d831b67635824e90, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3250786638241985162}
   m_SourcePrefab: {fileID: 100100000, guid: c63605f16e5b24d2d831b67635824e90, type: 3}
 --- !u!1 &4397686469357338994 stripped
 GameObject:
@@ -113,18 +110,3 @@ MonoBehaviour:
   AudioClip: {fileID: 0}
   AudioSource: {fileID: 0}
   AudioProvider: 0
---- !u!111 &3250786638241985162
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4397686469357338994}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: df77fb8aea9d34b69a662e0d6948276c, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0

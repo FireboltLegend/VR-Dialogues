@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1298983401808423255, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
       propertyPath: m_Name
-      value: 66e89c1104eba267d2a748f7 Variant
+      value: Girl Avatar
       objectReference: {fileID: 0}
     - target: {fileID: 3640251058386848723, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
       propertyPath: m_LocalScale.x
@@ -87,9 +87,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1298983401808423255, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1882196186758052949}
-    - targetCorrespondingSourceObject: {fileID: 1298983401808423255, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1191321409279004830}
   m_SourcePrefab: {fileID: 100100000, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
 --- !u!1 &1183815909582151221 stripped
 GameObject:
@@ -110,18 +107,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blinkDuration: 0.1
   blinkInterval: 3
---- !u!111 &1191321409279004830
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183815909582151221}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: a79c14a9f05fe42f1b53d2ad565ac656, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
