@@ -8,7 +8,11 @@ TerrainLayer:
   m_PrefabAsset: {fileID: 0}
   m_Name: Grass Terrain Layer
   m_DiffuseTexture: {fileID: 2800000, guid: e939889a01ba73f4c9f41bb8d6d79d5f, type: 3}
+<<<<<<< Updated upstream
   m_NormalMapTexture: {fileID: 2800000, guid: 625219de9f8d4de46ad5e99209e47d1b, type: 3}
+=======
+  m_NormalMapTexture: {fileID: 2800000, guid: 0c64d261e58031345b9844438ceb0af9, type: 3}
+>>>>>>> Stashed changes
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 2, y: 2}
   m_TileOffset: {x: 0, y: 0}
