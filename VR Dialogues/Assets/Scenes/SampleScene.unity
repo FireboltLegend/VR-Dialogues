@@ -1264,7 +1264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8396687618289066766, guid: c63605f16e5b24d2d831b67635824e90, type: 3}
       propertyPath: m_Name
-      value: 66dfb2e3185dd1b5b56f9891
+      value: BoyAvatar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -1704,7 +1704,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1298983401808423255, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
       propertyPath: m_Name
-      value: 66e89c1104eba267d2a748f7
+      value: GirlAvatar
       objectReference: {fileID: 0}
     - target: {fileID: 3640251058386848723, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
       propertyPath: m_LocalScale.x
