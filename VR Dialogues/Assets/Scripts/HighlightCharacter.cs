@@ -69,9 +69,13 @@ public class HighlightCharacter : MonoBehaviour
     {
         // Declare raycast hit object and set it to global position of line renderer
         RaycastHit hit;
-        Ray ray = new Ray(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1));
-        ray.origin = lineRenderer.transform.TransformPoint(ray.origin);
-        ray.direction = lineRenderer.transform.TransformDirection(ray.direction);
+        //Get start and end positions of the line in world space
+        Vector3 startPosition = lineRenderer.transform.TransformPoint(lineRenderer.GetPosition(0));
+        Vector3 endPosition = lineRenderer.transform.TransformPoint(lineRenderer.GetPosition(1));
+
+        // Calculate ray direction
+        Vector3 direction = (endPosition - startPosition).normalized;
+        Ray ray = new Ray(startPosition, endPosition);
         // Check if ray hits object
         if (Physics.Raycast(ray, out hit))
         {
@@ -116,6 +120,10 @@ public class HighlightCharacter : MonoBehaviour
         else if (gameObject.tag == "Interactable")
         {
             return Color.green;
+        }
+        else
+        {
+            return Color.blue;
         }
     }
 
