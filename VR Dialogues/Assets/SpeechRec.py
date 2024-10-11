@@ -4,6 +4,7 @@ import os
 from gtts import gTTS
 import pygame
 import random
+import time
 
 class MultiConversationAI:
     def __init__(self):
@@ -95,29 +96,47 @@ class MultiConversationAI:
     def start(self):
         print("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
         agent_selected = random.randint(1, 2)
-        
-        # Write to sync.txt each time start is called
-        
-        
+
         while True:
+            # Allow the chatbots to respond to each other up to 3 times
+            for _ in range(random.randint(1, 3)):  # Randomly choose how many responses (1-3)
+                # Get the chatbot's response
+                response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
+                print(f"{'Cortana' if agent_selected == 1 else 'Firebolt'}:", response)
+
+                # Save the response to speaker.txt
+                self.save_response(response)
+                self.write_sync_file()
+
+                # Alternate agents for the next response
+                agent_selected = 2 if agent_selected == 1 else 1
+            
+                # Introduce a short pause before the next chatbot response
+                time.sleep(1)  # Adjust the duration as needed
+
+            # Wait for user input after the chatbots' responses
             user_input = self.get_audio()
             if user_input.lower() == "stop":
                 if self.confirm_exit():
                     break
                 else:
                     continue
+        
             print("User:", user_input)
             self.conversation1.append({'role': 'user', 'content': user_input})
             self.conversation2.append({'role': 'user', 'content': user_input})
 
+            # After user speaks, get a response from the active agent
             response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
-            print(f"{'Firebolt' if agent_selected == 1 else 'English'}:", response)
+            print(f"{'Cortana' if agent_selected == 1 else 'Firebolt'}:", response)
 
             # Save the response to speaker.txt
             self.save_response(response)
             self.write_sync_file()
-            #self.tts_agent(response, lang='en-GB' if agent_selected == 2 else 'en')
-            agent_selected = 2 if agent_selected == 1 else 1  # Switch agents
+        
+            # Switch agents for the next turn
+            agent_selected = 2 if agent_selected == 1 else 1
+
 
     def confirm_exit(self):
         print("Are you sure you want to exit? (yes/no)")

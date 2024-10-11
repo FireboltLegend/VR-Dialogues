@@ -25,6 +25,28 @@ public class TTS : MonoBehaviour
         StartCoroutine(StartTTS());
     }
 
+    private void Update()
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, "sync.txt");
+
+        if (File.Exists(filePath))
+        {
+            string content = File.ReadAllText(filePath);
+
+            if (content.Contains("a"))
+            {
+                PlayTTS();
+
+                // Replace 'a' with 'b' in the content
+                string updatedContent = content.Replace('a', 'b');
+
+                // Write the updated content back to the file
+                File.WriteAllText(filePath, updatedContent);
+            }
+        }
+    }
+
+
     private IEnumerator StartTTS()
     {
         string textToSynthesize = textFile != null ? textFile.text : string.Empty;
