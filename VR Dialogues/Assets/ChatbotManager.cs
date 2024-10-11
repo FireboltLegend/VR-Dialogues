@@ -1,86 +1,48 @@
 using UnityEngine;
 using System.Diagnostics;
-using System.Text;
-using System.Collections;
 using System.IO;
+using TMPro;
 
 public class ChatbotManager : MonoBehaviour
 {
-    private Process pythonProcess;
+    [SerializeField] private TMP_Text response; 
+    private string pythonScriptPath;
 
-    // Start is called before the first frame update
     void Start()
     {
-        string pythonInterpreterPath = @"C:\Users\Student\AppData\Local\Programs\Python\Python310\python.exe";
-        string pythonScriptPath = System.IO.Path.Combine(Application.dataPath, "SpeechRec.py");
+        // Set the path to the Python script
+        pythonScriptPath = Path.Combine(Application.dataPath, "SpeechRec.py");
+        UnityEngine.Debug.Log("Python Script Path: " + pythonScriptPath);
+
+        // Clear text files initially
+        ClearTextFiles();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            UnityEngine.Debug.Log("Q Pressed");
             StartPythonScript();
-
-            //animator.SetBool("IsIdle", true);
-            File.WriteAllText("Assets/speaker.txt", "");
-            File.WriteAllText("Assets/user.txt", "");
+            UpdateResponseText();
         }
     }
 
     void StartPythonScript()
     {
-        UnityEngine.Debug.Log("Starting Python Script...");
-
-        string pythonInterpreterPath = @"C:\Users\Student\AppData\Local\Programs\Python\Python310\python.exe";
-        string pythonScriptPath = @$"{Application.dataPath}/SpeechRec.py";
-
-        UnityEngine.Debug.Log("Python Interpreter Path: " + pythonInterpreterPath);
-        UnityEngine.Debug.Log("Python Script Path: " + pythonScriptPath);
-
-        pythonProcess = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = pythonInterpreterPath,
-                Arguments = $"\"{pythonScriptPath}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = false  // Set to true if you don't want to see the window
-            },
-            EnableRaisingEvents = true
-        };
-
-        pythonProcess.OutputDataReceived += (sender, e) =>
-        {
-            if (!string.IsNullOrEmpty(e.Data))
-            {
-                UnityEngine.Debug.Log("Output: " + e.Data);
-            }
-        };
-
-        pythonProcess.ErrorDataReceived += (sender, e) =>
-        {
-            if (!string.IsNullOrEmpty(e.Data))
-            {
-                UnityEngine.Debug.LogError("Error: " + e.Data);
-            }
-        };
-
-        pythonProcess.Exited += (sender, e) =>
-        {
-            UnityEngine.Debug.Log("Python process exited.");
-            pythonProcess.Dispose();
-        };
-
         try
         {
-            pythonProcess.Start();
-            pythonProcess.BeginOutputReadLine();
-            pythonProcess.BeginErrorReadLine();
-            UnityEngine.Debug.Log("Python process started successfully.");
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "python", 
+                Arguments = $"\"{pythonScriptPath}\"",
+                UseShellExecute = true,
+                CreateNoWindow = false
+            };
+
+            Process process = Process.Start(startInfo);
+            process.WaitForExit();
+
+            UnityEngine.Debug.Log("Python script started successfully.");
         }
         catch (System.Exception ex)
         {
@@ -88,13 +50,23 @@ public class ChatbotManager : MonoBehaviour
         }
     }
 
-    // Optionally, you may want to stop the Python process when the Unity application quits
-    private void OnApplicationQuit()
+    void UpdateResponseText()
     {
-        if (pythonProcess != null && !pythonProcess.HasExited)
+        string speakerFilePath = Path.Combine(Application.dataPath, "speaker.txt");
+
+        if (File.Exists(speakerFilePath))
         {
-            pythonProcess.Kill();
-            pythonProcess.Dispose();
+            response.text = File.ReadAllText(speakerFilePath);
         }
+        else
+        {
+            response.text = "No response available.";
+        }
+    }
+
+    void ClearTextFiles()
+    {
+        File.WriteAllText(Path.Combine(Application.dataPath, "speaker.txt"), "");
+        File.WriteAllText(Path.Combine(Application.dataPath, "user.txt"), "");
     }
 }

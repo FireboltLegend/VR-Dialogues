@@ -40,8 +40,8 @@ class MultiConversationAI:
 
     def load_prompts(self):
         try:
-            self.conversation1.append({'role': 'system', 'content': self.open_file("C:\\Users\\Student\\Documents\\GitHub\\VR-Dialogues\\VR Dialogues\\Assets\\Chat1.txt")})
-            self.conversation2.append({'role': 'system', 'content': self.open_file("C:\\Users\\Student\\Documents\\GitHub\\VR-Dialogues\\VR Dialogues\\Assets\\Chat2.txt")})
+            self.conversation1.append({'role': 'system', 'content': self.open_file(os.path.join(os.path.dirname(__file__), "Chat1.txt"))})
+            self.conversation2.append({'role': 'system', 'content': self.open_file(os.path.join(os.path.dirname(__file__), "Chat2.txt"))})
         except FileNotFoundError as e:
             print(f"Error loading prompts: {e}")
             exit(1)
@@ -84,12 +84,12 @@ class MultiConversationAI:
 
     def save_response(self, response):
         """Save the response to speaker.txt."""
-        with open("speaker.txt", "w", encoding='utf-8') as file:
+        with open(os.path.join(os.path.dirname(__file__), "speaker.txt"), "w", encoding='utf-8') as file:
             file.write(response + "\n")  # Append the response followed by a newline
 
     def write_sync_file(self):
         """Write the character 'a' to sync.txt."""
-        with open("sync.txt", "w", encoding='utf-8') as file:
+        with open(os.path.join(os.path.dirname(__file__), "sync.txt"), "w", encoding='utf-8') as file:
             file.write('a')  # Overwrite sync.txt with 'a'
 
     def start(self):
