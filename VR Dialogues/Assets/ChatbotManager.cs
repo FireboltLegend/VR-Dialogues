@@ -33,7 +33,8 @@ public class ChatbotManager : MonoBehaviour
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = "python", 
+                //FileName = "python", 
+                FileName = "py", // use this if the above line doesn't work; seems to be how Python sets the default launcher
                 Arguments = $"\"{pythonScriptPath}\"",
                 UseShellExecute = true,
                 CreateNoWindow = false
