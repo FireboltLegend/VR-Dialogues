@@ -2,10 +2,12 @@ using Amazon;
 using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
+using Meta.WitAi.Utilities;
 using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,11 +16,19 @@ public class TTS : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private TextAsset textFile;
 
-    public enum PollyVoices { Amy, Brian, Camila, Emma, Gabrielle, Hannah, Isabella, Kendra, Kimberly, Lupe, Mia, Niamh, Olivia, Ruth, Stephen, Suvi, Takumi, Zayd, Arlet, Adriano, Laura, Seoyeon, Gregory, Hala, Joaquín, Inês, Thiago, Vicki, Daniel, Aria, Ayanda, Jitka, Kazuha, Lisa, Rémi, Andrés, Sergio, Burcu };
+    public enum PollyVoices { Amy, Brian, Camila, Emma, Gabrielle, Hannah, Isabella, Kendra, Kimberly, Lupe, Mia, Niamh, Olivia, Ruth, Stephen, Suvi, Takumi, Zayd, Arlet, Adriano, Laura, Seoyeon, Gregory, Hala, Ines, Thiago, Vicki, Daniel, Aria, Ayanda, Jitka, Kazuha, Lisa, Sergio, Burcu };
     public enum PollyLanguageCodes { None, arb, cmn_CN, cy_GB, da_DK, de_DE, en_AU, en_GB, en_GB_WLS, en_IN, en_US, es_ES, es_MX, es_US, fr_CA, fr_FR, is_IS, it_IT, ja_JP, hi_IN, ko_KR, nb_NO, nl_NL, pl_PL, pt_BR, pt_PT, ro_RO, ru_RU, sv_SE, tr_TR, en_NZ, en_ZA, ca_ES, de_AT, yue_CN, ar_AE, fi_FI, en_IE, nl_BE, fr_BE };
 
     [SerializeField] private PollyVoices voice;
     [SerializeField] private PollyLanguageCodes languagecode;
+
+    private void Reset()
+    {
+        if (textFile == null)
+        {
+            textFile = AssetDatabase.LoadAssetAtPath<TextAsset>($"{Application.dataPath}/speaker.txt");
+        }
+    }
 
     public void PlayTTS()
     {

@@ -10,7 +10,7 @@ public class TTSInspector : Editor
 
         TTS ttsScript = (TTS)target;
 
-        if (GUILayout.Button("Play TTS"))
+        if (GUILayout.Button("Test TTS"))
         {
             ttsScript.PlayTTS();
         }
