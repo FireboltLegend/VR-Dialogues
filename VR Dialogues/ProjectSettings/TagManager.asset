@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Gaze
+  - Avatar
   layers:
   - Default
   - TransparentFX

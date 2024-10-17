@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HighlightCharacter : MonoBehaviour
 {
-    private Outline outline;
     [SerializeField] LineRenderer rightLineRenderer;
     [SerializeField] LineRenderer leftLineRenderer;
     private Transform leftPos;
@@ -12,8 +11,8 @@ public class HighlightCharacter : MonoBehaviour
 
     void Start()
     {
-        outline = gameObject.GetComponent<Outline>();
-        outline.enabled = false;
+        rightLineRenderer.useWorldSpace = true;
+        leftLineRenderer.useWorldSpace = true;
         leftPos = leftLineRenderer.gameObject.GetComponent<Transform>();
         rightPos = rightLineRenderer.gameObject.GetComponent<Transform>();
     }
@@ -25,44 +24,29 @@ public class HighlightCharacter : MonoBehaviour
         CheckRayCollisionMouse();
     }
 
-    void OnSpaceHighlight()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Highlighting character...");
-            outline.enabled = !outline.enabled;
-        }
-
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Gaze" || other.gameObject == rightLineRenderer.gameObject
-            || other.gameObject == leftLineRenderer.gameObject)
-        {
-            Debug.Log("Highlighting character...");
-            OutlineCharacter();
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Gaze" || other.gameObject.tag == "MainCamera")
-        {
-            Debug.Log("Removing highlight from character");
-            RemoveOutline();
-        }
-    }
-
     void OutlineCharacter()
     {
         Debug.Log("Highlighting character...");
-        outline.enabled = true;
+        foreach (Transform child in transform)
+        {
+            Outline outline = child.gameObject.GetComponent<Outline>();
+            if (child.gameObject.activeSelf)
+            {
+                outline.enabled = true;
+            }
+            else outline.enabled = false;
+        }
     }
 
     void RemoveOutline()
     {
-        outline.enabled = false;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                child.gameObject.GetComponent<Outline>().enabled = false;
+            }
+        }
     }
 
     void CheckRayCollision(LineRenderer lineRenderer)
@@ -73,8 +57,9 @@ public class HighlightCharacter : MonoBehaviour
         Vector3 startPosition = lineRenderer.transform.TransformPoint(lineRenderer.GetPosition(0));
         Vector3 endPosition = lineRenderer.transform.TransformPoint(lineRenderer.GetPosition(1));
 
+
         // Calculate ray direction
-        Vector3 direction = (endPosition - startPosition).normalized;
+        Vector3 direction = (endPosition - startPosition);
         Ray ray = new Ray(startPosition, endPosition);
         // Check if ray hits object
         if (Physics.Raycast(ray, out hit))
@@ -106,11 +91,6 @@ public class HighlightCharacter : MonoBehaviour
         }
     }
 
-    void ChangeHighlightColor(Color color)
-    {
-        outline.OutlineColor = color;
-    }
-
     Color GetColor()
     {
         if (gameObject.tag == "Avatar")
@@ -126,6 +106,5 @@ public class HighlightCharacter : MonoBehaviour
             return Color.blue;
         }
     }
-
 
 }
