@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class HighlightCharacter : MonoBehaviour
 {
-    [SerializeField] LineRenderer rightLineRenderer;
-    [SerializeField] LineRenderer leftLineRenderer;
+    /*[SerializeField] LineRenderer rightLineRenderer;
+    [SerializeField] LineRenderer leftLineRenderer;*/
     private Transform leftPos;
     private Transform rightPos;
 
     void Start()
     {
-        rightLineRenderer.useWorldSpace = true;
+        /*rightLineRenderer.useWorldSpace = true;
         leftLineRenderer.useWorldSpace = true;
         leftPos = leftLineRenderer.gameObject.GetComponent<Transform>();
-        rightPos = rightLineRenderer.gameObject.GetComponent<Transform>();
+        rightPos = rightLineRenderer.gameObject.GetComponent<Transform>();*/
     }
 
     void Update()
     {
-        CheckRayCollision(rightLineRenderer);
-        CheckRayCollision(leftLineRenderer);
-        CheckRayCollisionMouse();
+        /*CheckRayCollision(rightLineRenderer);
+        CheckRayCollision(leftLineRenderer);*/
+        //CheckRayCollisionMouse();
     }
 
     void OutlineCharacter()
@@ -49,7 +49,7 @@ public class HighlightCharacter : MonoBehaviour
         }
     }
 
-    void CheckRayCollision(LineRenderer lineRenderer)
+    /*void CheckRayCollision(LineRenderer lineRenderer)
     {
         // Declare raycast hit object and set it to global position of line renderer
         RaycastHit hit;
@@ -73,7 +73,7 @@ public class HighlightCharacter : MonoBehaviour
                 RemoveOutline();
             }
         }
-    }
+    }*/
     void CheckRayCollisionMouse()
     {
         RaycastHit hit;

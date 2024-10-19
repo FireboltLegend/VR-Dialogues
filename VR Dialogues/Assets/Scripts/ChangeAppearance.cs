@@ -9,9 +9,19 @@ public class ChangeAppearance : MonoBehaviour
 {
     private int currentNum;
 
+    void Start()
+    {
+        foreach(Transform child in transform)
+        {
+            if (child.gameObject.activeSelf == true)
+            {
+                currentNum = child.gameObject.GetComponent<AvatarComponent>().num;
+            }
+        }
+    }
+
     void Update()
     {
-        //currentNum = 
         ChangeSkin();
     }
 
@@ -21,7 +31,7 @@ public class ChangeAppearance : MonoBehaviour
         {
             foreach (Transform child in transform)
             {
-                if (child.gameObject.GetComponent<AvatarComponent>().num == GetInputNum())
+                if (child.gameObject.GetComponent<AvatarComponent>().num == currentNum)
                 {
                     child.gameObject.SetActive(true);
                     currentNum = child.gameObject.GetComponent<AvatarComponent>().num;
@@ -39,6 +49,19 @@ public class ChangeAppearance : MonoBehaviour
         {
             int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
             currentNum = clothesNum;
+            Debug.Log("Clothes found, changing now trigger");
+            other.gameObject.transform.position = other.gameObject.GetComponent<WorldPos>().getOriginalPos();
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Clothes")
+        {
+            int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
+            currentNum = clothesNum;
+            Debug.Log("Clothes found, changing now collision");
+            other.gameObject.transform.position = other.gameObject.GetComponent<WorldPos>().getOriginalPos();
         }
     }
 
