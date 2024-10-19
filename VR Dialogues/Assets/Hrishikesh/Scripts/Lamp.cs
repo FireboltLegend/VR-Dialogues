@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class Lamp : MonoBehaviour
 {
-    private Light _light;
+    private GameObject _light;
     private Vector3 previousPosition;
-    private Vector3 velocity;
+    public Vector3 velocity;
+    private float timer = 0;
 
     private void Start()
     {
-        _light = GetComponentInChildren<Light>();
+        _light = GetComponentInChildren<Light>().gameObject;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        velocity = transform.position - previousPosition;
+        timer -= Time.deltaTime;
+        velocity = (transform.position - previousPosition) / Time.deltaTime;
         previousPosition = transform.position;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (velocity.magnitude > 0.5f)
-            _light.enabled = !_light.enabled;
+        if (velocity.magnitude > 3f && timer < 0)
+        {
+            timer = 0.5f;
+            _light.SetActive(!_light.activeInHierarchy);
+        }
     }
 }

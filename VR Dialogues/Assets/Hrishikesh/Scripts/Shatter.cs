@@ -13,15 +13,15 @@ public class Shatter : MonoBehaviour
         particles.GetComponent<ParticleSystem>().loop = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        velocity = transform.position - previousPosition;
+        velocity = (transform.position - previousPosition)/Time.deltaTime;
         previousPosition = transform.position;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (velocity.magnitude > 0.5f)
+        if (velocity.magnitude > 4f)
         {
             GameObject newParticles = Instantiate(particles, transform.position, transform.rotation);
             transform.position = Vector3.one * -1000;
