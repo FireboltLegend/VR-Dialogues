@@ -1,73 +1,132 @@
 using UnityEngine;
 using System.Diagnostics;
+using System.Text;
+using System.Collections;
 using System.IO;
-using TMPro;
 
 public class ChatbotManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text response; 
-    private string pythonScriptPath;
+    private Process pythonProcess;
 
+    // Start is called before the first frame update
     void Start()
     {
-        // Set the path to the Python script
-        pythonScriptPath = Path.Combine(Application.dataPath, "SpeechRec.py");
-        UnityEngine.Debug.Log("Python Script Path: " + pythonScriptPath);
-
-        // Clear text files initially
-        ClearTextFiles();
+        string pythonInterpreterPath = @"C:/Library/Frameworks/Python.framework/Versions/3.9/bin/python3";
+        string pythonScriptPath = System.IO.Path.Combine(Application.dataPath, "SpeechRec.py");
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            UnityEngine.Debug.Log("Q Pressed");
             StartPythonScript();
-            UpdateResponseText();
+            File.WriteAllText("Assets/speaker.txt", "");
+            File.WriteAllText("Assets/user.txt", "");
+        }
+
+        // Check if transcription is ready
+        if (IsTranscriptionReady())
+        {
+            string responseText = File.ReadAllText("Assets/speaker.txt");
+            if (!string.IsNullOrEmpty(responseText))
+            {
+                UnityEngine.Debug.Log("Playing TTS: " + responseText);
+                PlayTextAsSpeech(responseText);
+
+                // Clear the sync file after reading
+                File.WriteAllText("Assets/sync.txt", "");
+            }
         }
     }
 
     void StartPythonScript()
     {
+        UnityEngine.Debug.Log("Starting Python Script...");
+
+        string pythonInterpreterPath = @"C:/Library/Frameworks/Python.framework/Versions/3.9/bin/python3";
+        string pythonScriptPath = @$"{Application.dataPath}/SpeechRec.py";
+
+        UnityEngine.Debug.Log("Python Interpreter Path: " + pythonInterpreterPath);
+        UnityEngine.Debug.Log("Python Script Path: " + pythonScriptPath);
+
+        pythonProcess = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = pythonInterpreterPath,
+                Arguments = $"{pythonScriptPath}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = false
+            },
+            EnableRaisingEvents = true // Allow capturing process exit event
+        };
+
+        // Event handler for capturing the process exit event
+        pythonProcess.Exited += (sender, e) =>
+        {
+            string output = pythonProcess.StandardOutput.ReadToEnd();
+            string errorOutput = pythonProcess.StandardError.ReadToEnd();
+
+            if (!string.IsNullOrEmpty(output))
+            {
+                UnityEngine.Debug.Log("Python script output: " + output);
+            }
+
+            if (!string.IsNullOrEmpty(errorOutput))
+            {
+                UnityEngine.Debug.LogError("Python script error: " + errorOutput);
+            }
+
+            pythonProcess.Dispose(); // Dispose of the process to free resources
+        };
+
+        // Start the Python process
         try
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                //FileName = "python", 
-                FileName = "py", // use this if the above line doesn't work; seems to be how Python sets the default launcher
-                Arguments = $"\"{pythonScriptPath}\"",
-                UseShellExecute = true,
-                CreateNoWindow = false
-            };
-
-            Process process = Process.Start(startInfo);
-            process.WaitForExit();
-
-            UnityEngine.Debug.Log("Python script started successfully.");
+            pythonProcess.Start();
+            UnityEngine.Debug.Log("Python process started successfully.");
         }
         catch (System.Exception ex)
         {
             UnityEngine.Debug.LogError("Failed to start Python script: " + ex.Message);
         }
+
+        UnityEngine.Debug.Log("Python time part2");
     }
 
-    void UpdateResponseText()
+    // Method to check if the transcription is ready by reading the sync file
+    private bool IsTranscriptionReady()
     {
-        string speakerFilePath = Path.Combine(Application.dataPath, "speaker.txt");
-
-        if (File.Exists(speakerFilePath))
+        string syncFilePath = "Assets/sync.txt";
+        if (File.Exists(syncFilePath))
         {
-            response.text = File.ReadAllText(speakerFilePath);
+            string status = File.ReadAllText(syncFilePath);
+            return status.Trim() == "ready";
         }
-        else
+        return false;
+    }
+
+    // Optionally, you may want to stop the Python process when the Unity application quits
+    private void OnApplicationQuit()
+    {
+        if (pythonProcess != null && !pythonProcess.HasExited)
         {
-            response.text = "No response available.";
+            pythonProcess.Kill();
+            pythonProcess.Dispose();
         }
     }
 
-    void ClearTextFiles()
+    // Method to play the transcribed text as speech
+    void PlayTextAsSpeech(string text)
     {
-        File.WriteAllText(Path.Combine(Application.dataPath, "speaker.txt"), "");
-        File.WriteAllText(Path.Combine(Application.dataPath, "user.txt"), "");
+        // Assuming you have a text-to-speech method in Unity
+        // Implement the logic here to convert text to speech using your chosen TTS service
+        // For example, you could use Unity's Text-to-Speech integration or a third-party API.
+        UnityEngine.Debug.Log("Text to Speech: " + text);
+        // Add the TTS integration here
     }
 }
