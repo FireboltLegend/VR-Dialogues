@@ -26,12 +26,14 @@ public class TTS : MonoBehaviour
     {
         if (textFile == null)
         {
+            Debug.Log("Resetting: Loading default text file.");
             textFile = AssetDatabase.LoadAssetAtPath<TextAsset>($"{Application.dataPath}/speaker.txt");
         }
     }
 
     public void PlayTTS()
     {
+        Debug.Log("PlayTTS triggered.");
         StartCoroutine(StartTTS());
     }
 
@@ -45,6 +47,7 @@ public class TTS : MonoBehaviour
 
             if (content.Contains("a"))
             {
+                Debug.Log("Condition met: 'a' detected in sync.txt. Starting TTS playback.");
                 PlayTTS();
 
                 // Replace 'a' with 'b' in the content
@@ -52,10 +55,10 @@ public class TTS : MonoBehaviour
 
                 // Write the updated content back to the file
                 File.WriteAllText(filePath, updatedContent);
+                Debug.Log("sync.txt updated: 'a' replaced with 'b'.");
             }
         }
     }
-
 
     private IEnumerator StartTTS()
     {
@@ -63,9 +66,11 @@ public class TTS : MonoBehaviour
 
         if (string.IsNullOrEmpty(textToSynthesize))
         {
-            Debug.LogError("Either the dialogue is empty or not found!");
+            Debug.LogError("Error: The text to synthesize is either empty or not found.");
             yield break;
         }
+
+        Debug.Log("Text to synthesize: " + textToSynthesize);
 
         var credentials = new BasicAWSCredentials("AKIA2NK3X4NVQCGYVBEE", "yF5jkrnJ2uEMcI/PkbsON4EYaPshsXo2NYPbbXSs");
         var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
@@ -79,6 +84,8 @@ public class TTS : MonoBehaviour
             OutputFormat = OutputFormat.Mp3
         };
 
+        Debug.Log($"Synthesis request initiated with voice: {voice} and language code: {languagecode}");
+
         SynthesizeSpeechResponse response = null;
         Exception exception = null;
 
@@ -91,16 +98,12 @@ public class TTS : MonoBehaviour
         if (task.IsFaulted)
         {
             exception = task.Exception;
+            Debug.LogError("Error during Polly synthesis: " + exception.Message);
         }
         else
         {
             response = task.Result;
-        }
-
-        if (exception != null)
-        {
-            Debug.LogError("Polly failed: " + exception.Message);
-            yield break;
+            Debug.Log("Polly synthesis successful.");
         }
 
         if (response == null || response.AudioStream == null)
@@ -112,6 +115,8 @@ public class TTS : MonoBehaviour
         WriteIntoFile(response.AudioStream);
 
         var audioFilePath = $"{Application.persistentDataPath}/audio.mp3";
+        Debug.Log("Audio file written to: " + audioFilePath);
+
         using (var www = UnityWebRequestMultimedia.GetAudioClip(audioFilePath, AudioType.MPEG))
         {
             var webrequest = www.SendWebRequest();
@@ -134,6 +139,7 @@ public class TTS : MonoBehaviour
                     yield break;
                 }
 
+                Debug.Log("AudioClip successfully loaded and will now be played.");
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
@@ -142,6 +148,7 @@ public class TTS : MonoBehaviour
 
     private async Task<SynthesizeSpeechResponse> SynthesizeSpeechAsync(IAmazonPolly client, SynthesizeSpeechRequest request)
     {
+        Debug.Log("Asynchronous Polly synthesis initiated.");
         return await client.SynthesizeSpeechAsync(request);
     }
 
@@ -150,6 +157,7 @@ public class TTS : MonoBehaviour
         var filePath = $"{Application.persistentDataPath}/audio.mp3";
         using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
         {
+            Debug.Log("Writing synthesized speech to file: " + filePath);
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;
 
@@ -157,6 +165,8 @@ public class TTS : MonoBehaviour
             {
                 fileStream.Write(buffer, 0, bytesRead);
             }
+
+            Debug.Log("File write complete.");
         }
     }
 }
