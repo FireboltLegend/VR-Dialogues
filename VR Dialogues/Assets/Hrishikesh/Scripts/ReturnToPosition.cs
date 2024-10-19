@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class ReturnToPosition : MonoBehaviour
 {
-    [SerializeField] private Vector3 startPosition;
     private Vector3 startPosition;
     [SerializeField] private float returnTime;
     private bool returning;
 
-    private void Start()
+    void Start()
     {
         startPosition = transform.position;
     }
-
     void Update()
     {
-            Return();
         if (Vector3.Distance(startPosition, transform.position) > 1 && !returning)
         {
             returning = true;
@@ -24,9 +21,13 @@ public class ReturnToPosition : MonoBehaviour
         }
     }
 
-    private void Return()
+    void ReturnToStart()
     {
-        transform.position = startPosition;
+        if (returning)
+        {
+            transform.position = startPosition;
+            if (GetComponent<Rigidbody>() != null)
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
             returning = false;
         }
     }
