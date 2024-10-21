@@ -6,6 +6,7 @@ using System.IO;
 
 public class ChatbotManager : MonoBehaviour
 {
+    private TTS ttsmanager;
     private Process pythonProcess;
 
     // Start is called before the first frame update
@@ -45,22 +46,41 @@ public class ChatbotManager : MonoBehaviour
     {
         UnityEngine.Debug.Log("Starting Python Script...");
 
-        string pythonInterpreterPath = @"C:/Library/Frameworks/Python.framework/Versions/3.9/bin/python3";
-        string pythonScriptPath = @$"{Application.dataPath}/SpeechRec.py";
+        string pythonInterpreterPath = @"C:\Users\ayush\AppData\Local\Programs\Python\Python39\python.exe";
+        string pythonScriptPath = @$"{Application.dataPath}/SpeechRec.py";  // Make sure the script path is correct
 
-        UnityEngine.Debug.Log("Python Interpreter Path: " + pythonInterpreterPath);
-        UnityEngine.Debug.Log("Python Script Path: " + pythonScriptPath);
+        // Log the paths to help debug
+        UnityEngine.Debug.Log("Python interpreter path: " + pythonInterpreterPath);
+        UnityEngine.Debug.Log("Python script path: " + pythonScriptPath);
+
+        // Check if the Python interpreter exists
+        if (!File.Exists(pythonInterpreterPath))
+        {
+            UnityEngine.Debug.LogError("Python interpreter not found: " + pythonInterpreterPath);
+            return;
+        }
+
+        // Check if the Python script exists
+        if (!File.Exists(pythonScriptPath))
+        {
+            UnityEngine.Debug.LogError("Python script not found: " + pythonScriptPath);
+            return;
+        }
+
+        // Add double quotes around the script path
+        string arguments = $"\"{pythonScriptPath}\"";
 
         pythonProcess = new Process
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = pythonInterpreterPath,
-                Arguments = $"{pythonScriptPath}",
+                FileName = "python",
+                Arguments = arguments,  // Properly quote the Python script path
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = false
+                CreateNoWindow = false,
+                WorkingDirectory = Path.GetDirectoryName(pythonScriptPath) // Set the working directory
             },
             EnableRaisingEvents = true // Allow capturing process exit event
         };
@@ -98,6 +118,7 @@ public class ChatbotManager : MonoBehaviour
         UnityEngine.Debug.Log("Python time part2");
     }
 
+
     // Method to check if the transcription is ready by reading the sync file
     private bool IsTranscriptionReady()
     {
@@ -128,5 +149,6 @@ public class ChatbotManager : MonoBehaviour
         // For example, you could use Unity's Text-to-Speech integration or a third-party API.
         UnityEngine.Debug.Log("Text to Speech: " + text);
         // Add the TTS integration here
+        ttsmanager.PlayTTS();
     }
 }

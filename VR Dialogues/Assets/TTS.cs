@@ -2,12 +2,10 @@ using Amazon;
 using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
-using Meta.WitAi.Utilities;
 using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -16,26 +14,11 @@ public class TTS : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private TextAsset textFile;
 
-    public enum PollyVoices { Amy, Brian, Camila, Emma, Gabrielle, Hannah, Isabella, Kendra, Kimberly, Lupe, Mia, Niamh, Olivia, Ruth, Stephen, Suvi, Takumi, Zayd, Arlet, Adriano, Laura, Seoyeon, Gregory, Hala, Ines, Thiago, Vicki, Daniel, Aria, Ayanda, Jitka, Kazuha, Lisa, Sergio, Burcu };
+    public enum PollyVoices { Amy, Brian, Camila, Emma, Gabrielle, Hannah, Isabella, Kendra, Kimberly, Lupe, Mia, Niamh, Olivia, Ruth, Stephen, Suvi, Takumi, Zayd, Arlet, Adriano, Laura, Seoyeon, Gregory, Hala, Joaquín, Inês, Thiago, Vicki, Daniel, Aria, Ayanda, Jitka, Kazuha, Lisa, Rémi, Andrés, Sergio, Burcu };
     public enum PollyLanguageCodes { None, arb, cmn_CN, cy_GB, da_DK, de_DE, en_AU, en_GB, en_GB_WLS, en_IN, en_US, es_ES, es_MX, es_US, fr_CA, fr_FR, is_IS, it_IT, ja_JP, hi_IN, ko_KR, nb_NO, nl_NL, pl_PL, pt_BR, pt_PT, ro_RO, ru_RU, sv_SE, tr_TR, en_NZ, en_ZA, ca_ES, de_AT, yue_CN, ar_AE, fi_FI, en_IE, nl_BE, fr_BE };
 
     [SerializeField] private PollyVoices voice;
     [SerializeField] private PollyLanguageCodes languagecode;
-
-    private void Reset()
-    {
-        if (textFile == null)
-        {
-            Debug.Log("Resetting: Loading default text file.");
-            textFile = AssetDatabase.LoadAssetAtPath<TextAsset>($"{Application.dataPath}/speaker.txt");
-        }
-    }
-
-    public void PlayTTS()
-    {
-        Debug.Log("PlayTTS triggered.");
-        StartCoroutine(StartTTS());
-    }
 
     private void Update()
     {
@@ -48,16 +31,18 @@ public class TTS : MonoBehaviour
             if (content.Contains("a"))
             {
                 Debug.Log("Condition met: 'a' detected in sync.txt. Starting TTS playback.");
+                File.WriteAllText(filePath, "");
                 PlayTTS();
 
-                // Replace 'a' with 'b' in the content
-                string updatedContent = content.Replace('a', 'b');
 
-                // Write the updated content back to the file
-                File.WriteAllText(filePath, updatedContent);
-                Debug.Log("sync.txt updated: 'a' replaced with 'b'.");
+
             }
         }
+    }
+
+    public void PlayTTS()
+    {
+        StartCoroutine(StartTTS());
     }
 
     private IEnumerator StartTTS()
@@ -66,12 +51,11 @@ public class TTS : MonoBehaviour
 
         if (string.IsNullOrEmpty(textToSynthesize))
         {
-            Debug.LogError("Error: The text to synthesize is either empty or not found.");
+            Debug.LogError("Either the dialogue is empty or not found!");
             yield break;
         }
-
-        Debug.Log("Text to synthesize: " + textToSynthesize);
-
+        
+        Debug.Log("Loaded");
         var credentials = new BasicAWSCredentials("AKIA2NK3X4NVQCGYVBEE", "yF5jkrnJ2uEMcI/PkbsON4EYaPshsXo2NYPbbXSs");
         var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
 
@@ -84,26 +68,31 @@ public class TTS : MonoBehaviour
             OutputFormat = OutputFormat.Mp3
         };
 
-        Debug.Log($"Synthesis request initiated with voice: {voice} and language code: {languagecode}");
-
         SynthesizeSpeechResponse response = null;
         Exception exception = null;
 
+        Debug.Log("Sending request to Polly...");
         var task = SynthesizeSpeechAsync(client, request);
         while (!task.IsCompleted)
         {
             yield return null;
         }
 
+        Debug.Log("Polly request completed.");
+
         if (task.IsFaulted)
         {
             exception = task.Exception;
-            Debug.LogError("Error during Polly synthesis: " + exception.Message);
         }
         else
         {
             response = task.Result;
-            Debug.Log("Polly synthesis successful.");
+        }
+
+        if (exception != null)
+        {
+            Debug.LogError("Polly failed: " + exception.Message);
+            yield break;
         }
 
         if (response == null || response.AudioStream == null)
@@ -115,9 +104,7 @@ public class TTS : MonoBehaviour
         WriteIntoFile(response.AudioStream);
 
         var audioFilePath = $"{Application.persistentDataPath}/audio.mp3";
-        Debug.Log("Audio file written to: " + audioFilePath);
-
-        using (var www = UnityWebRequestMultimedia.GetAudioClip(audioFilePath, AudioType.MPEG))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://" + audioFilePath, AudioType.MPEG))
         {
             var webrequest = www.SendWebRequest();
 
@@ -139,25 +126,33 @@ public class TTS : MonoBehaviour
                     yield break;
                 }
 
-                Debug.Log("AudioClip successfully loaded and will now be played.");
+                Debug.Log("Audio Clip Loaded: " + (audioClip != null));
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
+
         }
+        string filePath = Path.Combine(Application.persistentDataPath, "sync.txt");
+        string content = File.ReadAllText(filePath);
+        // Replace 'a' with 'b' in the content
+        string updatedContent = content.Replace('a', 'b');
+
+        // Write the updated content back to the file
+        File.WriteAllText(filePath, updatedContent);
+        Debug.Log("sync.txt updated: 'a' replaced with 'b'.");
     }
 
     private async Task<SynthesizeSpeechResponse> SynthesizeSpeechAsync(IAmazonPolly client, SynthesizeSpeechRequest request)
     {
-        Debug.Log("Asynchronous Polly synthesis initiated.");
         return await client.SynthesizeSpeechAsync(request);
     }
 
     private void WriteIntoFile(Stream stream)
     {
         var filePath = $"{Application.persistentDataPath}/audio.mp3";
+        Debug.Log("Audio File Path: " + filePath);
         using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
         {
-            Debug.Log("Writing synthesized speech to file: " + filePath);
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;
 
@@ -165,8 +160,6 @@ public class TTS : MonoBehaviour
             {
                 fileStream.Write(buffer, 0, bytesRead);
             }
-
-            Debug.Log("File write complete.");
         }
     }
 }
