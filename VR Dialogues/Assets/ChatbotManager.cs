@@ -27,19 +27,7 @@ public class ChatbotManager : MonoBehaviour
             File.WriteAllText("Assets/user.txt", "");
         }
 
-        // Check if transcription is ready
-        if (IsTranscriptionReady())
-        {
-            string responseText = File.ReadAllText("Assets/speaker.txt");
-            if (!string.IsNullOrEmpty(responseText))
-            {
-                UnityEngine.Debug.Log("Playing TTS: " + responseText);
-                PlayTextAsSpeech(responseText);
-
-                // Clear the sync file after reading
-                File.WriteAllText("Assets/sync.txt", "");
-            }
-        }
+        
     }
 
     void StartPythonScript()
@@ -74,11 +62,9 @@ public class ChatbotManager : MonoBehaviour
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "python",
+                FileName = "py",
                 Arguments = arguments,  // Properly quote the Python script path
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
+                UseShellExecute = true,
                 CreateNoWindow = false,
                 WorkingDirectory = Path.GetDirectoryName(pythonScriptPath) // Set the working directory
             },
@@ -126,7 +112,7 @@ public class ChatbotManager : MonoBehaviour
         if (File.Exists(syncFilePath))
         {
             string status = File.ReadAllText(syncFilePath);
-            return status.Trim() == "ready";
+            return status == "a";
         }
         return false;
     }

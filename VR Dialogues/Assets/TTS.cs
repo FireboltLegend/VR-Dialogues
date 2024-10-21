@@ -22,11 +22,12 @@ public class TTS : MonoBehaviour
 
     private void Update()
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "sync.txt");
-
+        string filePath = Path.Combine(Application.dataPath, "sync.txt");
+        Debug.Log(filePath);
         if (File.Exists(filePath))
         {
             string content = File.ReadAllText(filePath);
+            Debug.Log(content);
 
             if (content.Contains("a"))
             {
@@ -49,11 +50,7 @@ public class TTS : MonoBehaviour
     {
         string textToSynthesize = textFile != null ? textFile.text : string.Empty;
 
-        if (string.IsNullOrEmpty(textToSynthesize))
-        {
-            Debug.LogError("Either the dialogue is empty or not found!");
-            yield break;
-        }
+
         
         Debug.Log("Loaded");
         var credentials = new BasicAWSCredentials("AKIA2NK3X4NVQCGYVBEE", "yF5jkrnJ2uEMcI/PkbsON4EYaPshsXo2NYPbbXSs");
