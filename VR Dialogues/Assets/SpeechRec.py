@@ -41,11 +41,22 @@ class MultiConversationAI:
 
     def load_prompts(self):
         try:
-            self.conversation1.append({'role': 'system', 'content': self.open_file(os.path.join(os.path.dirname(__file__), "Chat1.txt"))})
-            self.conversation2.append({'role': 'system', 'content': self.open_file(os.path.join(os.path.dirname(__file__), "Chat2.txt"))})
+            # Log the file paths before opening
+            print(f"Attempting to open Chat1.txt: {os.path.abspath('Chat1.txt')}")
+            print(f"Attempting to open Chat2.txt: {os.path.abspath('Chat2.txt')}")
+
+            # Check if the files exist before reading
+            if not os.path.exists('Chat1.txt'):
+                print("Error: Chat1.txt not found!")
+            if not os.path.exists('Chat2.txt'):
+                print("Error: Chat2.txt not found!")
+
+            self.conversation1.append({'role': 'system', 'content': self.open_file("Chat1.txt")})
+            self.conversation2.append({'role': 'system', 'content': self.open_file("Chat2.txt")})
         except FileNotFoundError as e:
             print(f"Error loading prompts: {e}")
             exit(1)
+
 
     def open_file(self, filepath):
         with open(filepath, 'r', encoding='utf-8') as infile:
@@ -83,36 +94,70 @@ class MultiConversationAI:
         except Exception as e:
             print(f"Error in TTS: {e}")
 
-    def save_response(self, response):
-        """Save the response to speaker.txt."""
-        with open(os.path.join(os.path.dirname(__file__), "speaker.txt"), "w", encoding='utf-8') as file:
+    def save_response1(self, response):
+        """Save the response to speaker1.txt."""
+        # Log the full path of the file to confirm where it's being saved
+        print(f"Saving response to: {os.path.abspath('speaker1.txt')}")
+    
+        with open("speaker1.txt", "w", encoding='utf-8') as file:
             file.write(response + "\n")  # Append the response followed by a newline
+
+    def empty_response1(self):
+        """Save the response to speaker1.txt."""
+        # Log the full path of the file to confirm where it's being saved
+        print(f"Saving response to: {os.path.abspath('speaker1.txt')}")
+    
+        with open("speaker1.txt", "w", encoding='utf-8') as file:
+            file.write("")  # Append the response followed by a newline
+
+    def save_response2(self, response):
+        """Save the response to speaker2.txt."""
+        # Log the full path of the file to confirm where it's being saved
+        print(f"Saving response to: {os.path.abspath('speaker2.txt')}")
+    
+        with open("speaker2.txt", "w", encoding='utf-8') as file:
+            file.write(response + "\n")  # Append the response followed by a newline
+    def empty_response2(self):
+        """Save the response to speaker2.txt."""
+        # Log the full path of the file to confirm where it's being saved
+        print(f"Saving response to: {os.path.abspath('speaker2.txt')}")
+    
+        with open("speaker2.txt", "w", encoding='utf-8') as file:
+            file.write("")  # Append the response followed by a newline
+
 
     def write_sync_file(self):
         """Write the character 'a' to sync.txt."""
-        with open(os.path.join(os.path.dirname(__file__), "sync.txt"), "w", encoding='utf-8') as file:
+        # Log the full path of sync.txt
+        print(f"Writing to sync.txt: {os.path.abspath('sync.txt')}")
+    
+        with open("sync.txt", "w", encoding='utf-8') as file:
             file.write('a')  # Overwrite sync.txt with 'a'
+
 
     def start(self):
         print("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
         agent_selected = random.randint(1, 2)
+        if agent_selected == 1:
+            self.save_response1("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
+            self.empty_response2()
+
+        elif agent_selected == 2:
+            self.save_response2("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
+            self.empty_response1()
+
+        self.write_sync_file() #exclude from if statement
 
         while True:
-            # Allow the chatbots to respond to each other up to 3 times
-            for _ in range(random.randint(1, 3)):  # Randomly choose how many responses (1-3)
-                # Get the chatbot's response
-                response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
-                print(f"{'Cortana' if agent_selected == 1 else 'Firebolt'}:", response)
+            while True:
+                with open("sync.txt", "r", encoding='utf-8') as file:
+                    sync_char = file.read()
 
-                # Save the response to speaker.txt
-                self.save_response(response)
-                self.write_sync_file()
+                    if sync_char == 'b':
+                        break
 
-                # Alternate agents for the next response
-                agent_selected = 2 if agent_selected == 1 else 1
-            
-                # Introduce a short pause before the next chatbot response
-                time.sleep(1)  # Adjust the duration as needed
+
+
 
             # Wait for user input after the chatbots' responses
             user_input = self.get_audio()
@@ -127,15 +172,42 @@ class MultiConversationAI:
             self.conversation2.append({'role': 'user', 'content': user_input})
 
             # After user speaks, get a response from the active agent
+            agent_selected = random.randint(1, 2)
             response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
-            print(f"{'Cortana' if agent_selected == 1 else 'Firebolt'}:", response)
+            print(f"{'Kitana' if agent_selected == 1 else 'Ezio'}:", response)
 
             # Save the response to speaker.txt
-            self.save_response(response)
-            self.write_sync_file()
-        
-            # Switch agents for the next turn
-            agent_selected = 2 if agent_selected == 1 else 1
+            if agent_selected == 1:
+                self.save_response1(response)
+                self.empty_response2()
+
+            elif agent_selected == 2:
+                self.save_response2(response)
+                self.empty_response1()
+
+            self.write_sync_file() #exclude from if statement
+            agent_selected = random.randint(0, 2)
+            count = 0
+            while count < 2 or agent_selected == 0: 
+                response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
+                print(f"{'Kitana' if agent_selected == 1 else 'Ezio'}:", response)
+
+                # Save the response to speaker.txt
+                if agent_selected == 1:
+                    self.save_response1(response)
+                    self.empty_response2()
+
+                elif agent_selected == 2:
+                    self.save_response2(response)
+                    self.empty_response1()
+
+                self.write_sync_file() #exclude from if statement
+                # Switch agents for the next turn
+                agent_selected = random.randint(0, 2)
+                count += 1
+
+
+            #for loop w range (0,1) 
 
 
     def confirm_exit(self):
