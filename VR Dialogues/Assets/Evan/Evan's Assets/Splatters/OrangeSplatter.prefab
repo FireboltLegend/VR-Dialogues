@@ -120,7 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015d6f759a49a6b40a9f335fba02bb3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruit: {fileID: 8602040299817230307, guid: 2014bb6321c5a4044b821b678605de3c, type: 3}
+  fruit: {fileID: 589274125449211649, guid: 42aba1991793100459ea97487e06f26b, type: 3}
+  secretFruit: {fileID: 3482716180785793384, guid: aa4e9921f810f834e8123a4c5935cf56, type: 3}
 --- !u!95 &-2113309715517742405
 Animator:
   serializedVersion: 5

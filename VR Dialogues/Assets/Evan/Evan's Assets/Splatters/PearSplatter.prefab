@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fruit: {fileID: 66088676006526168, guid: 1f4cdcdf86cad5a42a82295716a7b373, type: 3}
+  secretFruit: {fileID: 3482716180785793384, guid: aa4e9921f810f834e8123a4c5935cf56, type: 3}
 --- !u!95 &2424311634508836913
 Animator:
   serializedVersion: 5

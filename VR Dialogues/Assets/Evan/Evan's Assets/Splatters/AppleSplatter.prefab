@@ -142,3 +142,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fruit: {fileID: 6155911734189515427, guid: b0c7e0d17c276cd4a8c71921a4421811, type: 3}
+  secretFruit: {fileID: 3482716180785793384, guid: aa4e9921f810f834e8123a4c5935cf56, type: 3}
