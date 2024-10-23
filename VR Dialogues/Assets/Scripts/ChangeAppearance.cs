@@ -35,7 +35,7 @@ public class ChangeAppearance : MonoBehaviour
                 {
                     child.gameObject.SetActive(true);
                     currentNum = child.gameObject.GetComponent<AvatarComponent>().num;
-                    setOthersInactive(currentNum);
+                    SetOthersInactive(currentNum);
                     break;
                 }
             }
@@ -43,70 +43,17 @@ public class ChangeAppearance : MonoBehaviour
         }
     }
     
-    /*void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Clothes")
         {
             int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
             currentNum = clothesNum;
-            Debug.Log("Clothes found, changing now trigger");
-            
-        }
-    }*/
-
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "Clothes")
-        {
-            int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
-            currentNum = clothesNum;
-            ReturnHome(other);
+            ReturnHome(other.gameObject);
         }
     }
 
-    int GetInputNum()
-    {
-        Debug.Log("Checking for input...");
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            return 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            return 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            return 3;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            return 4;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            return 5;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            return 6;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            return 7;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            return 8;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            return 9;
-        }
-        else return 0;
-    }
-
-    void setOthersInactive(int num)
+    void SetOthersInactive(int num)
     {
         foreach (Transform child in transform)
         {
@@ -117,8 +64,9 @@ public class ChangeAppearance : MonoBehaviour
         }
     }
 
-    void ReturnHome(Collision other)
+    void ReturnHome(GameObject other)
     {
-        other.gameObject.transform.position = other.gameObject.GetComponent<WorldPos>().getOriginalPos();
+        other.transform.SetPositionAndRotation(other.GetComponent<WorldPos>().getOriginalPos(), other.transform.rotation);
+        //other.transform.position = other.GetComponent<WorldPos>().getOriginalPos();
     }
 }
