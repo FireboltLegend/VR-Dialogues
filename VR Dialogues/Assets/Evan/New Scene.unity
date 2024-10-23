@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1719,7 +1719,7 @@ MonoBehaviour:
   _maxSelectingInteractors: -1
   _data: {fileID: 0}
   _pointableElement: {fileID: 270468091}
-  _rigidbody: {fileID: 0}
+  _rigidbody: {fileID: 5038938318800454686}
   _physicsGrabbable: {fileID: 0}
   _resetGrabOnGrabsUpdated: 1
   _scoringModifier:
@@ -2795,7 +2795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.22
+      value: 1.032
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2803,7 +2803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.233
+      value: 4.907
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2897,7 +2897,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -7359,7 +7359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.79
+      value: 3.249
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8977,8 +8977,16 @@ PrefabInstance:
       value: Clothes 1
       objectReference: {fileID: 0}
     - target: {fileID: 8283390966568916997, guid: fa9e671051ce44a598ac039e6c01be21, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283390966568916997, guid: fa9e671051ce44a598ac039e6c01be21, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283390966568916997, guid: fa9e671051ce44a598ac039e6c01be21, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -9042,7 +9050,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -9063,7 +9071,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -13722,6 +13730,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clothes 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5008702260910812055, guid: 4bf94269cb35f4a0d8c5aae9dd0e3503, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5008702260910812055, guid: 4bf94269cb35f4a0d8c5aae9dd0e3503, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8735436269991069941, guid: 4bf94269cb35f4a0d8c5aae9dd0e3503, type: 3}
@@ -13761,6 +13777,14 @@ PrefabInstance:
     - target: {fileID: 7309515775871755785, guid: 890af4c6cd8ad4e999b17b4ff384f657, type: 3}
       propertyPath: m_Name
       value: Clothes 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7309515775871755785, guid: 890af4c6cd8ad4e999b17b4ff384f657, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7309515775871755785, guid: 890af4c6cd8ad4e999b17b4ff384f657, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 8363025303060366310, guid: 890af4c6cd8ad4e999b17b4ff384f657, type: 3}
       propertyPath: m_LocalScale.x
@@ -13862,6 +13886,14 @@ PrefabInstance:
     - target: {fileID: 5451899061375182919, guid: 51250370938654d5bbe1f2746d481edc, type: 3}
       propertyPath: m_Name
       value: Clothes 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5451899061375182919, guid: 51250370938654d5bbe1f2746d481edc, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5451899061375182919, guid: 51250370938654d5bbe1f2746d481edc, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 7529548909828307273, guid: 51250370938654d5bbe1f2746d481edc, type: 3}
       propertyPath: m_IsActive
@@ -14089,6 +14121,14 @@ PrefabInstance:
     - target: {fileID: 205382535817565647, guid: 88e552cde55d14fb69beaf2491644977, type: 3}
       propertyPath: m_Name
       value: Clothes 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 205382535817565647, guid: 88e552cde55d14fb69beaf2491644977, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 205382535817565647, guid: 88e552cde55d14fb69beaf2491644977, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 494076374040098157, guid: 88e552cde55d14fb69beaf2491644977, type: 3}
       propertyPath: m_LocalScale.x
@@ -14395,7 +14435,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14422,7 +14462,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14461,7 +14501,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14488,7 +14528,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14527,7 +14567,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14554,7 +14594,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14586,7 +14626,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14607,7 +14647,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14652,7 +14692,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14673,7 +14713,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14708,6 +14748,14 @@ PrefabInstance:
     - target: {fileID: 856958694580673934, guid: efd3db221b29b44f3bdb55e51de15aff, type: 3}
       propertyPath: m_Name
       value: Clothes 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 856958694580673934, guid: efd3db221b29b44f3bdb55e51de15aff, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 856958694580673934, guid: efd3db221b29b44f3bdb55e51de15aff, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 1710208909747100304, guid: efd3db221b29b44f3bdb55e51de15aff, type: 3}
       propertyPath: m_LocalScale.x
@@ -14843,6 +14891,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clothes 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1165022662240930907, guid: 6aa0d19ab42b841e79ea6fc3fa92792b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1165022662240930907, guid: 6aa0d19ab42b841e79ea6fc3fa92792b, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     - target: {fileID: 8908679267405863902, guid: 6aa0d19ab42b841e79ea6fc3fa92792b, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.3
@@ -14929,6 +14985,14 @@ PrefabInstance:
     - target: {fileID: 3562644018820283067, guid: 883040c821a9346a289d43e8b606b654, type: 3}
       propertyPath: m_Name
       value: Clothes 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562644018820283067, guid: 883040c821a9346a289d43e8b606b654, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562644018820283067, guid: 883040c821a9346a289d43e8b606b654, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 8556540906737719059, guid: 883040c821a9346a289d43e8b606b654, type: 3}
       propertyPath: m_LocalScale.x
@@ -15033,7 +15097,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -15060,7 +15124,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -15211,7 +15275,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -15238,7 +15302,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

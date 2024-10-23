@@ -7,11 +7,17 @@ TagManager:
   - Gaze
   - Avatar
   - Clothes
+  - Locomotion
+  - LocoButton
+  - LocoText
+  - PassThroughButton
+  - PassThrough
+  - SamplesInfoPanel
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Clothes
   - Water
   - UI
   - 
