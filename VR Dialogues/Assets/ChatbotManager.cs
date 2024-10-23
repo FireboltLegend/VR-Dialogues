@@ -26,6 +26,7 @@ public class ChatbotManager : MonoBehaviour
 			File.WriteAllText("Assets/speaker2.txt", "");
 			File.WriteAllText("Assets/sync.txt", "");
 			File.WriteAllText("Assets/user.txt", "");
+
 			StartPythonScript();
 		}
 	}
@@ -65,7 +66,7 @@ public class ChatbotManager : MonoBehaviour
 				FileName = "py",
 				Arguments = arguments,  // Properly quote the Python script path
 				UseShellExecute = true,
-				CreateNoWindow = false,
+				CreateNoWindow = true,
 				WorkingDirectory = Path.GetDirectoryName(pythonScriptPath) // Set the working directory
 			},
 			EnableRaisingEvents = true // Allow capturing process exit event
@@ -133,11 +134,27 @@ public class ChatbotManager : MonoBehaviour
 	// Method to play the transcribed text as speech
 	void PlayTextAsSpeech(string text)
 	{
-		// Assuming you have a text-to-speech method in Unity
-		// Implement the logic here to convert text to speech using your chosen TTS service
-		// For example, you could use Unity's Text-to-Speech integration or a third-party API.
 		UnityEngine.Debug.Log("Text to Speech: " + text);
-		// Add the TTS integration here
-		ttsmanager.PlayTTS();
+
+		// TTS Integration
+		foreach (GameObject go in FindObjectsOfType<GameObject>())
+		{ 
+			string textContentGirl = File.ReadAllText($"{Application.dataPath}/speaker1.txt");
+			string textContentBoy = File.ReadAllText($"{Application.dataPath}/speaker1.txt");
+            if (go.CompareTag("Avatar"))
+            {
+                if (!string.IsNullOrEmpty(textContentGirl))
+                {
+                    go.GetComponent<TTS>().PlayTTS();
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(textContentBoy))
+                {
+                    go.GetComponent<TTS>().PlayTTS();
+                    return;
+                }
+            }
+		}
 	}
 }

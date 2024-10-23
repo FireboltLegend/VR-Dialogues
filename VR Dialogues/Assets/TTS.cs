@@ -22,9 +22,30 @@ public class TTS : MonoBehaviour
 	[SerializeField] private PollyLanguageCodes languagecode;
 	[SerializeField, ReadOnly(true)] private bool playingAudio;
 
+	private FileSystemWatcher fileWatcher;
+
+	private void Start() { 
+		fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(Application.dataPath))
+		{
+			NotifyFilter = NotifyFilters.LastWrite,
+			Filter = Path.GetFileName("sync.txt") 
+		};
+
+		fileWatcher.Changed += OnSpeakerFileChanged;
+		fileWatcher.EnableRaisingEvents = true;
+	}
+
+	private void OnSpeakerFileChanged(object sender, FileSystemEventArgs e)
+	{
+		if (e.Name == "speaker1.txt" || e.Name == "speaker2.txt")
+		{
+			PlayTTS();
+		}
+	}
+
+	// Functionality to simulate manual sync between command prompt + Unity
 	private void Update()
 	{
-		Debug.Log(gameObject.name + " is alive");
 		string filePath = Path.Combine(Application.dataPath, "sync.txt");
 		// Debug.Log(filePath);
 		if (File.Exists(filePath))
@@ -37,12 +58,12 @@ public class TTS : MonoBehaviour
 				if(textFile != null && textFile.text != "")
 				{
 					File.WriteAllText(filePath, "");
-					Debug.Log("Condition met: 'a' detected in sync.txt. Starting TTS playback.\nText is: " + textFile.text);
+					Debug.Log(gameObject.name + " has Condition met: 'a' detected in sync.txt. Starting TTS playback.\nText is: " + textFile.text);
 					PlayTTS();
 				}
 			}
 		}
-	}
+	} 
 
 	public void PlayTTS()
 	{
@@ -53,6 +74,8 @@ public class TTS : MonoBehaviour
 	{
 		Debug.Log(gameObject.name + " is going to speak.");
 		string textToSynthesize = textFile != null ? textFile.text : string.Empty;
+		File.WriteAllText("Assets/speaker1.txt", "");
+		File.WriteAllText("Assets/speaker2.txt", "");
 
 		Debug.Log("Loaded");
 		var credentials = new BasicAWSCredentials("AKIA2NK3X4NVQCGYVBEE", "yF5jkrnJ2uEMcI/PkbsON4EYaPshsXo2NYPbbXSs");
@@ -128,6 +151,8 @@ public class TTS : MonoBehaviour
 				Debug.Log("Audio Clip Loaded: " + (audioClip != null));
 				audioSource.clip = audioClip;
 				audioSource.Play();
+				Debug.Log(gameObject.name);
+				
 				playingAudio = true;
 			}
 		}

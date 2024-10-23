@@ -97,32 +97,28 @@ class MultiConversationAI:
 	def save_response1(self, response):
 		"""Save the response to speaker1.txt."""
 		# Log the full path of the file to confirm where it's being saved
-		print(f"Saving response to: {os.path.abspath('speaker1.txt')}")
+		print(f"Saving response to: {os.path.abspath('speaker1.txt')}\nResponse:", response)
 	
 		with open("speaker1.txt", "w", encoding='utf-8') as file:
 			file.write(response)  # Append the response
+		with open("speaker1.txt", "r", encoding='utf-8') as file:
+			print("Test to See File Content is Being Saved:", file.read())
 
-	def empty_response1(self):
-		"""Save the response to speaker1.txt."""
-		# Log the full path of the file to confirm where it's being saved
-		print(f"Saving response to: {os.path.abspath('speaker1.txt')}")
-	
+	def empty_response1(self):	
 		with open("speaker1.txt", "w", encoding='utf-8') as file:
 			pass
 
 	def save_response2(self, response):
 		"""Save the response to speaker2.txt."""
 		# Log the full path of the file to confirm where it's being saved
-		print(f"Saving response to: {os.path.abspath('speaker2.txt')}")
+		print(f"Saving response to: {os.path.abspath('speaker2.txt')}\nResponse:", response)
 	
 		with open("speaker2.txt", "w", encoding='utf-8') as file:
 			file.write(response)  # Append the response
+		with open("speaker2.txt", "r", encoding='utf-8') as file:
+			print("Test to See File Content is Being qSaved:", file.read())
 
-	def empty_response2(self):
-		"""Save the response to speaker2.txt."""
-		# Log the full path of the file to confirm where it's being saved
-		print(f"Saving response to: {os.path.abspath('speaker2.txt')}")
-	
+	def empty_response2(self):	
 		with open("speaker2.txt", "w", encoding='utf-8') as file:
 			pass
 
@@ -138,6 +134,9 @@ class MultiConversationAI:
 
 	def start(self):
 		# print("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
+		ezioCount = 0
+		kitanaCount = 0
+
 		agent_selected = random.randint(1, 2)
 		print(f"{'Kitana' if agent_selected == 1 else 'Ezio'}:", "Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
 		if agent_selected == 1:
@@ -175,16 +174,29 @@ class MultiConversationAI:
 			self.conversation2.append({'role': 'user', 'content': user_input})
 
 			# After user speaks, get a response from the active agent
+			
 			agent_selected = random.randint(1, 2)
 			response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
 			print(f"{'Kitana' if agent_selected == 1 else 'Ezio'}:", response)
 
+			if (agent_selected == 1 and kitanaCount > 3):
+				agent_selected = 2
+				kitanaCount = 0
+
+			elif (agent_selected == 2 and ezioCount > 3):
+				agent_selected = 2
+				ezioCount = 0
+
 			# Save the response to speaker.txt
 			if agent_selected == 1:
+				kitanaCount += 1
+				ezioCount = 0
 				self.save_response1(response)
 				self.empty_response2()
 
 			elif agent_selected == 2:
+				ezioCount += 1
+				kitanaCount = 0
 				self.save_response2(response)
 				self.empty_response1()
 
