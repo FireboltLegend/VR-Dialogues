@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2791,7 +2791,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6689036041284674117, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
       propertyPath: m_Name
-      value: Wardrobe 1
+      value: Wardrobe
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13661,6 +13661,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7464465905637263773, guid: fdc0e4ade8b4d4758ae0d18a9c4381a0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925568982224153163, guid: fdc0e4ade8b4d4758ae0d18a9c4381a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14237,6 +14245,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 394908145586876325, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394908145586876325, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394908145586876325, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394908145586876325, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394908145586876325, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394908145586876325, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394908145586876325, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5944414197306723420, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0000006556511
@@ -14280,6 +14316,10 @@ PrefabInstance:
     - target: {fileID: 6388410221994014611, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
       propertyPath: m_Name
       value: Avatar 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467686626017388285, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

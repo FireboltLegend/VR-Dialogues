@@ -43,16 +43,16 @@ public class ChangeAppearance : MonoBehaviour
         }
     }
     
-    void OnTriggerEnter(Collider other)
+    /*void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Clothes")
         {
             int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
             currentNum = clothesNum;
             Debug.Log("Clothes found, changing now trigger");
-            other.gameObject.transform.position = other.gameObject.GetComponent<WorldPos>().getOriginalPos();
+            
         }
-    }
+    }*/
 
     void OnCollisionEnter(Collision other)
     {
@@ -60,8 +60,7 @@ public class ChangeAppearance : MonoBehaviour
         {
             int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
             currentNum = clothesNum;
-            Debug.Log("Clothes found, changing now collision");
-            other.gameObject.transform.position = other.gameObject.GetComponent<WorldPos>().getOriginalPos();
+            ReturnHome(other);
         }
     }
 
@@ -116,5 +115,10 @@ public class ChangeAppearance : MonoBehaviour
                 child.gameObject.SetActive(false);
             }
         }
+    }
+
+    void ReturnHome(Collision other)
+    {
+        other.gameObject.transform.position = other.gameObject.GetComponent<WorldPos>().getOriginalPos();
     }
 }
