@@ -11,7 +11,7 @@ public class ChangeAppearance : MonoBehaviour
 
     void Start()
     {
-        foreach(Transform child in transform)
+        foreach (Transform child in transform)
         {
             if (child.gameObject.activeSelf == true)
             {
@@ -42,17 +42,20 @@ public class ChangeAppearance : MonoBehaviour
 
         }
     }
-    
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Clothes")
         {
+            // Change skin
             int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
             currentNum = clothesNum;
-            // ReturnHome(other.gameObject);
+
+            // Return clothes to its original position
             Debug.Log("Original Position = " + other.gameObject.GetComponent<OriginalPosition>().GetOriginalPos());
             other.GetComponent<OriginalPosition>().GetChild().gameObject.SetActive(false);
             other.gameObject.transform.localPosition = other.gameObject.GetComponent<OriginalPosition>().GetOriginalPos();
+            other.gameObject.transform.localRotation = other.gameObject.GetComponent<OriginalPosition>().GetOriginalRot();
             Debug.Log("Object has been moved!");
         }
     }
@@ -68,18 +71,4 @@ public class ChangeAppearance : MonoBehaviour
         }
     }
 
-    void ReturnHome(GameObject other)
-    {
-        /*
-        OriginalPosition pos = other.GetComponent<OriginalPosition>();
-        if (pos != null)
-        {
-            pos.ResetPosition();
-        }
-        */
-        Debug.Log("Original Position = " + other.GetComponent<OriginalPosition>().GetOriginalPos());
-
-        other.transform.position = other.GetComponent<OriginalPosition>().GetOriginalPos();
-        Debug.Log("Object has been moved!");
-    }
 }
