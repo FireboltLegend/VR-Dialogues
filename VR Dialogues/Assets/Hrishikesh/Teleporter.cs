@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class PortalTeleporter : MonoBehaviour
 {
-    public Transform player;
     public Transform centerEye;
+    public Transform player;
     public Transform reciever;
+    public float dotProduct;
 
     private bool playerIsOverlapping = false;
 
@@ -15,19 +16,20 @@ public class PortalTeleporter : MonoBehaviour
     {
         if (playerIsOverlapping)
         {
-            Vector3 portalToPlayer = player.position - transform.position;
-            float dotProduct = Vector3.Dot(transform.up, portalToPlayer);
+            Vector3 portalToPlayer = centerEye.position - transform.position;
+            dotProduct = Vector3.Dot(transform.up, portalToPlayer);
 
             // If this is true: The player has moved across the portal
             if (dotProduct < 0f)
             {
                 // Teleport him!
                 float rotationDiff = -Quaternion.Angle(transform.rotation, reciever.rotation);
-                rotationDiff += 180;
-                player.Rotate(Vector3.up, rotationDiff);
+                rotationDiff += 180 - centerEye.localRotation.y;
+                //player.Rotate(Vector3.up, rotationDiff);
 
                 Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
-                player.position = reciever.position + positionOffset;
+                positionOffset -= centerEye.position - player.position;
+                player.position = reciever.position + positionOffset - reciever.forward * 0.6f;
 
                 playerIsOverlapping = false;
             }
