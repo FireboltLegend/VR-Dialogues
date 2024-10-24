@@ -7393,6 +7393,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OVRCameraRigInteraction
       objectReference: {fileID: 0}
+    - target: {fileID: 3942347904912776916, guid: f54012181eacade4ea242c65f804720f, type: 3}
+      propertyPath: _applyModifier
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -13676,14 +13680,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7464465905637263773, guid: fdc0e4ade8b4d4758ae0d18a9c4381a0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8925568982224153163, guid: fdc0e4ade8b4d4758ae0d18a9c4381a0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14343,6 +14339,10 @@ PrefabInstance:
     - target: {fileID: 6388410221994014611, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
       propertyPath: m_Name
       value: Avatar 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388410221994014611, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
+      propertyPath: m_TagString
+      value: Avatar
       objectReference: {fileID: 0}
     - target: {fileID: 6467686626017388285, guid: ae53c5c33e82549a0b14a420568f9a39, type: 3}
       propertyPath: m_IsActive

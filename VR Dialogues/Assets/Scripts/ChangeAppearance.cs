@@ -51,8 +51,8 @@ public class ChangeAppearance : MonoBehaviour
             currentNum = clothesNum;
             // ReturnHome(other.gameObject);
             Debug.Log("Original Position = " + other.gameObject.GetComponent<OriginalPosition>().GetOriginalPos());
-
-            other.gameObject.GetComponent<OriginalPosition>().ResetPosition();
+            other.GetComponent<OriginalPosition>().GetChild().gameObject.SetActive(false);
+            other.gameObject.transform.localPosition = other.gameObject.GetComponent<OriginalPosition>().GetOriginalPos();
             Debug.Log("Object has been moved!");
         }
     }
