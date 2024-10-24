@@ -49,7 +49,11 @@ public class ChangeAppearance : MonoBehaviour
         {
             int clothesNum = other.gameObject.GetComponent<AvatarComponent>().num;
             currentNum = clothesNum;
-            ReturnHome(other.gameObject);
+            // ReturnHome(other.gameObject);
+            Debug.Log("Original Position = " + other.gameObject.GetComponent<OriginalPosition>().GetOriginalPos());
+
+            other.gameObject.GetComponent<OriginalPosition>().ResetPosition();
+            Debug.Log("Object has been moved!");
         }
     }
 
@@ -66,7 +70,16 @@ public class ChangeAppearance : MonoBehaviour
 
     void ReturnHome(GameObject other)
     {
-        other.transform.SetPositionAndRotation(other.GetComponent<WorldPos>().getOriginalPos(), other.transform.rotation);
-        //other.transform.position = other.GetComponent<WorldPos>().getOriginalPos();
+        /*
+        OriginalPosition pos = other.GetComponent<OriginalPosition>();
+        if (pos != null)
+        {
+            pos.ResetPosition();
+        }
+        */
+        Debug.Log("Original Position = " + other.GetComponent<OriginalPosition>().GetOriginalPos());
+
+        other.transform.position = other.GetComponent<OriginalPosition>().GetOriginalPos();
+        Debug.Log("Object has been moved!");
     }
 }
