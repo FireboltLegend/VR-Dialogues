@@ -1902,6 +1902,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GirlAvatar
       objectReference: {fileID: 0}
+    - target: {fileID: 1298983401808423255, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
+      propertyPath: m_TagString
+      value: Avatar
+      objectReference: {fileID: 0}
     - target: {fileID: 3640251058386848723, guid: ff6b344e2955c4602ba8c740398b2017, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
