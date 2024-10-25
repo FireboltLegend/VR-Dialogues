@@ -9,7 +9,7 @@ using Meta.WitAi.Data;
 using OpenAI;
 using OpenAI.Audio;
 using OpenAI.Chat;
-
+using NAudio.Wave;
 
 public class MultiConversationAI
 {
@@ -23,24 +23,57 @@ public class MultiConversationAI
         conversation2 = new List<ChatMessage>();
         apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "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";
         
-
         LoadPrompts();
         STT();
     }
 
-    // Main Speech-To-Text Daemon -- will take in the already inputted user microphone recording
-    private string STT()
+    // Speech-To-Text Daemon (overload #1) -- given you want to use MicrophoneFactory or other custom Microphone Invocation
+    private string STT(string audioFilePath="Assets/user_input.wav")
     {
         OpenAIClient client = new OpenAIClient(apiKey); 
         AudioClient audioclient = client.GetAudioClient("whisper-1");
-        string audioFilePath = $"Assets/user_input.wav";
         AudioTranscriptionOptions options = new()
         {
             ResponseFormat = AudioTranscriptionFormat.Verbose,
             TimestampGranularities = AudioTimestampGranularities.Word | AudioTimestampGranularities.Segment,
         };
 
+
         AudioTranscription transcription = audioclient.TranscribeAudio(audioFilePath, options);
+        return transcription.Text;
+    }
+
+
+    // Speech-To-Text Daemon (overload #2) -- utilize in-house Microphone and Automated Speech Recognition
+    private string STT()
+    {
+        OpenAIClient client = new OpenAIClient(apiKey); 
+        AudioClient audioclient = client.GetAudioClient("whisper-1");
+        AudioTranscriptionOptions options = new()
+        {
+            ResponseFormat = AudioTranscriptionFormat.Verbose,
+            TimestampGranularities = AudioTimestampGranularities.Word | AudioTimestampGranularities.Segment,
+        };
+
+        WaveInEvent waveInput = new WaveInEvent();  // initiate the Micrphone device that is set at number 0
+
+        waveInput.WaveFormat = new WaveFormat(160000, 1);
+
+        using (var waveFileWriter = new WaveFileWriter("Assets/user_input.wav", new WaveFormat(16000, 1)))
+        { 
+            waveInput.DataAvailable += (s, e) => { waveFileWriter.Write(e.Buffer, 0, e.BytesRecorded); };
+
+            waveInput.StartRecording();
+
+            // Initialize the SilenceDetection -- longer timespan prevents false positives but also slower detection speed
+            SilenceDetector speechSilenceDetect = new SilenceDetector(waveInput, 16000, TimeSpan.FromSeconds(4), () => 
+            {
+                UnityEngine.Debug.Log("Silence detected. Stopping recording...");
+                waveInput.StopRecording();
+            });
+        }
+
+        AudioTranscription transcription = audioclient.TranscribeAudio("Assets/user_input.wav", options);
         return transcription.Text;
     }
 
@@ -49,17 +82,17 @@ public class MultiConversationAI
         try
         {
             if (!File.Exists("Chat1.txt"))
-                Console.WriteLine("Error: Chat1.txt not found!");
+                UnityEngine.Debug.Log("Error: Chat1.txt not found!");
 
             if (!File.Exists("Chat2.txt"))
-                Console.WriteLine("Error: Chat2.txt not found!");
+                UnityEngine.Debug.Log("Error: Chat2.txt not found!");
 
             conversation1.Add(ChatMessage.CreateSystemMessage(File.ReadAllText("Chat1.txt")));
             conversation2.Add(ChatMessage.CreateSystemMessage(File.ReadAllText("Chat2.txt")));
         }
         catch (FileNotFoundException ex)
         {
-            Console.WriteLine($"Error loading prompts: {ex.Message}");
+            UnityEngine.Debug.Log($"Error loading prompts: {ex.Message}");
             Environment.Exit(1);
         }
     }
@@ -84,7 +117,7 @@ public class MultiConversationAI
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            UnityEngine.Debug.Log($"An error occurred: {ex.Message}");
             return "";
         }
     }
@@ -92,21 +125,21 @@ public class MultiConversationAI
 
     private void SaveResponse(string response, string fileName)
     {
-        Console.WriteLine($"Saving response to: {Path.GetFullPath(fileName)}\nResponse: {response}");
+        UnityEngine.Debug.Log($"Saving response to: {Path.GetFullPath(fileName)}\nResponse: {response}");
         File.WriteAllText(fileName, response);
-        Console.WriteLine("Test to See File Content is Being Saved: " + File.ReadAllText(fileName));
+        UnityEngine.Debug.Log("Test to See File Content is Being Saved: " + File.ReadAllText(fileName));
     }
 
     private void WriteSyncFile()
     {
-        Console.WriteLine($"Writing to sync.txt: {Path.GetFullPath("sync.txt")}");
+        UnityEngine.Debug.Log($"Writing to sync.txt: {Path.GetFullPath("sync.txt")}");
         File.WriteAllText("sync.txt", "a");
     }
 
     public void Start()
     {
         int agentSelected = new Random().Next(1, 2);
-        Console.WriteLine($"{(agentSelected == 1 ? "Kitana" : "Ezio")}: Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.");
+        UnityEngine.Debug.Log($"{(agentSelected == 1 ? "Kitana" : "Ezio")}: Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.");
 
         SaveResponse("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.", agentSelected == 1 ? "speaker1.txt" : "speaker2.txt");
         WriteSyncFile();
@@ -129,7 +162,7 @@ public class MultiConversationAI
                 }
                 else
                 {
-                    Console.WriteLine("Continue Speaking!");
+                    UnityEngine.Debug.Log("Continue Speaking!");
                     continue;
                 }
             }
@@ -138,7 +171,7 @@ public class MultiConversationAI
             conversation2.Add(ChatMessage.CreateUserMessage(userInput));
 
             string response = GPT3Agent(agentSelected == 1 ? conversation1 : conversation2);
-            Console.WriteLine($"{(agentSelected == 1 ? "Kitana" : "Ezio")}: {response}");
+            UnityEngine.Debug.Log($"{(agentSelected == 1 ? "Kitana" : "Ezio")}: {response}");
 
             SaveResponse(response, agentSelected == 1 ? "speaker1.txt" : "speaker2.txt");
             WriteSyncFile();
@@ -147,8 +180,89 @@ public class MultiConversationAI
 
     private bool ConfirmExit()
     {
-        Console.WriteLine("Are you sure you want to exit? (yes/no)");
+        UnityEngine.Debug.Log("Are you sure you want to exit? (yes/no)");
         string response = STT();
         return response.ToLower() == "yes";
+    }
+}
+
+// Automates the user input removal of silence or background noise
+
+/*
+Inspired by: https://ieeexplore.ieee.org/document/9678476
+
+In short, this method uses what the researchers have as mathematical models to compute silence areas, which utilizse the robustness of audio signal energies.
+
+Implementation Steps (or general layout I had): 
+1. Calculate the continuous average energy (this is computing the energy of audio samples over a sample moving window of 50ms -- an overlap by 98%)
+2. Normalize Energy (compute normalized continous average energy to obtain signal's enveloping representation)
+3. Identify Silence (zero-crossing method helps identify the silence based on normalized energy values)
+
+*/
+public class SilenceDetector
+{
+    private readonly WaveInEvent _waveIn;
+    private readonly int _sampleRate;
+    private readonly int _bufferSize;
+    private readonly double _silenceThreshold;
+    private DateTime _lastSoundTime;
+    private readonly TimeSpan _silenceTimeout;
+    private readonly Action _onSilenceDetected;
+    private List<double> _energyLevels = new List<double>();
+
+    public SilenceDetector(WaveInEvent waveIn, int sampleRate, TimeSpan silenceTimeout, Action onSilenceDetected, double silenceThreshold = 0.1)
+    {
+        _waveIn = waveIn;
+        _sampleRate = sampleRate;
+        _silenceTimeout = silenceTimeout;
+        _onSilenceDetected = onSilenceDetected;
+        _silenceThreshold = silenceThreshold;
+        _bufferSize = (int)(sampleRate * 0.05); // 50 ms window
+
+        _waveIn.DataAvailable += OnDataAvailable;
+    }
+
+    private void OnDataAvailable(object sender, WaveInEventArgs e)
+    {
+        double[] samples = new double[e.Buffer.Length / 2];
+        Buffer.BlockCopy(e.Buffer, 0, samples, 0, e.Buffer.Length);
+        
+        double energy = CalculateEnergy(samples);
+        _energyLevels.Add(energy);
+
+        if (_energyLevels.Count >= _bufferSize)
+        {
+            double normalizedEnergy = NormalizeEnergy(_energyLevels.TakeLast(_bufferSize).ToArray());
+            DetectSilence(normalizedEnergy);
+        }
+    }
+
+    private double CalculateEnergy(double[] samples)
+    {
+        return samples.Sum(s => s * s); // E = s^2 (equation 1 in paper)
+    }
+
+    private double NormalizeEnergy(double[] energyLevels)
+    {
+        double average = energyLevels.Average();
+        double variance = energyLevels.Select(e => Math.Pow(e - average, 2)).Average();
+        double stdDev = Math.Sqrt(variance);
+
+        return (energyLevels.Last() - average) / stdDev; // normalization
+    }
+
+    private void DetectSilence(double normalizedEnergy)
+    {
+        if (normalizedEnergy < _silenceThreshold)
+        {
+            if (DateTime.Now - _lastSoundTime > _silenceTimeout)
+            {
+                _onSilenceDetected.Invoke();
+            }
+        }
+        else
+        {
+            _lastSoundTime = DateTime.Now;
+        }
     }
 }
