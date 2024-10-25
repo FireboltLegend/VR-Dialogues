@@ -10,19 +10,19 @@ public class MicrophoneFactory : MonoBehaviour
     public Dropdown microphoneDropdown;  // display all system-wide microphones (mainly for debugging purposes)
     public Button startButton;
     public Button stopButton;
-    public Image microphoneVisualizer;
-    public RawImage spectrogramDisplay;
+    //public Image microphoneVisualizer;
+    //public RawImage spectrogramDisplay;
 
     // Internal Properties
     private AudioClip audioClip;
     private string selectedMicrophone;
     private bool isRecording = false;
     private float[] samples = new float[256];
-    private float[] spectrumData = new float[256];
+    //private float[] spectrumData = new float[256];
     private Texture2D spectrogramTexture;
-    private int spectrogramWidth = 512;
-    private int spectrogramHeight = 256;
-    private int spectrogramXPosition = 0;
+    //private int spectrogramWidth = 512;
+    //private int spectrogramHeight = 256;
+    //private int spectrogramXPosition = 0;
 
     // Initialize GUI elements
     void Awake()
@@ -30,13 +30,13 @@ public class MicrophoneFactory : MonoBehaviour
         microphoneDropdown = GameObject.Find("MicrophoneDropdown").GetComponent<Dropdown>();
         startButton = GameObject.Find("Record").GetComponent<Button>();
         stopButton = GameObject.Find("Stop").GetComponent<Button>();
-        microphoneVisualizer = GameObject.Find("MicrophoneVisualizer").GetComponent<Image>();
-        spectrogramDisplay = GameObject.Find("SpectrogramDisplay").GetComponent<RawImage>();
+        //microphoneVisualizer = GameObject.Find("MicrophoneVisualizer").GetComponent<Image>();
+        //spectrogramDisplay = GameObject.Find("SpectrogramDisplay").GetComponent<RawImage>();
     }
     void Start()
     {
-        spectrogramTexture = new Texture2D(spectrogramWidth, spectrogramHeight, TextureFormat.RGBA32, false);
-        spectrogramDisplay.texture = spectrogramTexture;
+        //spectrogramTexture = new Texture2D(spectrogramWidth, spectrogramHeight, TextureFormat.RGBA32, false);
+        //spectrogramDisplay.texture = spectrogramTexture;
 
         microphoneDropdown.AddOptions(Microphone.devices.ToList());
 
@@ -55,7 +55,7 @@ public class MicrophoneFactory : MonoBehaviour
         if (isRecording)
         {
             audioClip.GetData(samples, Microphone.GetPosition(selectedMicrophone) - samples.Length);
-            UpdateMicrophoneVisualizer(samples);
+            //UpdateMicrophoneVisualizer(samples);
         }
     }
 
@@ -82,13 +82,13 @@ public class MicrophoneFactory : MonoBehaviour
         }
     }
 
-    private void UpdateMicrophoneVisualizer(float[] samples)
+    /*private void UpdateMicrophoneVisualizer(float[] samples)
     {
         float maxAmplitude = samples.Max();
         microphoneVisualizer.fillAmount = Mathf.Clamp(maxAmplitude, 0f, 1f);
-    }
+    }*/
 
-    private void UpdateSpectrogram(float[] spectrumData)
+    /*private void UpdateSpectrogram(float[] spectrumData)
     {
         Color[] pixels = spectrogramTexture.GetPixels();
         for (int x = 1; x < spectrogramWidth; x++)
@@ -107,7 +107,7 @@ public class MicrophoneFactory : MonoBehaviour
         }
 
         spectrogramTexture.Apply();
-    }
+    }*/
 
     // Converts the AudioClip to a WAV file
     private void SaveWav(AudioClip clip, string filePath)

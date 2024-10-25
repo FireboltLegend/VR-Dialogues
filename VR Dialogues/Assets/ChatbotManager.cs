@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Diagnostics;
-using System.Text;
-using System.Collections;
 using System.IO;
 
 public class ChatbotManager : MonoBehaviour
 {
 	private TTS ttsmanager;
+	private MultiConversationAI mcai;
 	private Process pythonProcess;
 
 	// Start is called before the first frame update
@@ -27,7 +26,9 @@ public class ChatbotManager : MonoBehaviour
 			File.WriteAllText("Assets/sync.txt", "");
 			File.WriteAllText("Assets/user.txt", "");
 
-			StartPythonScript();
+			//StartPythonScript();
+			mcai = gameObject.AddComponent<MultiConversationAI>();
+			mcai.RunMCAI();
 		}
 	}
 

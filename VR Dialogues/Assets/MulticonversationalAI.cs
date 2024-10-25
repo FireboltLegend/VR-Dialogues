@@ -2,33 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
-using Meta.WitAi.Data;
 using OpenAI;
 using OpenAI.Audio;
 using OpenAI.Chat;
 using NAudio.Wave;
+using UnityEngine;
+using System.Collections;
 
-public class MultiConversationAI
+public class MultiConversationAI : MonoBehaviour
 {
     private List<ChatMessage> conversation1;
     private List<ChatMessage> conversation2;
     private string apiKey;
 
-    public MultiConversationAI()
-    {
-        conversation1 = new List<ChatMessage>();
-        conversation2 = new List<ChatMessage>();
-        apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "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";
-        
-        LoadPrompts();
-        STT();
-    }
-
     // Speech-To-Text Daemon (overload #1) -- given you want to use MicrophoneFactory or other custom Microphone Invocation
-    private string STT(string audioFilePath="Assets/user_input.wav")
+    private string STT(string audioFilePath)
     {
         OpenAIClient client = new OpenAIClient(apiKey); 
         AudioClient audioclient = client.GetAudioClient("whisper-1");
@@ -40,6 +28,9 @@ public class MultiConversationAI
 
 
         AudioTranscription transcription = audioclient.TranscribeAudio(audioFilePath, options);
+        conversation1.Add(ChatMessage.CreateUserMessage(transcription.Text));
+        conversation2.Add(ChatMessage.CreateUserMessage(transcription.Text));
+
         return transcription.Text;
     }
 
@@ -74,6 +65,9 @@ public class MultiConversationAI
         }
 
         AudioTranscription transcription = audioclient.TranscribeAudio("Assets/user_input.wav", options);
+        conversation1.Add(ChatMessage.CreateUserMessage(transcription.Text));
+        conversation2.Add(ChatMessage.CreateUserMessage(transcription.Text));
+
         return transcription.Text;
     }
 
@@ -136,29 +130,33 @@ public class MultiConversationAI
         File.WriteAllText("sync.txt", "a");
     }
 
-    public void Start()
+    public void RunMCAI()
     {
-        int agentSelected = new Random().Next(1, 2);
+
+        conversation1 = new List<ChatMessage>();
+        conversation2 = new List<ChatMessage>();
+        apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "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";
+        
+        LoadPrompts();
+        //StartCoroutine(ConversationLoop());
+    }
+
+    private IEnumerator ConversationLoop()
+    {
+        int agentSelected = new System.Random().Next(1, 2);
         UnityEngine.Debug.Log($"{(agentSelected == 1 ? "Kitana" : "Ezio")}: Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.");
 
         SaveResponse("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.", agentSelected == 1 ? "speaker1.txt" : "speaker2.txt");
-        WriteSyncFile();
 
         while (true)
         {
-            var syncChar = File.ReadAllText("sync.txt");
-            if (syncChar == "b")
-            {
-                File.WriteAllText("sync.txt", string.Empty);
-                break;
-            }
-
             string userInput = STT();
             if (userInput.ToLower() == "stop")
             {
                 if (ConfirmExit())
                 {
-                    break;
+                    UnityEngine.Debug.Log("Exiting conversation. Returning to normal state in Unity.");
+                    yield break;
                 }
                 else
                 {
@@ -174,7 +172,8 @@ public class MultiConversationAI
             UnityEngine.Debug.Log($"{(agentSelected == 1 ? "Kitana" : "Ezio")}: {response}");
 
             SaveResponse(response, agentSelected == 1 ? "speaker1.txt" : "speaker2.txt");
-            WriteSyncFile();
+
+            yield return null;
         }
     }
 
