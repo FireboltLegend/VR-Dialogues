@@ -7,7 +7,8 @@ public class PortalTeleporter : MonoBehaviour
     public Transform centerEye;
     public Transform player;
     public Transform reciever;
-    public float dotProduct;
+
+    private float dotProduct;
 
     private bool playerIsOverlapping = false;
 
@@ -24,12 +25,11 @@ public class PortalTeleporter : MonoBehaviour
             {
                 // Teleport him!
                 float rotationDiff = -Quaternion.Angle(transform.rotation, reciever.rotation);
-                rotationDiff += 180 - centerEye.localRotation.y;
-                //player.Rotate(Vector3.up, rotationDiff);
+                rotationDiff += -centerEye.rotation.y;
 
                 Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
-                positionOffset -= centerEye.position - player.position;
-                player.position = reciever.position + positionOffset - reciever.forward * 0.6f;
+                player.position = reciever.position + positionOffset;
+                player.position -= centerEye.position - player.position + reciever.right * 0.8f;
 
                 playerIsOverlapping = false;
             }
