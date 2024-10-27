@@ -1,159 +1,271 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; 
+using CSCore;
+using CSCore.Streams;
+using CSCore.Codecs.WAV;
+using CSCore.Codecs; 
 
 public class MicrophoneFactory : MonoBehaviour
 {
-    // GUI-Friendly Elements
-    public Dropdown microphoneDropdown;  // display all system-wide microphones (mainly for debugging purposes)
+    public TMP_Dropdown microphoneDropdown;  
     public Button startButton;
     public Button stopButton;
-    //public Image microphoneVisualizer;
-    //public RawImage spectrogramDisplay;
 
-    // Internal Properties
     private AudioClip audioClip;
     private string selectedMicrophone;
     private bool isRecording = false;
     private float[] samples = new float[256];
-    //private float[] spectrumData = new float[256];
-    private Texture2D spectrogramTexture;
-    //private int spectrogramWidth = 512;
-    //private int spectrogramHeight = 256;
-    //private int spectrogramXPosition = 0;
 
-    // Initialize GUI elements
     void Awake()
     {
-        microphoneDropdown = GameObject.Find("MicrophoneDropdown").GetComponent<Dropdown>();
+        microphoneDropdown = GameObject.Find("MicrophoneDropdown").GetComponent<TMP_Dropdown>();
         startButton = GameObject.Find("Record").GetComponent<Button>();
         stopButton = GameObject.Find("Stop").GetComponent<Button>();
-        //microphoneVisualizer = GameObject.Find("MicrophoneVisualizer").GetComponent<Image>();
-        //spectrogramDisplay = GameObject.Find("SpectrogramDisplay").GetComponent<RawImage>();
     }
+
     void Start()
     {
-        //spectrogramTexture = new Texture2D(spectrogramWidth, spectrogramHeight, TextureFormat.RGBA32, false);
-        //spectrogramDisplay.texture = spectrogramTexture;
+        var microphones = Microphone.devices.ToList();
+        microphoneDropdown.AddOptions(microphones);
+        selectedMicrophone = microphones.Count > 0 ? microphones[0] : null;
 
-        microphoneDropdown.AddOptions(Microphone.devices.ToList());
-
-        if (Microphone.devices.Length > 0)
+        if (selectedMicrophone == null)
         {
-            selectedMicrophone = Microphone.devices[0];
-            microphoneDropdown.onValueChanged.AddListener(OnMicrophoneSelected);
+            Debug.LogWarning("No microphones found.");
+            return;
         }
 
+        microphoneDropdown.onValueChanged.AddListener(OnMicrophoneSelected);
         startButton.onClick.AddListener(StartRecording);
         stopButton.onClick.AddListener(StopRecording);
     }
 
     void Update()
     {
-        if (isRecording)
+        if (isRecording && audioClip != null)
         {
-            audioClip.GetData(samples, Microphone.GetPosition(selectedMicrophone) - samples.Length);
-            //UpdateMicrophoneVisualizer(samples);
+            int currentPosition = Microphone.GetPosition(selectedMicrophone);
+            if (currentPosition >= samples.Length)
+            {
+                audioClip.GetData(samples, currentPosition - samples.Length);
+            }
         }
     }
 
     public void OnMicrophoneSelected(int index)
     {
-        selectedMicrophone = Microphone.devices[index];
+        if (index >= 0 && index < Microphone.devices.Length)
+        {
+            selectedMicrophone = Microphone.devices[index];
+        }
+        else
+        {
+            Debug.LogError("Selected microphone index is out of range.");
+        }
     }
+
     public void StartRecording()
     {
         if (selectedMicrophone != null)
         {
-            audioClip = Microphone.Start(selectedMicrophone, false, 30, 44100);
+            audioClip = Microphone.Start(selectedMicrophone, false, 10, 44100);
             isRecording = true;
         }
     }
+
     public void StopRecording()
     {
         if (isRecording)
         {
             Microphone.End(selectedMicrophone);
             isRecording = false;
-
             SaveWav(audioClip, "Assets/user_input.wav");
         }
     }
 
-    /*private void UpdateMicrophoneVisualizer(float[] samples)
+    private void SaveWav(AudioClip clip, string filePath, float silenceThreshold = 0.01f)
     {
-        float maxAmplitude = samples.Max();
-        microphoneVisualizer.fillAmount = Mathf.Clamp(maxAmplitude, 0f, 1f);
-    }*/
-
-    /*private void UpdateSpectrogram(float[] spectrumData)
-    {
-        Color[] pixels = spectrogramTexture.GetPixels();
-        for (int x = 1; x < spectrogramWidth; x++)
+        if (clip == null)
         {
-            for (int y = 0; y < spectrogramHeight; y++)
-            {
-                spectrogramTexture.SetPixel(x - 1, y, spectrogramTexture.GetPixel(x, y));
-            }
+            Debug.LogError("AudioClip is null. Cannot save WAV file.");
+            return;
         }
 
-        for (int y = 0; y < spectrumData.Length; y++)
-        {
-            float intensity = Mathf.Clamp01(spectrumData[y] * 10);
-            Color color = new Color(intensity, intensity, intensity);
-            spectrogramTexture.SetPixel(spectrogramWidth - 1, y, color);
-        }
-
-        spectrogramTexture.Apply();
-    }*/
-
-    // Converts the AudioClip to a WAV file
-    private void SaveWav(AudioClip clip, string filePath)
-    {
-        var samples = new float[clip.samples];
+        var samples = new float[clip.samples * clip.channels];
         clip.GetData(samples, 0);
-        byte[] wavData = ConvertToWav(samples, clip.channels, clip.frequency);
+        string tempFilePath = Path.Combine(Path.GetTempPath(), "temp.wav");
+        File.WriteAllBytes(tempFilePath, ConvertToWav(samples, clip.channels, clip.frequency));
+        var trimmedSamples = TrimSilence(tempFilePath, silenceThreshold);
 
+        if (trimmedSamples.Length == 0)
+        {
+            Debug.LogError("No audio data to save after trimming silence.");
+            return;
+        }
+
+        byte[] wavData = ConvertToWav(trimmedSamples, clip.channels, clip.frequency);
         File.WriteAllBytes(filePath, wavData);
         Debug.Log("Audio saved to: " + filePath);
     }
 
+
+    public float[] TrimSilence(string filePath, float silenceThreshold = 0.01f)
+    {
+        using (var waveSource = CodecFactory.Instance.GetCodec(filePath))
+        {
+            byte[] byteSamples = new byte[waveSource.Length];
+            waveSource.Read(byteSamples, 0, byteSamples.Length);
+
+            float[] samples = new float[byteSamples.Length / 2];
+            for (int i = 0; i < samples.Length; i++)
+            {
+                samples[i] = BitConverter.ToInt16(byteSamples, i * 2) / 32768f;
+            }
+
+            int startIndex = 0;
+            int endIndex = samples.Length - 1;
+
+            while (startIndex <= endIndex && Math.Abs(samples[startIndex]) < silenceThreshold)
+            {
+                startIndex++;
+            }
+
+            while (endIndex >= startIndex && Math.Abs(samples[endIndex]) < silenceThreshold)
+            {
+                endIndex--;
+            }
+
+            if (startIndex > endIndex)
+            {
+                Debug.LogWarning("No valid audio detected.");
+                return new float[0]; 
+            }
+
+            int trimmedLength = endIndex - startIndex + 1;
+            float[] trimmedSamples = new float[trimmedLength];
+            Array.Copy(samples, startIndex, trimmedSamples, 0, trimmedLength);
+
+            Debug.Log($"Trimmed {samples.Length} samples down to {trimmedLength} samples.");
+            return trimmedSamples;
+        }
+    }
+    
     private byte[] ConvertToWav(float[] samples, int channels, int sampleRate)
     {
-        MemoryStream stream = new MemoryStream();
-        BinaryWriter writer = new BinaryWriter(stream);
-
-        int totalSamples = samples.Length;
-        int totalDataLength = totalSamples * 2;
-        int fileSize = 44 + totalDataLength;
-
-        // WAV Header
-        writer.Write(System.Text.Encoding.UTF8.GetBytes("RIFF"));
-        writer.Write(fileSize);
-        writer.Write(System.Text.Encoding.UTF8.GetBytes("WAVE"));
-        writer.Write(System.Text.Encoding.UTF8.GetBytes("fmt "));
-
-        // metadata 
-        writer.Write(16);
-        writer.Write((short)1);
-        writer.Write((short)channels);
-        writer.Write(sampleRate);
-        writer.Write(sampleRate * channels * 2);
-        writer.Write((short)(channels * 2));
-        writer.Write((short)16);
-
-        // audio subchunk metadata
-        writer.Write(System.Text.Encoding.UTF8.GetBytes("data"));
-        writer.Write(totalDataLength);
-
-        foreach (var sample in samples)
+        using (MemoryStream stream = new MemoryStream())
+        using (BinaryWriter writer = new BinaryWriter(stream))
         {
-            short intSample = (short)(sample * short.MaxValue);
-            writer.Write(intSample);
-        }
+            int totalSamples = samples.Length;
+            int totalDataLength = totalSamples * 2; // 2 bytes per sample
+            int fileSize = 44 + totalDataLength; // 44 bytes for the header + data length
 
-        return stream.ToArray();
+            // Write WAV header
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("RIFF")); // Chunk ID
+            writer.Write(fileSize);                                   // Chunk size
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("WAVE")); // Format
+
+            // fmt subchunk
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("fmt ")); // Subchunk1 ID
+            writer.Write(16);                                         // Subchunk1 size (16 for PCM)
+            writer.Write((short)1);                                  // Audio format (1 for PCM)
+            writer.Write((short)channels);                           // Number of channels
+            writer.Write(sampleRate);                                // Sample rate
+            writer.Write(sampleRate * channels * 2);               // Byte rate (sampleRate * numChannels * bytesPerSample)
+            writer.Write((short)(channels * 2));                    // Block align (numChannels * bytesPerSample)
+            writer.Write((short)16);                                 // Bits per sample
+
+            // data subchunk
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("data")); // Subchunk2 ID
+            writer.Write(totalDataLength);                           // Subchunk2 size
+
+            // Write audio data
+            foreach (var sample in samples)
+            {
+                short intSample = (short)(sample * short.MaxValue); // Convert float to short
+                writer.Write(intSample);
+            }
+
+            return stream.ToArray(); // Return the complete WAV file as a byte array
+        }
     }
 }
+
+
+
+// Because of a lack of time to work on this research project, this SilenceDetection library is saved for a future use!
+/*
+public class SilenceDetector
+{
+    private readonly int _sampleRate;
+    private readonly double _silenceThreshold;
+    private readonly TimeSpan _silenceTimeout;
+    private readonly Action _onSilenceDetected;
+    private DateTime _lastSoundTime;
+    private readonly int _bufferSize;
+    private List<double> _energyLevels = new List<double>();
+
+    public int StartIndex { get; set; } = -1; 
+    public int EndIndex { get; set; } = -1; 
+
+    public SilenceDetector(int sampleRate, TimeSpan silenceTimeout, Action onSilenceDetected, double silenceThreshold = 0.1)
+    {
+        _sampleRate = sampleRate;
+        _silenceTimeout = silenceTimeout;
+        _onSilenceDetected = onSilenceDetected;
+        _silenceThreshold = silenceThreshold;
+        _bufferSize = (int)(sampleRate * 0.05); // 50 ms window
+    }
+
+    public void OnDataAvailable(float[] samples)
+    {
+        double energy = CalculateEnergy(samples);
+        _energyLevels.Add(energy);
+
+        if (energy > _silenceThreshold)
+        {
+            if (StartIndex == -1) // Set start index on first sound
+            {
+                StartIndex = _energyLevels.Count - samples.Length; 
+            }
+
+            EndIndex = _energyLevels.Count - 1; 
+            _lastSoundTime = DateTime.Now; 
+        }
+
+        if (_energyLevels.Count >= _bufferSize)
+        {
+            double normalizedEnergy = NormalizeEnergy(_energyLevels.TakeLast(_bufferSize).ToArray());
+            DetectSilence(normalizedEnergy);
+        }
+    }
+
+    private double CalculateEnergy(float[] samples)
+    {
+        return samples.Sum(s => s * s);
+    }
+
+    private double NormalizeEnergy(double[] energyLevels)
+    {
+        double average = energyLevels.Average();
+        double variance = energyLevels.Select(e => Math.Pow(e - average, 2)).Average();
+        double stdDev = Math.Sqrt(variance);
+
+        return (energyLevels.Last() - average) / stdDev; 
+    }
+
+    private void DetectSilence(double normalizedEnergy)
+    {
+        if (normalizedEnergy < _silenceThreshold)
+        {
+            if (DateTime.Now - _lastSoundTime > _silenceTimeout)
+            {
+                _onSilenceDetected.Invoke();
+            }
+        }
+    }
+}*/

@@ -5,7 +5,7 @@ using System.IO;
 public class ChatbotManager : MonoBehaviour
 {
 	private TTS ttsmanager;
-	private MultiConversationAI mcai;
+	//private MultiConversationAI mcai;
 	private Process pythonProcess;
 
 	// Start is called before the first frame update
@@ -26,9 +26,9 @@ public class ChatbotManager : MonoBehaviour
 			File.WriteAllText("Assets/sync.txt", "");
 			File.WriteAllText("Assets/user.txt", "");
 
-			//StartPythonScript();
-			mcai = gameObject.AddComponent<MultiConversationAI>();
-			mcai.RunMCAI();
+			StartPythonScript();
+			//mcai = gameObject.AddComponent<MultiConversationAI>();
+			//mcai.RunMCAI();
 		}
 	}
 
@@ -36,19 +36,10 @@ public class ChatbotManager : MonoBehaviour
 	{
 		UnityEngine.Debug.Log("Starting Python Script...");
 
-		string pythonInterpreterPath = @"C:\Users\ayush\AppData\Local\Programs\Python\Python39\python.exe";
+		//string pythonInterpreterPath = @"C:\Users\ayush\AppData\Local\Programs\Python\Python39\python.exe";
 		string pythonScriptPath = @$"{Application.dataPath}/SpeechRec.py";  // Make sure the script path is correct
 
-		// Log the paths to help debug
-		UnityEngine.Debug.Log("Python interpreter path: " + pythonInterpreterPath);
 		UnityEngine.Debug.Log("Python script path: " + pythonScriptPath);
-
-		// Check if the Python interpreter exists
-		if (!File.Exists(pythonInterpreterPath))
-		{
-			UnityEngine.Debug.LogError("Python interpreter not found: " + pythonInterpreterPath);
-			return;
-		}
 
 		// Check if the Python script exists
 		if (!File.Exists(pythonScriptPath))
@@ -67,7 +58,7 @@ public class ChatbotManager : MonoBehaviour
 				FileName = "py",
 				Arguments = arguments,  // Properly quote the Python script path
 				UseShellExecute = true,
-				CreateNoWindow = true,
+				CreateNoWindow = false,
 				WorkingDirectory = Path.GetDirectoryName(pythonScriptPath) // Set the working directory
 			},
 			EnableRaisingEvents = true // Allow capturing process exit event
@@ -130,32 +121,5 @@ public class ChatbotManager : MonoBehaviour
 		File.WriteAllText("Assets/speaker1.txt", "");
 		File.WriteAllText("Assets/speaker2.txt", "");
 		File.WriteAllText("Assets/sync.txt", "");
-	}
-
-	// Method to play the transcribed text as speech
-	void PlayTextAsSpeech(string text)
-	{
-		UnityEngine.Debug.Log("Text to Speech: " + text);
-
-		// TTS Integration
-		foreach (GameObject go in FindObjectsOfType<GameObject>())
-		{ 
-			string textContentGirl = File.ReadAllText($"{Application.dataPath}/speaker1.txt");
-			string textContentBoy = File.ReadAllText($"{Application.dataPath}/speaker1.txt");
-            if (go.CompareTag("Avatar"))
-            {
-                if (!string.IsNullOrEmpty(textContentGirl))
-                {
-                    go.GetComponent<TTS>().PlayTTS();
-                    return;
-                }
-
-                if (!string.IsNullOrEmpty(textContentBoy))
-                {
-                    go.GetComponent<TTS>().PlayTTS();
-                    return;
-                }
-            }
-		}
 	}
 }

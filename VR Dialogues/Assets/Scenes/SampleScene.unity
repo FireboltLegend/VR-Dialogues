@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -343,7 +343,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.5, y: -0.5}
+  m_AnchoredPosition: {x: -7.499977, y: -0.5}
   m_SizeDelta: {x: -35, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &623655639
@@ -366,7 +366,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Oculus Headset
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2243,6 +2243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1624042155}
   - component: {fileID: 1624042154}
+  - component: {fileID: 1624042156}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2277,6 +2278,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1624042156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624042153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3045293458693a84f84d948a7e255583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  microphoneDropdown: {fileID: 0}
+  startButton: {fileID: 0}
+  stopButton: {fileID: 0}
 --- !u!1 &1741594184
 GameObject:
   m_ObjectHideFlags: 0
@@ -2948,7 +2964,7 @@ GameObject:
   - component: {fileID: 2015648772}
   - component: {fileID: 2015648771}
   m_Layer: 5
-  m_Name: MicrophoneDropdwon
+  m_Name: MicrophoneDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2973,8 +2989,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -450, y: 223}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -407.7, y: 223}
+  m_SizeDelta: {x: 242.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2015648771
 MonoBehaviour:
@@ -3025,13 +3041,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Oculus Headset
-      m_Image: {fileID: 0}
-    - m_Text: Headphones
-      m_Image: {fileID: 0}
-    - m_Text: Cable
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
