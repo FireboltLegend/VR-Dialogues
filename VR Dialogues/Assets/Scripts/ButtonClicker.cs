@@ -14,7 +14,6 @@ public class ButtonClicker : MonoBehaviour
     void Start()
     {
         originalPos = transform.position;
-        //otherPosition = Vector3.zero;
         otherGameObject = null;
     }
 
@@ -32,15 +31,14 @@ public class ButtonClicker : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         otherGameObject = other.gameObject;
-        otherPosition = other.transform.position;
-        Debug.Log("The button is currently colliding. The distance is " + Vector3.Distance(otherPosition, transform.position));
+        Debug.Log("The button is currently colliding. The distance is " + Vector3.Distance(otherGameObject.transform.position, transform.position));
         transform.localPosition = maxPress;
         
     }
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log("The distance on trigger exit is " + Vector3.Distance(otherPosition, transform.position));
+        Debug.Log("The distance on trigger exit is " + Vector3.Distance(otherGameObject.transform.position, transform.position));
     }
 
 
