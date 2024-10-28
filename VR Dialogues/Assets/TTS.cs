@@ -1,7 +1,7 @@
-using Amazon;
-using Amazon.Polly;
-using Amazon.Polly.Model;
-using Amazon.Runtime;
+//using Amazon;
+//using Amazon.Polly;
+//using Amazon.Polly.Model;
+//using Amazon.Runtime;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -12,19 +12,19 @@ using UnityEngine.Networking;
 
 public class TTS : MonoBehaviour
 {
-	[SerializeField] private AudioSource audioSource;
-	[SerializeField] private TextAsset textFile;
+	[SerializeField] private AudioSource girlAudioSource;
+    [SerializeField] private AudioSource boyAudioSource;
+    [SerializeField] private TextAsset textFile;
 
 	public enum PollyVoices { Amy, Brian, Camila, Emma, Gabrielle, Hannah, Isabella, Kendra, Kimberly, Lupe, Mia, Niamh, Olivia, Ruth, Stephen, Suvi, Takumi, Zayd, Arlet, Adriano, Laura, Seoyeon, Gregory, Hala, Joaquín, Inês, Thiago, Vicki, Daniel, Aria, Ayanda, Jitka, Kazuha, Lisa, Rémi, Andrés, Sergio, Burcu };
 	public enum PollyLanguageCodes { None, arb, cmn_CN, cy_GB, da_DK, de_DE, en_AU, en_GB, en_GB_WLS, en_IN, en_US, es_ES, es_MX, es_US, fr_CA, fr_FR, is_IS, it_IT, ja_JP, hi_IN, ko_KR, nb_NO, nl_NL, pl_PL, pt_BR, pt_PT, ro_RO, ru_RU, sv_SE, tr_TR, en_NZ, en_ZA, ca_ES, de_AT, yue_CN, ar_AE, fi_FI, en_IE, nl_BE, fr_BE };
 
-	[SerializeField] private PollyVoices voice;
-	[SerializeField] private PollyLanguageCodes languagecode;
-	[SerializeField, ReadOnly(true)] private bool playingAudio;
+	//[SerializeField] private PollyVoices voice;
+	//[SerializeField] private PollyLanguageCodes languagecode;
 
-	private FileSystemWatcher fileWatcher;
+	//private FileSystemWatcher fileWatcher;
 
-	private void Start() { 
+	/*private void Start() { 
 		fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(Application.dataPath))
 		{
 			NotifyFilter = NotifyFilters.LastWrite,
@@ -41,7 +41,7 @@ public class TTS : MonoBehaviour
 		{
 			PlayTTS();
 		}
-	}
+	}*/
 
 	// Functionality to simulate manual sync between command prompt + Unity
 	private void Update()
@@ -55,17 +55,47 @@ public class TTS : MonoBehaviour
 
 			if (content.Contains("a"))
 			{
-				if(textFile != null && textFile.text != "")
+				if (textFile != null && textFile.text != "")
 				{
-					File.WriteAllText(filePath, "");
-					Debug.Log(gameObject.name + " has Condition met: 'a' detected in sync.txt. Starting TTS playback.\nText is: " + textFile.text);
-					PlayTTS();
+					if (textFile.text.Contains("1"))
+					{
+                        AudioClip girlAudioClip = Resources.Load<AudioClip>("girlAudio.wav");
+                        if (girlAudioSource != null && girlAudioClip != null)
+                        {
+                            girlAudioSource.clip = girlAudioClip;
+                            girlAudioSource.Play();
+							StartCoroutine(CheckAudioPlayback(girlAudioSource)); // concurrency for girl avatar
+                        }
+
+                    }
+
+                    if (textFile.text.Contains("2"))
+                    {
+                        AudioClip boyAudioClip = Resources.Load<AudioClip>("boyAudio.wav");
+                        if (boyAudioSource != null && boyAudioClip != null)
+                        {
+                            boyAudioSource.clip = boyAudioClip;
+                            boyAudioSource.Play();
+                            StartCoroutine(CheckAudioPlayback(boyAudioSource)); // concurrency for boy avatar
+                        }
+
+                    }
 				}
 			}
 		}
-	} 
+	}
 
-	public void PlayTTS()
+    private IEnumerator CheckAudioPlayback(AudioSource avatarAudioSource)
+    {
+        while (avatarAudioSource.isPlaying)
+        {
+            yield return null;
+        }
+
+        File.WriteAllText($"Assets/sync.txt", "b");
+    }
+
+    /*public void PlayTTS()
 	{
 		StartCoroutine(StartTTS());
 	}
@@ -186,5 +216,5 @@ public class TTS : MonoBehaviour
 				fileStream.Write(buffer, 0, bytesRead);
 			}
 		}
-	}
+	}*/
 }
