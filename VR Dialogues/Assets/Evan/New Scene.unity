@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2607,6 +2607,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6689036041284674117, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
       propertyPath: m_Name
+      value: Wardrobe
+      objectReference: {fileID: 0}
+    - target: {fileID: -6689036041284674117, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
+      propertyPath: m_TagString
       value: Wardrobe
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 9e229975d45624e2ebb0e8508b8feb0f, type: 3}
@@ -7235,7 +7239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.41
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10348,6 +10352,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.009499997, y: 0.01770607, z: -0.0011095628}
     m_Extent: {x: 0.04527676, y: 0.05372102, z: 0.06648618}
   m_DirtyAABB: 0
+--- !u!1 &1702925850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1702925851}
+  m_Layer: 0
+  m_Name: Hidden Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1702925851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702925850}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.4053, y: 108.7, z: 1.5654}
+  m_LocalScale: {x: 0.1, y: 0.05, z: 0.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1713814624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11490,7 +11525,7 @@ Transform:
   m_GameObject: {fileID: 1860727936}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.333, z: 0}
+  m_LocalPosition: {x: 0, y: 0.46, z: 0}
   m_LocalScale: {x: 0.8000001, y: 0.8093466, z: 0.8000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11581,8 +11616,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5185d275b7b8b4bbaaec49cb087dca23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPress: {x: 0, y: 0.2, z: 0}
-  distance: 1
+  distance: 0.2
+  hiddenPos: {fileID: 1702925851}
+  speed: 1
 --- !u!54 &1860727943
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14289,3 +14325,4 @@ SceneRoots:
   - {fileID: 1183198906799338034}
   - {fileID: 1537637392}
   - {fileID: 454061405}
+  - {fileID: 1702925851}
