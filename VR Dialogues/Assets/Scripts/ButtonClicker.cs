@@ -17,7 +17,11 @@ public class ButtonClicker : MonoBehaviour
     private bool canSummon;
     [SerializeField] float speed;
     private bool isSummoning;
-    
+
+
+    // New method variables
+    private bool canPress;
+
     void Start()
     {
         isSummoning = false;
@@ -28,10 +32,13 @@ public class ButtonClicker : MonoBehaviour
         maxPress = originalPos - new Vector3(0, 0.26f, 0);
         wardrobeObject = GameObject.FindGameObjectWithTag("Wardrobe");
         originalWardrobePos = wardrobeObject.transform.position;
+
+        canPress = true;
     }
 
     void Update()
     {
+        /*
         if (otherGameObject != null && canUnclick)
         {
             if (Vector3.Distance(otherGameObject.transform.position, transform.position) >= distance)
@@ -39,29 +46,43 @@ public class ButtonClicker : MonoBehaviour
                 transform.localPosition = originalPos;
             }
             canUnclick = false;
+        }*/
+        if (otherGameObject != null && !canPress)
+        {
+            if (Vector3.Distance(otherGameObject.transform.position, transform.position) >= distance)
+            {
+                canPress = true;
+            }
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (!isSummoning)
+        /*if (!isSummoning)
         {
             canUnclick = false;
             otherGameObject = other.gameObject;
             Debug.Log("The button is currently colliding. The distance is " + Vector3.Distance(otherGameObject.transform.position, transform.position));
             transform.localPosition = maxPress;
-        }
+        }*/
     }
 
     void OnTriggerExit(Collider other)
     {
+        /*
         if (!isSummoning)
         {
             canUnclick = true;
             Debug.Log("The distance on trigger exit is " + Vector3.Distance(otherGameObject.transform.position, transform.position));
             canSummon = !canSummon;
             SummonOrNot();
+        }*/
+        if (canPress)
+        {
+            MoveWardrobe();
+            SwitchState();
         }
+        canPress = false;
     }
 
     void SummonOrNot()
@@ -76,6 +97,30 @@ public class ButtonClicker : MonoBehaviour
             wardrobeObject.transform.position = Vector3.Lerp(hiddenPos.position, originalWardrobePos, speed);
         }
         isSummoning = false;
+    }
+
+    void SwitchState()
+    {
+        if (transform.localPosition == originalPos)
+        {
+            transform.localPosition = maxPress;
+        }
+        else
+        {
+            transform.localPosition = originalPos;
+        }
+    }
+
+    void MoveWardrobe()
+    {
+        if (transform.localPosition == originalPos)
+        {
+            wardrobeObject.transform.position = Vector3.Lerp(originalWardrobePos, hiddenPos.position, speed);
+        }
+        else
+        {
+            wardrobeObject.transform.position = Vector3.Lerp(hiddenPos.position, originalWardrobePos, speed);
+        }
     }
 
 }
