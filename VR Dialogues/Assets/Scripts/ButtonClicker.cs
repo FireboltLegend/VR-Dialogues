@@ -38,6 +38,7 @@ public class ButtonClicker : MonoBehaviour
             {
                 transform.localPosition = originalPos;
             }
+            canUnclick = false;
         }
     }
 
