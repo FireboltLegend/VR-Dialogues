@@ -135,9 +135,9 @@ public class OVRLipSync : MonoBehaviour
     #if UNITY_EDITOR || UNITY_STANDALONE_WIN
         public const string strOVRLS = "OVRLipSync";
     #elif UNITY_STANDALONE_OSX
-    public const string strOVRLS = "OVRLipSync.bundle";
+        public const string strOVRLS = "OVRLipSync.bundle";
     #else
-    public const string strOVRLS = "__Internal";
+        public const string strOVRLS = "__Internal";
     #endif
 
     [DllImport(strOVRLS)]
