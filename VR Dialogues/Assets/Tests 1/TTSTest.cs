@@ -8,6 +8,22 @@ public class TTSTests
 {
     private TTS ttsScript;
     private string syncFilePath;
+    private AudioClip girlClip;
+    private AudioClip boyClip;
+
+    [OneTimeSetUp]
+    public void LoadAudioClips()
+    {
+        // Load audio clips once before all tests
+        girlClip = Resources.Load<AudioClip>("girlAudio");
+        boyClip = Resources.Load<AudioClip>("boyAudio");
+
+        // Verify clips loaded successfully
+        if (girlClip == null)
+            Debug.LogError("Failed to load girlAudio clip from Resources folder");
+        if (boyClip == null)
+            Debug.LogError("Failed to load boyAudio clip from Resources folder");
+    }
 
     [SetUp]
     public void Setup()
@@ -16,78 +32,162 @@ public class TTSTests
         ttsScript = gameObject.AddComponent<TTS>();
         ttsScript.girlAudioSource = gameObject.AddComponent<AudioSource>();
         ttsScript.boyAudioSource = gameObject.AddComponent<AudioSource>();
+        ttsScript.girlAudioSource.clip = girlClip;
+        ttsScript.boyAudioSource.clip = boyClip;
 
-        ttsScript.girlAudioSource.clip = Resources.Load<AudioClip>("girlAudio.wav");
-        ttsScript.boyAudioSource.clip = Resources.Load<AudioClip>("boyAudio.wav");
+        Debug.Log($"Girl Clip assigned: {ttsScript.girlAudioSource.clip != null}");
+        Debug.Log($"Boy Clip assigned: {ttsScript.boyAudioSource.clip != null}");
 
-        Debug.Log($"Girl Clip: {ttsScript.girlAudioSource.clip}, Boy Clip: {ttsScript.boyAudioSource.clip}"); 
         syncFilePath = Path.Combine(Application.dataPath, "sync.txt");
-
         gameObject.AddComponent<AudioListener>();
 
+        if (!File.Exists(syncFilePath))
+        {
+            File.WriteAllText(syncFilePath, "");
+        }
     }
 
-    // Test #1 - Sanity Check for "sync.txt" file
-    [UnityTest]
-    public IEnumerator TestFileExistence()
+    [TearDown]
+    public void Cleanup()
     {
-        Assert.IsTrue(File.Exists(syncFilePath), "✗ Sync File existence");
-        yield break;
+        if (ttsScript != null)
+        {
+            Object.DestroyImmediate(ttsScript.gameObject);
+        }
     }
 
-    // Test #2 - File read operation to see if "a" is in the sync file
-    [UnityTest]
-    public IEnumerator TestStringContentContainsA()
+    // Basic Setup Tests
+    [Test]
+    public void Test_ComponentsInitialization()
     {
+        Assert.IsNotNull(ttsScript, "TTS Script should be initialized");
+        Assert.IsNotNull(ttsScript.girlAudioSource, "Girl AudioSource should be initialized");
+        Assert.IsNotNull(ttsScript.boyAudioSource, "Boy AudioSource should be initialized");
+    }
+
+    [Test]
+    public void Test_AudioClipsLoaded()
+    {
+        Assert.IsNotNull(girlClip, "Girl audio clip should be loaded");
+        Assert.IsNotNull(boyClip, "Boy audio clip should be loaded");
+    }
+
+    // File Tests
+    [Test]
+    public void Test_SyncFileExists()
+    {
+        Assert.IsTrue(File.Exists(syncFilePath), "Sync file should exist");
+    }
+
+    [Test]
+    public void Test_SyncFileReadable()
+    {
+        Assert.DoesNotThrow(() => File.ReadAllText(syncFilePath), "Should be able to read sync file");
+    }
+
+    [Test]
+    public void Test_SyncFileWritable()
+    {
+        string testContent = "test";
+        Assert.DoesNotThrow(() => File.WriteAllText(syncFilePath, testContent), "Should be able to write to sync file");
+    }
+
+    // Content Tests
+    [UnityTest]
+    public IEnumerator Test_FileContentContainsA()
+    {
+        File.WriteAllText(syncFilePath, "a");
         string content = File.ReadAllText(syncFilePath);
-        Assert.IsTrue(content.Contains("a"), "✗ File content contains 'a'");
+        Assert.IsTrue(content.Contains("a"), "File content should contain 'a'");
         yield break;
     }
 
-    // Test #3 - Check for 1 or 2 to signify appropriate ECA
     [UnityTest]
-    public IEnumerator TestStringContentContains1Or2()
+    public IEnumerator Test_FileContentContains1Or2()
     {
+        File.WriteAllText(syncFilePath, "1");
         string content = File.ReadAllText(syncFilePath);
         bool containsOneOrTwo = content.Contains("1") || content.Contains("2");
-        Assert.IsTrue(containsOneOrTwo, "✗ File content contains '1' or '2'");
+        Assert.IsTrue(containsOneOrTwo, "File content should contain '1' or '2'");
         yield break;
     }
 
-    // Test #4 - Girl Audio Source Load and Play Operation
+    // Audio Source Tests
     [UnityTest]
-    public IEnumerator TestGirlAudioSourceLoadingAndPlaying()
+    public IEnumerator Test_GirlAudioSourceProperties()
     {
-        File.WriteAllText(syncFilePath, "a1");
-        yield return null;
-
-        ttsScript.Update();
-        ttsScript.girlAudioSource.Play();
-        yield return null;
-
-        Assert.IsNotNull(ttsScript.girlAudioSource.clip, "✗ Loading Girl audio source clip object");
-        Assert.IsTrue(ttsScript.girlAudioSource.isPlaying, "✗ Girl audio source playing");
-
-        yield return ttsScript.StartCoroutine(ttsScript.CheckAudioPlayback(ttsScript.girlAudioSource));
-        Assert.AreEqual("b", File.ReadAllText(syncFilePath), "✗ Sync file updated to 'b'");
+        Assert.IsNotNull(ttsScript.girlAudioSource.clip, "Girl AudioSource should have a clip assigned");
+        Assert.IsFalse(ttsScript.girlAudioSource.isPlaying, "Girl AudioSource should not be playing initially");
+        Assert.IsTrue(ttsScript.girlAudioSource.enabled, "Girl AudioSource should be enabled");
+        yield break;
     }
 
-    // Test #5 - Boy Audio Source Load and Play Operation
     [UnityTest]
-    public IEnumerator TestBoyAudioSourceLoadingAndPlaying()
+    public IEnumerator Test_BoyAudioSourceProperties()
     {
-        // 5. Write content that triggers boyAudioSource
-        File.WriteAllText(syncFilePath, "a2");
-        yield return null;
+        Assert.IsNotNull(ttsScript.boyAudioSource.clip, "Boy AudioSource should have a clip assigned");
+        Assert.IsFalse(ttsScript.boyAudioSource.isPlaying, "Boy AudioSource should not be playing initially");
+        Assert.IsTrue(ttsScript.boyAudioSource.enabled, "Boy AudioSource should be enabled");
+        yield break;
+    }
+
+    // Playback Tests
+    [UnityTest]
+    public IEnumerator Test_GirlAudioSourceLoadingAndPlaying()
+    {
+        Assert.IsNotNull(girlClip, "Girl clip should be loaded from Resources");
+
+        File.WriteAllText(syncFilePath, "a1");
+        yield return new WaitForSeconds(0.1f);
 
         ttsScript.Update();
+        Assert.IsNotNull(ttsScript.girlAudioSource.clip, "Girl AudioSource clip should not be null after Update");
+
+        ttsScript.girlAudioSource.Play();
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.IsTrue(ttsScript.girlAudioSource.isPlaying, "Girl audio source should be playing");
+        yield return ttsScript.StartCoroutine(ttsScript.CheckAudioPlayback(ttsScript.girlAudioSource));
+        Assert.AreEqual("b", File.ReadAllText(syncFilePath), "Sync file should be updated to 'b'");
+    }
+
+    [UnityTest]
+    public IEnumerator Test_BoyAudioSourceLoadingAndPlaying()
+    {
+        Assert.IsNotNull(boyClip, "Boy clip should be loaded from Resources");
+
+        File.WriteAllText(syncFilePath, "a2");
+        yield return new WaitForSeconds(0.1f);
+
+        ttsScript.Update();
+        Assert.IsNotNull(ttsScript.boyAudioSource.clip, "Boy AudioSource clip should not be null after Update");
+
         ttsScript.boyAudioSource.Play();
-        yield return null;
+        yield return new WaitForSeconds(0.1f);
 
-        Assert.IsNotNull(ttsScript.boyAudioSource.clip, "✗ Loading Boy audio source clip object");
-        Assert.IsTrue(ttsScript.boyAudioSource.isPlaying, "✗ Boy audio source playing");
-
+        Assert.IsTrue(ttsScript.boyAudioSource.isPlaying, "Boy audio source should be playing");
         yield return ttsScript.StartCoroutine(ttsScript.CheckAudioPlayback(ttsScript.boyAudioSource));
-        Assert.AreEqual("b", File.ReadAllText(syncFilePath), "✗ Sync file updated to 'b'.");
+        Assert.AreEqual("b", File.ReadAllText(syncFilePath), "Sync file should be updated to 'b'");
+    }
+
+    // Edge Cases
+    [UnityTest]
+    public IEnumerator Test_InvalidSyncFileContent()
+    {
+        File.WriteAllText(syncFilePath, "invalid");
+        yield return new WaitForSeconds(0.1f);
+        ttsScript.Update();
+        Assert.IsFalse(ttsScript.girlAudioSource.isPlaying, "Girl audio should not play with invalid content");
+        Assert.IsFalse(ttsScript.boyAudioSource.isPlaying, "Boy audio should not play with invalid content");
+    }
+
+    [UnityTest]
+    public IEnumerator Test_EmptySyncFile()
+    {
+        File.WriteAllText(syncFilePath, "");
+        yield return new WaitForSeconds(0.1f);
+        ttsScript.Update();
+        Assert.IsFalse(ttsScript.girlAudioSource.isPlaying, "Girl audio should not play with empty file");
+        Assert.IsFalse(ttsScript.boyAudioSource.isPlaying, "Boy audio should not play with empty file");
     }
 }

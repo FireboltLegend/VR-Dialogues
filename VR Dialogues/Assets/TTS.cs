@@ -59,7 +59,7 @@ public class TTS : MonoBehaviour
 				{
 					if (textFile.text.Contains("1"))
 					{
-                        AudioClip girlAudioClip = Resources.Load<AudioClip>("girlAudio.wav");
+                        AudioClip girlAudioClip = Resources.Load<AudioClip>("girlAudio");
                         if (girlAudioSource != null && girlAudioClip != null)
                         {
                             girlAudioSource.clip = girlAudioClip;
@@ -71,7 +71,7 @@ public class TTS : MonoBehaviour
 
                     if (textFile.text.Contains("2"))
                     {
-                        AudioClip boyAudioClip = Resources.Load<AudioClip>("boyAudio.wav");
+                        AudioClip boyAudioClip = Resources.Load<AudioClip>("boyAudio");
                         if (boyAudioSource != null && boyAudioClip != null)
                         {
                             boyAudioSource.clip = boyAudioClip;

@@ -1,236 +1,183 @@
-import speech_recognition as sr
-import openai
 import os
-from gtts import gTTS
 import pygame
 import random
-import time
+import openai
+import speech_recognition as sr
+import sounddevice as sd
+import numpy as np
+import wave
+from google.cloud import texttospeech
 
-class MultiConversationAI:
-	def __init__(self):
-		self.conversation1 = []
-		self.conversation2 = []
-		self.api_key = os.getenv("OPENAI_API_KEY", "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")  # Replace with your actual key
-		self.setup_openai()
-		self.setup_audio()
-		self.load_prompts()
+# Set up OpenAI API key
+openai.api_key = "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"
 
-	def setup_openai(self):
-		openai.api_key = self.api_key
-		openai.api_base = 'https://api.openai.com/v1'  # Correct base URL
-		if not self.api_key:
-			raise ValueError("Error: OpenAI API key not set. Please set the OPENAI_API_KEY environment variable.")
+# Set up Google Cloud Text-to-Speech API key
+os.environ["GOOGLE_API_KEY"] = "AIzaSyC125Gb92Jb5ImLGQGNyf9dIC3QJhXAKiY"
 
-	def setup_audio(self):
-		pygame.mixer.init()
+# Initialize Pygame mixer
+pygame.mixer.init(frequency=22050, size=-16, channels=2)
 
-	def get_audio(self):
-		recognizer = sr.Recognizer()
-		microphone = sr.Microphone()
-		with microphone as source:
-			recognizer.adjust_for_ambient_noise(source)
-			try:
-				audio = recognizer.listen(source)
-				return recognizer.recognize_google(audio)
-			except sr.UnknownValueError:
-				print("Could not understand audio.")
-				return ""
-			except sr.RequestError as e:
-				print(f"Could not request results from Google Speech Recognition service; {e}")
-				return ""
+# Conversation lists
+conversation1 = []
+conversation2 = []
 
-	def load_prompts(self):
-		try:
-			# Log the file paths before opening
-			print(f"Attempting to open Chat1.txt: {os.path.abspath('Chat1.txt')}")
-			print(f"Attempting to open Chat2.txt: {os.path.abspath('Chat2.txt')}")
+# Create Google Cloud Text-to-Speech client
+def create_tts_client(api_key: str):
+    client_options = {"api_key": api_key}
+    return texttospeech.TextToSpeechClient(client_options=client_options)
 
-			# Check if the files exist before reading
-			if not os.path.exists('Chat1.txt'):
-				print("Error: Chat1.txt not found!")
-			if not os.path.exists('Chat2.txt'):
-				print("Error: Chat2.txt not found!")
+# Create the TTS client with the API key
+tts_client = create_tts_client(os.environ["GOOGLE_API_KEY"])
 
-			self.conversation1.append({'role': 'system', 'content': self.open_file("Chat1.txt")})
-			self.conversation2.append({'role': 'system', 'content': self.open_file("Chat2.txt")})
-		except FileNotFoundError as e:
-			print(f"Error loading prompts: {e}")
-			exit(1)
+def text_to_wav(voice_name: str, text: str):
+    language_code = "-".join(voice_name.split("-")[:2])
+    text_input = texttospeech.SynthesisInput(text=text)
+    voice_params = texttospeech.VoiceSelectionParams(
+        language_code=language_code, name=voice_name
+    )
+    audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.LINEAR16)
 
+    response = tts_client.synthesize_speech(
+        input=text_input,
+        voice=voice_params,
+        audio_config=audio_config,
+    )
 
-	def open_file(self, filepath):
-		with open(filepath, 'r', encoding='utf-8') as infile:
-			return infile.read()
+    filename = "audio.wav"
+    with open(filename, "wb") as out:
+        out.write(response.audio_content)
+        print(f'Generated speech saved to "{filename}"')
 
-	def gpt3_agent(self, messages, model='gpt-3.5-turbo', temperature=0.9, max_tokens=100, frequency_penalty=2.0, presence_penalty=2.0):
-		try:
-			response = openai.ChatCompletion.create(
-				model=model,
-				messages=messages,
-				temperature=temperature,
-				max_tokens=max_tokens,
-				frequency_penalty=frequency_penalty,
-				presence_penalty=presence_penalty
-			)
-			return response['choices'][0]['message']['content'].strip()
-		except openai.error.InvalidRequestError as e:
-			print(f"OpenAI API error: {e}")
-			return None
-		except Exception as e:
-			print(f"An error occurred: {e}")
-			return None
+def playAudio():
+    try:
+        pygame.mixer.music.load("audio.wav")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
+    except pygame.error as e:
+        print(f"Error playing audio: {e}")
 
-	def tts_agent(self, response, lang='en'):
-		"""
-		Convert text response to speech and play it using pygame.
-		"""
-		try:
-			tts = gTTS(text=response, lang=lang)  # Generate speech
-			tts.save("response.mp3")              # Save speech to an mp3 file
-			pygame.mixer.music.load("response.mp3")  # Load the mp3 file
-			pygame.mixer.music.play()               # Play the loaded audio
-			while pygame.mixer.music.get_busy():    # Wait until the audio is finished
-				pygame.time.Clock().tick(10)
-		except Exception as e:
-			print(f"Error in TTS: {e}")
+def gpt3(messages, model='gpt-3.5-turbo', temperature=0.9, max_tokens=100, frequency_penalty=2.0, presence_penalty=2.0):
+    try:
+        response = openai.ChatCompletion.create(
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            frequency_penalty=frequency_penalty,
+            presence_penalty=presence_penalty
+        )
+        response_text = response['choices'][0]['message']['content'].strip()
+        return response_text
+    except Exception as e:
+        print(f"Error calling OpenAI API: {e}")
+        return "I'm having trouble responding right now."
 
-	def save_response1(self, response):
-		"""Save the response to speaker1.txt."""
-		# Log the full path of the file to confirm where it's being saved
-		print(f"Saving response to: {os.path.abspath('speaker1.txt')}\nResponse:", response)
-	
-		with open("speaker1.txt", "w", encoding='utf-8') as file:
-			file.write(response)  # Append the response
-		with open("speaker1.txt", "r", encoding='utf-8') as file:
-			print("Test to See File Content is Being Saved:", file.read())
+def tts(response, character):
+    if character == 1:
+        print("Kitana:", response)
+        text_to_wav("en-US-Standard-H", response)  # Female voice for Kitana
+        conversation1.append({'role': 'system', 'content': response})
+        conversation2.append({'role': 'user', 'content': f'Kitana said "{response}"'})
+        with open("sync.txt", "a") as sync_file:
+            sync_file.write("a1\n")
+    elif character == 2:
+        print("Ezio:", response)
+        text_to_wav("en-US-Standard-J", response)  # Male voice for Ezio
+        conversation1.append({'role': 'user', 'content': f'Ezio said "{response}"'})
+        conversation2.append({'role': 'system', 'content': response})
+        with open("sync.txt", "a") as sync_file:
+            sync_file.write("a2\n")
 
-	def empty_response1(self):	
-		with open("speaker1.txt", "w", encoding='utf-8') as file:
-			pass
+def saveResponse(response):
+    with open(os.path.join(os.path.dirname(__file__), "speaker.txt"), "w", encoding='utf-8') as file:
+        file.write(response)
 
-	def save_response2(self, response):
-		"""Save the response to speaker2.txt."""
-		# Log the full path of the file to confirm where it's being saved
-		print(f"Saving response to: {os.path.abspath('speaker2.txt')}\nResponse:", response)
-	
-		with open("speaker2.txt", "w", encoding='utf-8') as file:
-			file.write(response)  # Append the response
-		with open("speaker2.txt", "r", encoding='utf-8') as file:
-			print("Test to See File Content is Being qSaved:", file.read())
+def openFile(filepath):
+    with open(filepath, 'r') as file:
+        return file.read().strip()
 
-	def empty_response2(self):	
-		with open("speaker2.txt", "w", encoding='utf-8') as file:
-			pass
+# Function to listen for speech
+def listen_for_speech():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio = recognizer.listen(source)
+        try:
+            return recognizer.recognize_google(audio)
+        except sr.UnknownValueError:
+            print("Sorry, I could not understand the audio.")
+            return ""
+        except sr.RequestError as e:
+            print(f"Could not request results from Google Speech Recognition service; {e}")
+            return ""
 
+# Function to record audio
+def record_audio(filename, duration):
+    print("Recording...")
+    audio_data = sd.rec(int(duration * 44100), samplerate=44100, channels=1, dtype='int16')
+    sd.wait()  # Wait until the recording is finished
+    with wave.open(filename, 'wb') as wf:
+        wf.setnchannels(1)  # Mono
+        wf.setsampwidth(2)  # 16 bits
+        wf.setframerate(44100)
+        wf.writeframes(audio_data.tobytes())
+    print(f"Recorded audio saved to '{filename}'.")
 
-	def write_sync_file(self):
-		"""Write the character 'a' to sync.txt."""
-		# Log the full path of sync.txt
-		print(f"Writing to sync.txt: {os.path.abspath('sync.txt')}")
-	
-		with open("sync.txt", "w", encoding='utf-8') as file:
-			file.write('a')  # Overwrite sync.txt with 'a'
+# Load initial prompts
+with open(os.path.join(os.path.dirname(__file__), "PromptChat1.txt"), 'r') as file:
+    prompt_content = file.read().strip()
+conversation1.append({'role': 'system', 'content': prompt_content})
+conversation2.append({'role': 'system', 'content': prompt_content})
 
+# Initial greetings
+kWelcome = "What's Up! I'm Kitana!"
+tts(kWelcome, 1)
 
-	def start(self):
-		# print("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
-		ezioCount = 0
-		kitanaCount = 0
+eWelcome = "Hey! I'm Ezio!"
+tts(eWelcome, 2)
 
-		agent_selected = random.randint(1, 2)
-		print(f"{'Kitana' if agent_selected == 1 else 'Ezio'}:", "Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
-		if agent_selected == 1:
-			self.save_response1("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
-			self.empty_response2()
+# Sync file to check for 'b'
+sync_file_path = "sync.txt"
 
-		elif agent_selected == 2:
-			self.save_response2("Welcome to the Multi-Conversation AI! Just start talking when you're ready. Say 'stop' to end the conversation.")
-			self.empty_response1()
+while True:
+    # Wait for 'b' to be written to the sync file
+    while True:
+        with open(sync_file_path, 'r') as sync_file:
+            sync_content = sync_file.read().strip()
+        if 'b' in sync_content:
+            break
 
-		self.write_sync_file()
+    # Clear the 'b' from the sync file
+    with open(sync_file_path, 'w') as sync_file:
+        sync_file.write(sync_content.replace('b', '', 1))
 
-		while True:
-			while True:
-				file = open("sync.txt", "r")
-				sync_char = file.read()
-				if sync_char == 'b':
-					print("Opening Sync File\nSync Char:", sync_char)
-					file.close()
-					file = open("sync.txt", "w").close()
-					break
+    # Listen for user input
+    record_audio('user_audio.wav', 5)
+    user_input = listen_for_speech()
+    
+    if user_input:
+        print(f"You said: {user_input}")
 
-			# Wait for user input after the chatbots' responses
-			print("Say Something")
-			user_input = self.get_audio()
-			if user_input.lower() == "stop":
-				if self.confirm_exit():
-					break
-				else:
-					print("Continue Speaking!")
-					continue
-		
-			print("User:", user_input)
-			self.conversation1.append({'role': 'user', 'content': user_input})
-			self.conversation2.append({'role': 'user', 'content': user_input})
+        # Append user input to both conversations
+        conversation1.append({'role': 'user', 'content': user_input})
+        conversation2.append({'role': 'user', 'content': user_input})
 
-			# After user speaks, get a response from the active agent
-			
-			agent_selected = random.randint(1, 2)
-			response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
-			print(f"{'Kitana' if agent_selected == 1 else 'Ezio'}:", response)
+        # Randomly select an agent to respond
+        agentSelected = random.randint(1, 2)
 
-			if (agent_selected == 1 and kitanaCount > 3):
-				agent_selected = 2
-				kitanaCount = 0
+        # Get the appropriate response from OpenAI
+        response = (gpt3(conversation1) if agentSelected == 1 else gpt3(conversation2))
 
-			elif (agent_selected == 2 and ezioCount > 3):
-				agent_selected = 2
-				ezioCount = 0
+        # Respond using the TTS function
+        tts(response, agentSelected)
 
-			# Save the response to speaker.txt
-			if agent_selected == 1:
-				kitanaCount += 1
-				ezioCount = 0
-				self.save_response1(response)
-				self.empty_response2()
+        # Allow the agents to converse with each other, limited to 3 total exchanges
+        agent_count = 0
+        while agent_count < 3:
+            agentSelected = 2 if agentSelected == 1 else 1  # Switch agent
+            response = (gpt3(conversation1) if agentSelected == 1 else gpt3(conversation2))
+            tts(response, agentSelected)
+            agent_count += 1
 
-			elif agent_selected == 2:
-				ezioCount += 1
-				kitanaCount = 0
-				self.save_response2(response)
-				self.empty_response1()
-
-			self.write_sync_file() #exclude from if statement
-			agent_selected = random.randint(0, 2)
-			count = 0
-			# while count < 2 or agent_selected != 0: 
-			# 	response = self.gpt3_agent(self.conversation1 if agent_selected == 1 else self.conversation2)
-			# 	print(f"{'Kitana' if agent_selected == 1 else 'Ezio'}:", response)
-
-			# 	# Save the response to speaker.txt
-			# 	if agent_selected == 1:
-			# 		self.save_response1(response)
-			# 		self.empty_response2()
-
-			# 	elif agent_selected == 2:
-			# 		self.save_response2(response)
-			# 		self.empty_response1()
-
-			# 	self.write_sync_file() #exclude from if statement
-			# 	# Switch agents for the next turn
-			# 	agent_selected = random.randint(0, 2)
-			# 	count += 1
-
-
-			#for loop w range (0,1) 
-
-
-	def confirm_exit(self):
-		print("Are you sure you want to exit? (yes/no)")
-		response = self.get_audio()
-		return response.lower() == "yes"
-
-
-if __name__ == "__main__":
-	ai = MultiConversationAI()
-	ai.start()
+        # After the agents finish their conversation, continue to wait for user input
