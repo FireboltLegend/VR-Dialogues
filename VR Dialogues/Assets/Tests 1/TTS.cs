@@ -12,8 +12,8 @@ using UnityEngine.Networking;
 
 public class TTS : MonoBehaviour
 {
-    [SerializeField] private AudioSource girlAudioSource;
-    [SerializeField] private AudioSource boyAudioSource;
+    public AudioSource girlAudioSource;
+    public AudioSource boyAudioSource;
     [SerializeField] private TextAsset textFile;
 
 	public enum PollyVoices { Amy, Brian, Camila, Emma, Gabrielle, Hannah, Isabella, Kendra, Kimberly, Lupe, Mia, Niamh, Olivia, Ruth, Stephen, Suvi, Takumi, Zayd, Arlet, Adriano, Laura, Seoyeon, Gregory, Hala, Joaquín, Inês, Thiago, Vicki, Daniel, Aria, Ayanda, Jitka, Kazuha, Lisa, Rémi, Andrés, Sergio, Burcu };
@@ -44,7 +44,7 @@ public class TTS : MonoBehaviour
 	}*/
 
 	// Functionality to simulate manual sync between command prompt + Unity
-	private void Update()
+	public void Update()
 	{
 		string filePath = Path.Combine(Application.dataPath, "sync.txt");
 		// Debug.Log(filePath);
@@ -85,7 +85,7 @@ public class TTS : MonoBehaviour
 		}
 	}
 
-    private IEnumerator CheckAudioPlayback(AudioSource avatarAudioSource)
+    public IEnumerator CheckAudioPlayback(AudioSource avatarAudioSource)
     {
         while (avatarAudioSource.isPlaying)
         {
