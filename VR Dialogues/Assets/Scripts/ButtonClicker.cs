@@ -21,6 +21,7 @@ public class ButtonClicker : MonoBehaviour
 
     // New method variables
     private bool canPress;
+    private bool isHere;
 
     void Start()
     {
@@ -34,6 +35,8 @@ public class ButtonClicker : MonoBehaviour
         originalWardrobePos = wardrobeObject.transform.position;
 
         canPress = true;
+
+        isHere = true;
     }
 
     void Update()
@@ -47,13 +50,13 @@ public class ButtonClicker : MonoBehaviour
             }
             canUnclick = false;
         }*/
-        if (otherGameObject != null && !canPress)
+        /*if (otherGameObject != null && !canPress)
         {
             if (Vector3.Distance(otherGameObject.transform.position, transform.position) >= distance)
             {
                 canPress = true;
             }
-        }
+        }*/
     }
 
     void OnTriggerEnter(Collider other)
@@ -65,6 +68,8 @@ public class ButtonClicker : MonoBehaviour
             Debug.Log("The button is currently colliding. The distance is " + Vector3.Distance(otherGameObject.transform.position, transform.position));
             transform.localPosition = maxPress;
         }*/
+        MoveWardrobe();
+        canPress = false;
     }
 
     void OnTriggerExit(Collider other)
@@ -77,12 +82,9 @@ public class ButtonClicker : MonoBehaviour
             canSummon = !canSummon;
             SummonOrNot();
         }*/
-        if (canPress)
-        {
-            MoveWardrobe();
-            SwitchState();
-        }
-        canPress = false;
+        // while (Vector3.Distance(otherGameObject.transform.positi
+        otherGameObject = other.gameObject;
+        WaitForDistance();
     }
 
     void SummonOrNot()
@@ -101,7 +103,7 @@ public class ButtonClicker : MonoBehaviour
 
     void SwitchState()
     {
-        if (transform.localPosition == originalPos)
+        if (isHere)
         {
             transform.localPosition = maxPress;
         }
@@ -113,14 +115,32 @@ public class ButtonClicker : MonoBehaviour
 
     void MoveWardrobe()
     {
-        if (transform.localPosition == originalPos)
+        if (canPress)
         {
-            wardrobeObject.transform.position = Vector3.Lerp(originalWardrobePos, hiddenPos.position, speed);
+            if (isHere)
+            {
+                wardrobeObject.transform.position = Vector3.Lerp(originalWardrobePos, hiddenPos.position, speed);
+            }
+            else
+            {
+                wardrobeObject.transform.position = Vector3.Lerp(hiddenPos.position, originalWardrobePos, speed);
+            }
+            SwitchState();
         }
-        else
+        isHere = !isHere;
+    }
+
+    void WaitForDistance()
+    {
+        float realDistance = -1.0f;
+        Debug.Log("Beginning Distance Loop...");
+        while (realDistance < distance)
         {
-            wardrobeObject.transform.position = Vector3.Lerp(hiddenPos.position, originalWardrobePos, speed);
+            Debug.Log("Real Distance is " + realDistance);
+            realDistance = Vector3.Distance(otherGameObject.transform.position, transform.position);
         }
+        canPress = true;
+        Debug.Log("Distance achieved!");
     }
 
 }
