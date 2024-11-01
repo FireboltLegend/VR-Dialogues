@@ -47,39 +47,40 @@ public class TTS : MonoBehaviour
 	private void Update()
 	{
 		string filePath = Path.Combine(Application.dataPath, "sync.txt");
-		// Debug.Log(filePath);
+		//Debug.Log(filePath);
 		if (File.Exists(filePath))
 		{
 			string content = File.ReadAllText(filePath);
-			// Debug.Log(content);
+			//Debug.Log(content);
 
 			if (content.Contains("a"))
 			{
-				if (textFile != null && textFile.text != "")
+				if (content.Contains("1"))
 				{
-					if (textFile.text.Contains("1"))
+					AudioClip girlAudioClip = Resources.Load<AudioClip>("girlAudio");
+					Debug.Log(girlAudioSource);
+					if (girlAudioSource != null && girlAudioClip != null)
 					{
-                        AudioClip girlAudioClip = Resources.Load<AudioClip>("girlAudio");
-                        if (girlAudioSource != null && girlAudioClip != null)
-                        {
-                            girlAudioSource.clip = girlAudioClip;
-                            girlAudioSource.Play();
-							StartCoroutine(CheckAudioPlayback(girlAudioSource)); // concurrency for girl avatar
-                        }
+						Debug.Log("Encountered girlAudio Here");
+						girlAudioSource.clip = girlAudioClip;
+						girlAudioSource.Play();
+						StartCoroutine(CheckAudioPlayback(girlAudioSource)); // concurrency for girl avatar
+					}
 
-                    }
+				}
 
-                    if (textFile.text.Contains("2"))
-                    {
-                        AudioClip boyAudioClip = Resources.Load<AudioClip>("boyAudio");
-                        if (boyAudioSource != null && boyAudioClip != null)
-                        {
-                            boyAudioSource.clip = boyAudioClip;
-                            boyAudioSource.Play();
-                            StartCoroutine(CheckAudioPlayback(boyAudioSource)); // concurrency for boy avatar
-                        }
+				if (content.Contains("2"))
+				{
+					AudioClip boyAudioClip = Resources.Load<AudioClip>("boyAudio");
+					Debug.Log(boyAudioClip);
+					if (boyAudioSource != null && boyAudioClip != null)
+					{
+						Debug.Log("Encountered boyAudio Here");
+						boyAudioSource.clip = boyAudioClip;
+						boyAudioSource.Play();
+						StartCoroutine(CheckAudioPlayback(boyAudioSource)); // concurrency for boy avatar
+					}
 
-                    }
 				}
 			}
 		}
