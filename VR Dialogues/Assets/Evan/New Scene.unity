@@ -7243,7 +7243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.249
+      value: 2.25
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11617,8 +11617,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 0.2
+  otherGameObject: {fileID: 0}
+  wardrobeObject: {fileID: 0}
+  originalWardrobePos: {x: 0, y: 0, z: 0}
   hiddenPos: {fileID: 1702925851}
-  speed: 1
+  speed: 0.0001
+  canPress: 0
+  isHere: 0
+  waitForDistance: 0
 --- !u!54 &1860727943
 Rigidbody:
   m_ObjectHideFlags: 0
