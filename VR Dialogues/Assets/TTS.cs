@@ -57,11 +57,12 @@ public class TTS : MonoBehaviour
 			{
 				if (content.Contains("1"))
 				{
+					GameObject girlAvatar = GameObject.Find("GirlAvatar");
+					girlAudioSource = girlAvatar.GetComponent<AudioSource>();
 					AudioClip girlAudioClip = Resources.Load<AudioClip>("girlAudio");
-					Debug.Log(girlAudioSource);
+
 					if (girlAudioSource != null && girlAudioClip != null)
 					{
-						Debug.Log("Encountered girlAudio Here");
 						girlAudioSource.clip = girlAudioClip;
 						girlAudioSource.Play();
 						StartCoroutine(CheckAudioPlayback(girlAudioSource)); // concurrency for girl avatar
@@ -71,11 +72,12 @@ public class TTS : MonoBehaviour
 
 				if (content.Contains("2"))
 				{
+					GameObject boyAvatar = GameObject.Find("BoyAvatar");
+					boyAudioSource = boyAvatar.GetComponent<AudioSource>();
 					AudioClip boyAudioClip = Resources.Load<AudioClip>("boyAudio");
-					Debug.Log(boyAudioClip);
+
 					if (boyAudioSource != null && boyAudioClip != null)
 					{
-						Debug.Log("Encountered boyAudio Here");
 						boyAudioSource.clip = boyAudioClip;
 						boyAudioSource.Play();
 						StartCoroutine(CheckAudioPlayback(boyAudioSource)); // concurrency for boy avatar

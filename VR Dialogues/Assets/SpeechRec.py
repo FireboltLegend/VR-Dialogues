@@ -28,7 +28,7 @@ def create_tts_client(api_key: str):
 # Create the TTS client with the API key
 tts_client = create_tts_client(os.environ["GOOGLE_API_KEY"])
 
-def text_to_wav(voice_name: str, text: str, speaker_name: str, path=r"C:\Users\abbas\OneDrive\Documents\GitHub\VR-Dialogues\VR Dialogues\Assets\Resources"):
+def text_to_wav(voice_name: str, text: str, speaker_name: str, path=r"C:\Users\joale\Documents\GitHub\VR-Dialogues\VR Dialogues\Assets\Resources"):
     language_code = "-".join(voice_name.split("-")[:2])
     text_input = texttospeech.SynthesisInput(text=text)
     voice_params = texttospeech.VoiceSelectionParams(
