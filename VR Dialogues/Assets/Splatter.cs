@@ -72,6 +72,7 @@ public class Splatter : MonoBehaviour
             {
                 animator.SetTrigger("Angry");
                 animator.SetBool("Mad", true);
+                collision.gameObject.GetComponent<SitWhenSit>().startTimer = true;
             }
             Instantiate(splatter, this.transform.position, collision.gameObject.transform.rotation);
             Destroy(this.gameObject);
