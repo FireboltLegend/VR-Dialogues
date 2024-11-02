@@ -55,6 +55,7 @@ public class ButtonAndWardrobeController : MonoBehaviour
     {
         if (canPressButton)
         {
+            otherGameObject = other.gameObject;
             PressButton();
             canMoveWardrobe = true;
         }
@@ -64,11 +65,10 @@ public class ButtonAndWardrobeController : MonoBehaviour
     {
         if (canPressButton)
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition,
-                pressedButtonPos, wardrobeSpeed * Time.deltaTime);
-        }
-        if (transform.localPosition == pressedButtonPos)
-        {
+            if (transform.localPosition == originalButtonPos)
+                transform.localPosition = pressedButtonPos;
+            else if (transform.localPosition == pressedButtonPos)
+                transform.localPosition = originalButtonPos;
             canPressButton = false;
         }
     }
