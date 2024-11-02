@@ -30,6 +30,7 @@ public class SitWhenSit : MonoBehaviour
             {
                 startTimer = false;
                 timer = 0;
+                this.gameObject.GetComponent<Animator>().SetBool("Mad", false);
             }
         }
     }
