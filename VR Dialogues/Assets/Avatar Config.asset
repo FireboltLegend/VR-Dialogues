@@ -61,8 +61,8 @@ MonoBehaviour:
     TargetProperty: 
     Type: 1
   MorphTargets:
-  - Oculus Visemes
   - mouthSmile
   - eyeBlinkLeft
   - eyeBlinkRight
   - Oculus Visemes
+  - ARKit
