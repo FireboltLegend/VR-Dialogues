@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11618,7 +11618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distance: 0.2
   otherGameObject: {fileID: 0}
-  wardrobeObject: {fileID: 0}
+  wardrobeObject: {fileID: 454061406}
   originalWardrobePos: {x: 0, y: 0, z: 0}
   hiddenPos: {fileID: 1702925851}
   speed: 0.0001
