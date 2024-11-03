@@ -8,6 +8,7 @@ public class Lamp : MonoBehaviour
     private Vector3 previousPosition;
     public Vector3 velocity;
     private float timer = 0;
+    private bool wasKinematic;
 
     private void Start()
     {
@@ -21,12 +22,9 @@ public class Lamp : MonoBehaviour
         previousPosition = transform.position;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void ToggleLight()
     {
-        if (velocity.magnitude > 3f && timer < 0)
-        {
-            timer = 0.5f;
-            _light.SetActive(!_light.activeInHierarchy);
-        }
+        print("ADDADAd");
+        _light.SetActive(!_light.activeInHierarchy);
     }
 }

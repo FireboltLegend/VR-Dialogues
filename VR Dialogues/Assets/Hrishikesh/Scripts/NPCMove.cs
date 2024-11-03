@@ -33,15 +33,15 @@ public class NPCMove : MonoBehaviour
         while (true)
         {
             RaycastHit hit;
-            if (Physics.Raycast(new Vector3(Random.Range(-15, 15), 50, Random.Range(-15, 15)), Vector3.down, out hit))
+            if (Physics.Raycast(transform.position + new Vector3(Random.Range(-15, 15), 50, Random.Range(-15, 15)), Vector3.down, out hit))
                 target = hit.point;
 
-            if (agent.remainingDistance < 0.2f || timer > 15)
+            if (agent.remainingDistance < 0.2f || timer > 10)
             {
                 agent.SetDestination(target);
                 timer = 0;
             }
-            yield return new WaitForSeconds(Random.Range(4f, 8f));
+            yield return new WaitForSeconds(Random.Range(4f, 6f));
         }
     }
 }

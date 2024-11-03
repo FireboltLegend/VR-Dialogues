@@ -10,6 +10,9 @@ public class Elevator : MonoBehaviour
     [SerializeField] private Transform[] elevatorPositions;
     [SerializeField] private int floor;
     [SerializeField] private Transform door;
+    [SerializeField] private Transform[] agents;
+    [SerializeField] private Transform[] agent1Positions;
+    [SerializeField] private Transform[] agent2Positions;
     private int previousFloor;
     private Vector3 doorStartPos;
     private bool doorClosing;
@@ -27,13 +30,19 @@ public class Elevator : MonoBehaviour
             StartTeleporting(floor);
         previousFloor = floor;
         if (!doorClosing)
-            door.localPosition = Vector3.MoveTowards(door.localPosition, doorStartPos, 10 * Time.deltaTime);
+            door.localPosition = Vector3.Lerp(door.localPosition, doorStartPos, 4 * Time.deltaTime);
         else
-            door.localPosition = Vector3.MoveTowards(door.localPosition, doorStartPos + Vector3.up * 2.25f, 10 * Time.deltaTime);
+            door.localPosition = Vector3.Lerp(door.localPosition, new Vector3(doorStartPos.x, doorStartPos.y, 0), 4 * Time.deltaTime);
+
+        if (Vector3.Distance(door.localPosition, doorStartPos) < 0.01f)
+            door.gameObject.SetActive(false);
+        else
+            door.gameObject.SetActive(true);
     }
 
     public void StartTeleporting(int floor)
     {
+        StopAllCoroutines();
         StartCoroutine(Teleport(floor));
     }
 
@@ -41,12 +50,16 @@ public class Elevator : MonoBehaviour
     {
         doorClosing = true;
         yield return new WaitForSeconds(timeToReach);
+        playerRig.parent = transform;
         transform.position = elevatorPositions[floor].position;
         transform.rotation = elevatorPositions[floor].rotation;
-        playerRig.position = elevatorPositions[floor].position;
-        playerRig.rotation = elevatorPositions[floor].rotation;
-        OVRManager.display.RecenterPose();
-        print(OVRPlugin.GetLocalTrackingSpaceRecenterCount());
+
+        agents[0].position = agent1Positions[floor].position;
+        agents[1].position = agent2Positions[floor].position;
+        agents[0].rotation = agent1Positions[floor].rotation;
+        agents[1].rotation = agent2Positions[floor].rotation;
+
+        playerRig.parent = null;
         doorClosing = false;
     }
 }

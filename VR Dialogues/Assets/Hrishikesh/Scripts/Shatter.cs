@@ -15,7 +15,7 @@ public class Shatter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = (transform.position - previousPosition)/Time.deltaTime;
+        velocity = (transform.position - previousPosition) / Time.deltaTime;
         previousPosition = transform.position;
     }
 
@@ -23,8 +23,10 @@ public class Shatter : MonoBehaviour
     {
         if (velocity.magnitude > 4f)
         {
-            GameObject newParticles = Instantiate(particles, transform.position, transform.rotation);
+            GameObject newParticles = Instantiate(particles, transform.position, Quaternion.identity);
+            Destroy(newParticles, 6);
             transform.position = Vector3.one * -1000;
+            GetComponent<Rigidbody>().useGravity = false;
         }
     }
 }

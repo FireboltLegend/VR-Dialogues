@@ -12,12 +12,9 @@ GameObject:
   - component: {fileID: 1952619694224511204}
   - component: {fileID: 4394930554705798190}
   - component: {fileID: 5173119964329792906}
-  - component: {fileID: 4414322811260181938}
   - component: {fileID: 8972553787140652704}
   - component: {fileID: 8708455338962691719}
-  - component: {fileID: 5836399355624521895}
-  - component: {fileID: 5515407869240456187}
-  - component: {fileID: 1033816092564153541}
+  - component: {fileID: 1133894268505852801}
   m_Layer: 0
   m_Name: rock_set_01
   m_TagString: Untagged
@@ -35,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.10000001, y: 0.1, z: 0.10000001}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8350034767116338947}
@@ -113,27 +110,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1235008327096976198, guid: 0466565b86721e04bb87cc48b27a4854, type: 3}
---- !u!135 &4414322811260181938
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2881479668610909691}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.3921894
-  m_Center: {x: -0.015772134, y: 0.61667025, z: -0.10045874}
 --- !u!114 &8972553787140652704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,28 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   returnTime: 10
---- !u!135 &5836399355624521895
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2881479668610909691}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.3921894
-  m_Center: {x: -0.015772134, y: 0.61667025, z: -0.10045874}
---- !u!54 &5515407869240456187
+--- !u!54 &1133894268505852801
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,32 +158,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!135 &1033816092564153541
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2881479668610909691}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.3921894
-  m_Center: {x: -0.015772134, y: 0.61667025, z: -0.10045874}
+  m_CollisionDetection: 1
 --- !u!1 &5866520970875857583
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: f8766c17-aaf8-4b55-9431-de8deea83842
-  instanceId: d9c8d2dc-98e4-4b24-a82f-438a87b85dce
+  instanceId: 28e9e717-b977-4d96-9cb2-43603bf906f3
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: f8338144-8280-4ff6-9455-ae2bb9c20fe8
@@ -303,7 +237,7 @@ MonoBehaviour:
   _twoGrabTransformer: {fileID: 0}
   _targetTransform: {fileID: 3221976788240441153}
   _maxGrabPoints: -1
-  _rigidbody: {fileID: 0}
+  _rigidbody: {fileID: 1133894268505852801}
   _kinematicWhileSelected: 1
   _throwWhenUnselected: 1
 --- !u!114 &5047433466217970808
@@ -323,7 +257,7 @@ MonoBehaviour:
   _maxSelectingInteractors: -1
   _data: {fileID: 0}
   _pointableElement: {fileID: 8607858977243187792}
-  _rigidbody: {fileID: 5515407869240456187}
+  _rigidbody: {fileID: 1133894268505852801}
   _physicsGrabbable: {fileID: 0}
   _resetGrabOnGrabsUpdated: 1
   _scoringModifier:
@@ -364,7 +298,7 @@ MonoBehaviour:
   _maxSelectingInteractors: -1
   _data: {fileID: 0}
   _pointableElement: {fileID: 8607858977243187792}
-  _rigidbody: {fileID: 0}
+  _rigidbody: {fileID: 1133894268505852801}
   _grabSource: {fileID: 0}
   _useClosestPointAsGrabSource: 0
   _releaseDistance: 0
