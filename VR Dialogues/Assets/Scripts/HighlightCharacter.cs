@@ -23,7 +23,7 @@ public class HighlightCharacter : MonoBehaviour
         CheckRayCollision(leftLineRenderer);*/
         //CheckRayCollisionMouse();
     }
-
+    /*
     void OutlineCharacter()
     {
         Debug.Log("Highlighting character...");
@@ -73,7 +73,7 @@ public class HighlightCharacter : MonoBehaviour
                 RemoveOutline();
             }
         }
-    }*/
+    }*/ /*
     void CheckRayCollisionMouse()
     {
         RaycastHit hit;
@@ -105,6 +105,6 @@ public class HighlightCharacter : MonoBehaviour
         {
             return Color.blue;
         }
-    }
+    }*/
 
 }
