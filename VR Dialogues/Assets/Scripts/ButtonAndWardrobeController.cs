@@ -20,7 +20,7 @@ public class ButtonAndWardrobeController : MonoBehaviour
     private GameObject otherGameObject;
 
     // Conditional variables
-    private bool canPressButton;
+    private bool[] canPressButton;
     private bool canMoveWardrobe;
     private bool canCheckDistance;
     [SerializeField] float expectedDistance;
@@ -40,7 +40,9 @@ public class ButtonAndWardrobeController : MonoBehaviour
         otherGameObject = null;
 
         // Conditional variables
-        canPressButton = true; // canPressButton -> canMoveWardrobe -> canCheckDistances
+        canPressButton = new bool[2]; // canPressButton -> canMoveWardrobe -> canCheckDistances
+        canPressButton[0] = true;
+        canPressButton[1] = false;
         canMoveWardrobe = false;
         canCheckDistance = false;
     }
@@ -53,7 +55,7 @@ public class ButtonAndWardrobeController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (canPressButton)
+        if (canPressButton[0] && canPressButton[1])
         {
             otherGameObject = other.gameObject;
             PressButton();
@@ -63,13 +65,14 @@ public class ButtonAndWardrobeController : MonoBehaviour
 
     void PressButton()
     {
-        if (canPressButton)
+        if (canPressButton[0] && canPressButton[1])
         {
             if (transform.localPosition == originalButtonPos)
                 transform.localPosition = pressedButtonPos;
             else if (transform.localPosition == pressedButtonPos)
                 transform.localPosition = originalButtonPos;
-            canPressButton = false;
+            canPressButton[0] = false;
+            canPressButton[1] = false;
         }
     }
 
@@ -94,6 +97,7 @@ public class ButtonAndWardrobeController : MonoBehaviour
             wardrobeIsOnGround = !wardrobeIsOnGround;
             canMoveWardrobe = false;
             canCheckDistance = true;
+            canPressButton[0] = true;
         }
     }
 
@@ -108,7 +112,7 @@ public class ButtonAndWardrobeController : MonoBehaviour
             {
                 Debug.Log("Distance achieved!");
                 canCheckDistance = false;
-                canPressButton = true;
+                canPressButton[1] = true;
             }
         }
     }
