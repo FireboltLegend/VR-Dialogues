@@ -13,6 +13,7 @@ public class ReturnToPosition : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
+        startRotation = transform.rotation;
     }
     void Update()
     {
