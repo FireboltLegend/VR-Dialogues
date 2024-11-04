@@ -57,9 +57,9 @@ public class TTS : MonoBehaviour
 			{
 				if (content.Contains("1"))
 				{
-					GameObject girlAvatar = GameObject.Find("GirlAvatar");
-					girlAudioSource = girlAvatar.GetComponent<AudioSource>();
-					AudioClip girlAudioClip = Resources.Load<AudioClip>("girlAudio");
+					// GameObject girlAvatar = GameObject.Find("GirlAvatar");
+					// girlAudioSource = girlAvatar.GetComponent<AudioSource>();
+					AudioClip girlAudioClip = Resources.Load<AudioClip>("audio");
 
 					if (girlAudioSource != null && girlAudioClip != null)
 					{
@@ -72,9 +72,9 @@ public class TTS : MonoBehaviour
 
 				if (content.Contains("2"))
 				{
-					GameObject boyAvatar = GameObject.Find("BoyAvatar");
-					boyAudioSource = boyAvatar.GetComponent<AudioSource>();
-					AudioClip boyAudioClip = Resources.Load<AudioClip>("boyAudio");
+					// GameObject boyAvatar = GameObject.Find("BoyAvatar");
+					// boyAudioSource = boyAvatar.GetComponent<AudioSource>();
+					AudioClip boyAudioClip = Resources.Load<AudioClip>("audio");
 
 					if (boyAudioSource != null && boyAudioClip != null)
 					{

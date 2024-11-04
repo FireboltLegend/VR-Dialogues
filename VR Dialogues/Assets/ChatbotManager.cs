@@ -37,7 +37,7 @@ public class ChatbotManager : MonoBehaviour
 		UnityEngine.Debug.Log("Starting Python Script...");
 
 		//string pythonInterpreterPath = @"C:\Users\ayush\AppData\Local\Programs\Python\Python39\python.exe";
-		string pythonScriptPath = @$"{Application.dataPath}/SpeechRec.py";  // Make sure the script path is correct
+		string pythonScriptPath = @$"{Application.dataPath}/speechModule.py";  // Make sure the script path is correct
 
 		UnityEngine.Debug.Log("Python script path: " + pythonScriptPath);
 
