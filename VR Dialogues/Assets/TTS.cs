@@ -21,6 +21,7 @@ public class TTS : MonoBehaviour
 
 	//[SerializeField] private PollyVoices voice;
 	//[SerializeField] private PollyLanguageCodes languagecode;
+	private bool isPlaying = false;
 
 	//private FileSystemWatcher fileWatcher;
 
@@ -53,40 +54,37 @@ public class TTS : MonoBehaviour
 			string content = File.ReadAllText(filePath);
 			//Debug.Log(content);
 
-			if (content.Contains("a"))
+			if (content.Contains("a") && !isPlaying)
 			{
-				if (content.Contains("1"))
-				{
-					// GameObject girlAvatar = GameObject.Find("GirlAvatar");
-					// girlAudioSource = girlAvatar.GetComponent<AudioSource>();
-					AudioClip girlAudioClip = Resources.Load<AudioClip>("audio");
+		                if (content.Contains("1"))
+                		{
+					girlAudioSource = GameObject.Find("GirlAvatar").GetComponent<AudioSource>();
+                    			PlayAudio(girlAudioSource, "audio"); // Specify audio clip name as needed
+                		}
 
-					if (girlAudioSource != null && girlAudioClip != null)
-					{
-						girlAudioSource.clip = girlAudioClip;
-						girlAudioSource.Play();
-						StartCoroutine(CheckAudioPlayback(girlAudioSource)); // concurrency for girl avatar
-					}
-
-				}
-
-				if (content.Contains("2"))
-				{
-					// GameObject boyAvatar = GameObject.Find("BoyAvatar");
-					// boyAudioSource = boyAvatar.GetComponent<AudioSource>();
-					AudioClip boyAudioClip = Resources.Load<AudioClip>("audio");
-
-					if (boyAudioSource != null && boyAudioClip != null)
-					{
-						boyAudioSource.clip = boyAudioClip;
-						boyAudioSource.Play();
-						StartCoroutine(CheckAudioPlayback(boyAudioSource)); // concurrency for boy avatar
-					}
-
-				}
+                		if (content.Contains("2"))
+                		{
+					boyAudioSource = GameObject.Find("BoyAvatar").GetComponent<AudioSource>();
+                    			PlayAudio(boyAudioSource, "audio"); // Specify audio clip name as needed
+                		}
 			}
 		}
 	}
+
+    private void PlayAudio(AudioSource audioSource, string audioClipName)
+    {
+        AudioClip audioClip = Resources.Load<AudioClip>(audioClipName);
+
+	Debug.Log(audioSource);
+	Debug.Log(audioClip);
+        if (audioSource != null && audioClip != null)
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+            isPlaying = true; // Set flag to true to indicate playback is happening
+            StartCoroutine(CheckAudioPlayback(audioSource));
+        }
+    }
 
     private IEnumerator CheckAudioPlayback(AudioSource avatarAudioSource)
     {
@@ -94,8 +92,10 @@ public class TTS : MonoBehaviour
         {
             yield return null;
         }
-
+	
+	isPlaying = false;
         File.WriteAllText($"Assets/sync.txt", "b");
+	Debug.Log("sync.txt updated: 'a' replaced with 'b'.");
     }
 
     /*public void PlayTTS()
