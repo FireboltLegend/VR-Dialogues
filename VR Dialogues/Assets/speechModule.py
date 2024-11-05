@@ -7,6 +7,8 @@ import sounddevice as sd
 import numpy as np
 import wave
 from google.cloud import texttospeech
+import time
+
 
 conversation1 = []
 conversation2 = []
@@ -113,6 +115,7 @@ tts(kWelcome, 1)
 while True:
 	if readSyncFile() == "b":
 		break
+	time.sleep(3)
 
 eWelcome = "And my name is Ezio!"
 tts(eWelcome, 2)
@@ -120,6 +123,7 @@ tts(eWelcome, 2)
 while True:
 	if readSyncFile() == "b":
 		break
+	time.sleep(3)
 
 greetings = [
 	"How’s your day going?",
@@ -140,6 +144,7 @@ tts(greetings[selectedGreeting], agentSelected)
 while True:
 	if readSyncFile() == "b":
 		break
+	time.sleep(3)
 
 while True:
 	saveResponse("Say Something!")
@@ -152,6 +157,7 @@ while True:
 	while True:
 		if readSyncFile() == "b":
 			break
+		time.sleep(3)
 
 	count = 0
 	while count < 3 and random.randint(0, 1) != 0:
@@ -165,3 +171,4 @@ while True:
 		while True:
 			if readSyncFile() == "b":
 				break
+			time.sleep(3)
