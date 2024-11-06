@@ -33,10 +33,9 @@ public class SendWardrobeBack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Button has been pressed");
+        Debug.Log("Button has been pressed" + other.gameObject.tag);
         transform.localPosition = pressedPosition;
         canLerp = true;
-        if (other.CompareTag("Player"))
-            moveProps.Toggle();
+        moveProps.Toggle();
     }
 }
