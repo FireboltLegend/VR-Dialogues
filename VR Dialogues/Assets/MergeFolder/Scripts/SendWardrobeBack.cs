@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class SendWardrobeBack : MonoBehaviour
 {
-    [SerializeField] Transform originalTransform;
-    [SerializeField] float speed;
+    [SerializeField] private MoveProps moveProps;
+    /*[SerializeField] Transform originalTransform;
+    [SerializeField] float speed;*/
 
     [SerializeField] float buttonPressLength;
     Vector3 pressedPosition;
@@ -22,12 +23,12 @@ public class SendWardrobeBack : MonoBehaviour
 
     void Update()
     {
-        if (canLerp) 
+        /*if (canLerp) 
         {
             wardrobeObject.transform.position = Vector3.Lerp(wardrobeObject.transform.position, originalTransform.position, speed);
         }
         if (wardrobeObject.transform.position == originalTransform.position)
-            canLerp = false;
+            canLerp = false;*/
     }
 
     private void OnTriggerEnter(Collider other)
@@ -35,5 +36,7 @@ public class SendWardrobeBack : MonoBehaviour
         Debug.Log("Button has been pressed");
         transform.localPosition = pressedPosition;
         canLerp = true;
+        if (other.CompareTag("Player"))
+            moveProps.Toggle();
     }
 }
