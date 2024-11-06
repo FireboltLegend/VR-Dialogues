@@ -65,3 +65,11 @@ MonoBehaviour:
   - mouthSmile
   - eyeBlinkLeft
   - eyeBlinkRight
+  - cheekPuff
+  - browDownLeft
+  - jawOpen
+  - browDownRight
+  - browInnerUp
+  - browOuterUpLeft
+  - browOuterUpRight
+  - ARKit
