@@ -7,24 +7,24 @@ public class ReturnToPosition : MonoBehaviour
     private Vector3 startPosition;
     private Quaternion startRotation;
     [SerializeField] private float returnTime;
+    [SerializeField] private Transform returnPosition;
+    [SerializeField] private float checkDistance;
     private bool returning;
-    private float timer;
+    public float timer;
 
     void Start()
     {
-        startPosition = transform.position;
+        startPosition = returnPosition.position;
         startRotation = transform.rotation;
     }
     void Update()
     {
-        if (Vector3.Distance(startPosition, transform.position) > 1.5f && !returning)
-            returning = true;
         if (returning)
             timer += Time.deltaTime;
-        if (timer >= returnTime)
+        if (timer > returnTime)
             ReturnToStart();
-        if (GetComponent<Rigidbody>().isKinematic)
-            timer = 0;
+        if (Vector3.Distance(returnPosition.position, transform.position) > checkDistance && !returning)
+            returning = true;
     }
 
     void ReturnToStart()
@@ -33,7 +33,8 @@ public class ReturnToPosition : MonoBehaviour
         {
             if (GetComponent<Rigidbody>() != null)
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.position = startPosition;
+            GetComponent<Rigidbody>().MovePosition(returnPosition.position);
+            transform.position =(returnPosition.position);
             transform.rotation = startRotation;
             GetComponent<Rigidbody>().useGravity = true;
             timer = 0;

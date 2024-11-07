@@ -24,7 +24,6 @@ public class Lamp : MonoBehaviour
 
     public void ToggleLight()
     {
-        print("ADDADAd");
         _light.SetActive(!_light.activeInHierarchy);
     }
 }
