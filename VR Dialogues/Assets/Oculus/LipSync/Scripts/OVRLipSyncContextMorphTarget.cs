@@ -116,6 +116,13 @@ public class OVRLipSyncContextMorphTarget : MonoBehaviour
     /// </summary>
     void Update ()
     {
+        foreach(Transform child in transform)
+        {
+            if (child.gameObject.activeSelf == true)
+            {
+                skinnedMeshRenderer = child.gameObject.GetComponent<SkinnedMeshRenderer>();
+            }
+        }
         if((lipsyncContext != null) && (skinnedMeshRenderer != null))
         {
             // get the current viseme frame
