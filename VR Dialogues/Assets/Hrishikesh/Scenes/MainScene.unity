@@ -29875,6 +29875,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7940524065003646547, guid: bd567d068613140d88090c82fb789aa3, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -30105,6 +30109,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8851345072120944602, guid: 4928c0f7c62aa49cf9cfe9a565dbbe9f, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -30212,6 +30220,10 @@ PrefabInstance:
     - target: {fileID: 5771661038868686151, guid: be8b5de0dab9d4cf084ff74ea23f7d6d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5771661038868686151, guid: be8b5de0dab9d4cf084ff74ea23f7d6d, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -30592,6 +30604,10 @@ PrefabInstance:
     - target: {fileID: 1586817424405757499, guid: e9b189ffd39de4aa7aa745946ca62a29, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586817424405757499, guid: e9b189ffd39de4aa7aa745946ca62a29, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 9074163135200900587, guid: e9b189ffd39de4aa7aa745946ca62a29, type: 3}
       propertyPath: m_Controller
@@ -31546,6 +31562,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3085780754980966083, guid: 9ff8896c702e94c8899a16bb57893f3a, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     - target: {fileID: 8561629441665592987, guid: 9ff8896c702e94c8899a16bb57893f3a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -31851,6 +31871,10 @@ PrefabInstance:
     - target: {fileID: 8173276052207550805, guid: 139edd89c57d94ac492d3d6f076f23bd, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8173276052207550805, guid: 139edd89c57d94ac492d3d6f076f23bd, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 8743841050919343622, guid: 139edd89c57d94ac492d3d6f076f23bd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -32295,6 +32319,10 @@ PrefabInstance:
     - target: {fileID: 87260645110608616, guid: 7f9b29c62223342518d33edba707f4ea, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87260645110608616, guid: 7f9b29c62223342518d33edba707f4ea, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 4504668543058517089, guid: 7f9b29c62223342518d33edba707f4ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -33081,6 +33109,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5738698411286989673, guid: 8542b2a928e42406888aa751f8eb7819, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33788,6 +33820,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7800706643281228434, guid: fa3a935b442a542cf8f81c9810cbe45d, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34171,6 +34207,10 @@ PrefabInstance:
     - target: {fileID: 6701254713284259430, guid: 18d19810c21724b97b83182995e3bfc8, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701254713284259430, guid: 18d19810c21724b97b83182995e3bfc8, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35658,6 +35698,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7050399492134864201, guid: 4fa8931fa672a4b4e85c3c0bff634dbc, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36358,6 +36402,10 @@ PrefabInstance:
     - target: {fileID: 3759443181201643095, guid: 0996f47d502af4744b1a702b7ce730ad, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759443181201643095, guid: 0996f47d502af4744b1a702b7ce730ad, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 4647707042207954392, guid: 0996f47d502af4744b1a702b7ce730ad, type: 3}
       propertyPath: m_Controller
@@ -38031,6 +38079,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5762871522440882364, guid: 1c567315f352a4118b2cdb03848603c3, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     - target: {fileID: 6528503790189284284, guid: 1c567315f352a4118b2cdb03848603c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -38509,6 +38561,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9094856203519797628, guid: 89433c0c4a282429da1dc5ad8145ec14, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38563,6 +38619,10 @@ PrefabInstance:
     - target: {fileID: 535205677775076605, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
       propertyPath: m_Name
       value: Skin 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 535205677775076605, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 3494749824729546606, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
       propertyPath: m_LocalPosition.x
@@ -40877,6 +40937,10 @@ PrefabInstance:
     - target: {fileID: 5033841431779700918, guid: 1ca442930193147a58e47125fa37fb0a, type: 3}
       propertyPath: m_Name
       value: Skin 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5033841431779700918, guid: 1ca442930193147a58e47125fa37fb0a, type: 3}
+      propertyPath: m_TagString
+      value: Clothes
       objectReference: {fileID: 0}
     - target: {fileID: 7627010533021258470, guid: 1ca442930193147a58e47125fa37fb0a, type: 3}
       propertyPath: m_Controller
