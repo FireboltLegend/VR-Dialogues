@@ -12,10 +12,12 @@ using UnityEngine.Networking;
 
 public class TTS : MonoBehaviour
 {
-    public AudioSource girlAudioSource;
-    public AudioSource boyAudioSource;
+    [SerializeField, ReadOnly(true)] public GameObject girl;
+    [SerializeField, ReadOnly(true)] public GameObject boy;
+	public AudioSource girlAudioSource;
+	public AudioSource boyAudioSource;
     [SerializeField] private TextAsset textFile;
-
+	
 	public enum PollyVoices { Amy, Brian, Camila, Emma, Gabrielle, Hannah, Isabella, Kendra, Kimberly, Lupe, Mia, Niamh, Olivia, Ruth, Stephen, Suvi, Takumi, Zayd, Arlet, Adriano, Laura, Seoyeon, Gregory, Hala, Joaquín, Inês, Thiago, Vicki, Daniel, Aria, Ayanda, Jitka, Kazuha, Lisa, Rémi, Andrés, Sergio, Burcu };
 	public enum PollyLanguageCodes { None, arb, cmn_CN, cy_GB, da_DK, de_DE, en_AU, en_GB, en_GB_WLS, en_IN, en_US, es_ES, es_MX, es_US, fr_CA, fr_FR, is_IS, it_IT, ja_JP, hi_IN, ko_KR, nb_NO, nl_NL, pl_PL, pt_BR, pt_PT, ro_RO, ru_RU, sv_SE, tr_TR, en_NZ, en_ZA, ca_ES, de_AT, yue_CN, ar_AE, fi_FI, en_IE, nl_BE, fr_BE };
 
@@ -44,8 +46,11 @@ public class TTS : MonoBehaviour
 	}*/
 
 	// Functionality to simulate manual sync between command prompt + Unity
+	
 	public void Update()
 	{
+		girlAudioSource = girl.GetComponentInChildren<AudioSource>();
+		boyAudioSource = boy.GetComponentInChildren<AudioSource>();
 		string filePath = Path.Combine(Application.dataPath, "sync.txt");
 		// Debug.Log(filePath);
 		if (File.Exists(filePath))

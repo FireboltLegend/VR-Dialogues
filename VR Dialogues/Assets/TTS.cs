@@ -60,14 +60,14 @@ public class TTS : MonoBehaviour
 				if (content.Contains("1"))
 				{
 					AssetDatabase.Refresh();
-					girlAudioSource = GameObject.Find("GirlAvatar").GetComponent<AudioSource>();
+					girlAudioSource = GameObject.Find("Avatar 2").GetComponent<AudioSource>();
 					PlayAudio(girlAudioSource, "audio"); // Specify audio clip name as needed
 				}
 
 				if (content.Contains("2"))
 				{
 					AssetDatabase.Refresh();
-					boyAudioSource = GameObject.Find("BoyAvatar").GetComponent<AudioSource>();
+					boyAudioSource = GameObject.Find("Avatar 1").GetComponent<AudioSource>();
 					PlayAudio(boyAudioSource, "audio"); // Specify audio clip name as needed
 				}
 			}
