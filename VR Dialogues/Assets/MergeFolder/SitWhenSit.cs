@@ -1,31 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SitWhenSit : MonoBehaviour
 {
+    public GameObject propMove1;
+    public GameObject propMove2;
     public GameObject player;
-    public Vector3 positionHigh;
-    public Vector3 positionLow;
+    public float boundary;
     public float timer = 0f;
     public bool startTimer = false;
+    private bool animationLock;
     // Update is called once per frame
 
     void Update()
     {
-        if(player.transform.position.x > positionLow.x && player.transform.position.x < positionHigh.x && player.transform.position.y > positionLow.y && player.transform.position.y < positionHigh.y && player.transform.position.z > positionLow.z && player.transform.position.z < positionHigh.z)
+        if(propMove1.GetComponent<MoveProps>().moveToPosition2 || propMove2.GetComponent<MoveProps>().moveToPosition2)
+        {
+            this.gameObject.GetComponent<Animator>().SetBool("Sitting", false);
+            animationLock = true;
+        }
+        else if(player.transform.localPosition.y < boundary)
         {
             this.gameObject.GetComponent<Animator>().SetBool("Sitting", true);
+            animationLock = false;
         }
         else
         {
             this.gameObject.GetComponent<Animator>().SetBool("Sitting", false);
+            animationLock = false;
         }
         if (startTimer)
         {
             timer += Time.deltaTime;
-            if (timer > 10f)
+            if (timer > 10f && !animationLock)
             {
                 startTimer = false;
                 timer = 0;

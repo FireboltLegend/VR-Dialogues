@@ -122,4 +122,9 @@ public class ChatbotManager : MonoBehaviour
 		File.WriteAllText("Assets/speaker2.txt", "");
 		File.WriteAllText("Assets/sync.txt", "");
 	}
+
+	public Process ReturnPythonProcess()
+	{
+		return pythonProcess;
+	}
 }
