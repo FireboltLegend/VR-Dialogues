@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Diagnostics;
 
 public class MoveProps : MonoBehaviour
 {
     [SerializeField] private PropData[] propDatas;
     public bool moveToPosition2;
+    private Process pythonProcess;
 
     private void Update()
     {
@@ -25,6 +27,13 @@ public class MoveProps : MonoBehaviour
     public void Toggle()
     {
         moveToPosition2 = !moveToPosition2;
+        pythonProcess = GameObject.FindGameObjectWithTag("Finish").GetComponent<ChatbotManager>().ReturnPythonProcess();
+        if (pythonProcess != null && !pythonProcess.HasExited)
+        {
+            pythonProcess.Kill();
+            pythonProcess.Dispose();
+        }
+
     }
 }
 
