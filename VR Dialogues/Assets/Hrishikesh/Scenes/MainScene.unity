@@ -1622,7 +1622,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5183193759188182404, guid: 0baa9be61301941d3872836c8e98bb7f, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4859227576911693958, guid: 0baa9be61301941d3872836c8e98bb7f, type: 3}
       insertIndex: -1
@@ -5042,6 +5043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a22e8c7b834f8489fdc6190f6eddee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatPrompt: {fileID: 4900000, guid: 5cd6cf4ffebb1834aaed71cb313d7256, type: 3}
 --- !u!54 &368858824
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6099,7 +6101,7 @@ Transform:
   m_GameObject: {fileID: 448706004}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06, y: 1, z: 1.407}
+  m_LocalPosition: {x: -0.06, y: 0.85, z: 1.407}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22468,7 +22470,7 @@ Transform:
   m_GameObject: {fileID: 1450000613}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.87, z: -1.94}
+  m_LocalPosition: {x: 0, y: 2, z: -1.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25758,7 +25760,8 @@ PrefabInstance:
       value: Clothes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3857402430561312217, guid: 746c73dd0a6024009afbe80b964fa525, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3740259289537274485, guid: 746c73dd0a6024009afbe80b964fa525, type: 3}
       insertIndex: -1
@@ -27044,6 +27047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a22e8c7b834f8489fdc6190f6eddee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatPrompt: {fileID: 4900000, guid: 3439c98a1c995db42a8c7499cdd0d504, type: 3}
 --- !u!54 &1931159438
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -32362,7 +32366,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5183193759188182404, guid: 0baa9be61301941d3872836c8e98bb7f, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4859227576911693958, guid: 0baa9be61301941d3872836c8e98bb7f, type: 3}
       insertIndex: -1
@@ -36062,7 +36067,8 @@ PrefabInstance:
       value: Clothes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3857402430561312217, guid: 746c73dd0a6024009afbe80b964fa525, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3740259289537274485, guid: 746c73dd0a6024009afbe80b964fa525, type: 3}
       insertIndex: -1

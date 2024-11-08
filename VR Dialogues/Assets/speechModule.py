@@ -110,20 +110,22 @@ conversation1.append({'role': 'system', 'content': openFile(os.path.join(os.path
 conversation2.append({'role': 'system', 'content': openFile(os.path.join(os.path.dirname(__file__), "Chat2.txt"))})
 
 kWelcome = "Hi, My name is Kirtana!"
+saveResponse(kWelcome)
 tts(kWelcome, 1)
 
 while True:
 	if readSyncFile() == "b":
 		break
-	time.sleep(3)
+	time.sleep(0.5)
 
 eWelcome = "And my name is Ezio!"
+saveResponse(eWelcome)
 tts(eWelcome, 2)
 
 while True:
 	if readSyncFile() == "b":
 		break
-	time.sleep(3)
+	time.sleep(0.5)
 
 greetings = [
 	"How’s your day going?",
@@ -138,13 +140,13 @@ greetings = [
 
 agentSelected = random.randint(1, 2)
 selectedGreeting = random.randint(0, len(greetings) - 1)
-
+saveResponse(greetings[selectedGreeting])
 tts(greetings[selectedGreeting], agentSelected)
 
 while True:
 	if readSyncFile() == "b":
 		break
-	time.sleep(3)
+	time.sleep(0.5)
 
 while True:
 	saveResponse("Say Something!")
@@ -152,12 +154,13 @@ while True:
 	agentSelected = random.randint(1, 2)
 	getaudio()
 	response = (gpt3(conversation1) if agentSelected == 1 else gpt3(conversation2))
+	saveResponse(response)
 	tts(response, agentSelected)
 	
 	while True:
 		if readSyncFile() == "b":
 			break
-		time.sleep(3)
+		time.sleep(0.5)
 
 	count = 0
 	while count < 3 and random.randint(0, 1) != 0:
@@ -166,9 +169,10 @@ while True:
 		elif agentSelected == 2:
 			agentSelected = 1
 		response = (gpt3(conversation1) if agentSelected == 1 else gpt3(conversation2))
+		saveResponse(response)
 		tts(response, agentSelected)
 		count += 1
 		while True:
 			if readSyncFile() == "b":
 				break
-			time.sleep(3)
+			time.sleep(0.5)

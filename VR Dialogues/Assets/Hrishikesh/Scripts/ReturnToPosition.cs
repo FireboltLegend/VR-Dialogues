@@ -34,6 +34,7 @@ public class ReturnToPosition : MonoBehaviour
             if (GetComponent<Rigidbody>() != null)
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<Rigidbody>().MovePosition(returnPosition.position);
+            GetComponent<Rigidbody>().MoveRotation(startRotation);
             transform.position =(returnPosition.position);
             transform.rotation = startRotation;
             GetComponent<Rigidbody>().useGravity = true;
