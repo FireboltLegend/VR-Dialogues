@@ -2590,7 +2590,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2541fcbc3f11393478711bd3f49ebc63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  font: {fileID: 12800000, guid: 6cfd34253cf5b994da10aa6e9e155deb, type: 3}
   speechText: {fileID: 155853075}
   filePath: 
 --- !u!1 &169915498
@@ -6139,19 +6138,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 91309fa39f7198948a891141837a3965, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 91309fa39f7198948a891141837a3965, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 91309fa39f7198948a891141837a3965, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: -0.70710677
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 91309fa39f7198948a891141837a3965, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5
+      value: -0.70710677
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 91309fa39f7198948a891141837a3965, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6163,7 +6162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 91309fa39f7198948a891141837a3965, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13258,7 +13257,7 @@ Transform:
   m_GameObject: {fileID: 741672337}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.24, z: -1.91}
+  m_LocalPosition: {x: -1.59, y: -0.24, z: -5.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22472,7 +22471,7 @@ Transform:
   m_GameObject: {fileID: 1450000613}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -1.94}
+  m_LocalPosition: {x: -1.406, y: 2, z: -4.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -28037,7 +28036,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2541fcbc3f11393478711bd3f49ebc63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  font: {fileID: 0}
   speechText: {fileID: 2031628773}
   filePath: 
 --- !u!1 &2033369702

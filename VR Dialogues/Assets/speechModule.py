@@ -51,7 +51,6 @@ def getaudio():
 	recognizer = sr.Recognizer()
 	microphone = sr.Microphone()
 
-
 	with microphone as source:
 		recognizer.adjust_for_ambient_noise(source)
 		try:
@@ -65,10 +64,6 @@ def getaudio():
 		except sr.WaitTimeoutError: 
 			print("WaitTimeOutError")
 			return ""
-		
-		
-		
-
 
 def gpt3(messages, model='gpt-3.5-turbo', temperature=0.9, max_tokens=100, frequency_penalty=2.0, presence_penalty=2.0):
 	response = openai.ChatCompletion.create(
