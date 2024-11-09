@@ -21,8 +21,7 @@ public class ChatbotManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
 			UnityEngine.Debug.Log("Q Pressed");
-			File.WriteAllText("Assets/speaker1.txt", "");
-			File.WriteAllText("Assets/speaker2.txt", "");
+			File.WriteAllText("Assets/speaker.txt", "");
 			File.WriteAllText("Assets/sync.txt", "");
 			File.WriteAllText("Assets/user.txt", "");
 

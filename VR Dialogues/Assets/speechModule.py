@@ -151,8 +151,13 @@ while True:
 while True:
 	saveResponse("Say Something!")
 	print("Say Something!")
-	agentSelected = random.randint(1, 2)
-	getaudio()
+	userResponse = getaudio()
+	if(userResponse.lower().find("kritana") != -1 or userResponse.lower().find("cortana") != -1) or userResponse.lower().find("curtain") != -1:
+		agentSelected = 1
+	elif(userResponse.lower().find("ezio") != -1 or userResponse.lower().find("ezzio") != -1 or userResponse.lower().find("enzio") != -1 or userResponse.lower().find("seo") != -1):
+		agentSelected = 2
+	else:
+		agentSelected = random.randint(1, 2)
 	response = (gpt3(conversation1) if agentSelected == 1 else gpt3(conversation2))
 	saveResponse(response)
 	tts(response, agentSelected)
@@ -163,7 +168,7 @@ while True:
 		time.sleep(0.5)
 
 	count = 0
-	while count < 3 and random.randint(0, 1) != 0:
+	while count < 1 and random.randint(0, 1) != 0:
 		if agentSelected == 1:
 			agentSelected = 2
 		elif agentSelected == 2:

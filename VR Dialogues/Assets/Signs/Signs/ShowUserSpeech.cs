@@ -23,6 +23,11 @@ public class ShowUserSpeech : MonoBehaviour
         {
             string speech = File.ReadAllText(filePath);
             speechText.text = speech;
+            speechText.outlineWidth = 0f;
+            if (speech.Equals("Say Something!")) 
+            {
+                speechText.outlineWidth = 0.2f;
+            }
         }
     }
 }
