@@ -101,7 +101,7 @@ def listen_for_speech():
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        audio = recognizer.listen(source)
+        audio = recognizer.listen(source, timeout=2)
         try:
             return recognizer.recognize_google(audio)
         except sr.UnknownValueError:
@@ -109,6 +109,8 @@ def listen_for_speech():
             return ""
         except sr.RequestError as e:
             print(f"Could not request results from Google Speech Recognition service; {e}")
+            return ""
+        except sr.WaitTimeoutError:
             return ""
 
 # Function to record audio
