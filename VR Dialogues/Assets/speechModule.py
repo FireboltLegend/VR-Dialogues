@@ -52,7 +52,11 @@ def getaudio():
 	microphone = sr.Microphone()
 	with microphone as source:
 		recognizer.adjust_for_ambient_noise(source)
-		audio = recognizer.listen(source)
+		try:
+			audio = recognizer.listen(source, timeout=2)
+		except sr.WaitTimeoutError: 
+			pass
+		
 		recognized_text = recognizer.recognize_google(audio)
 		conversation1.append({'role': 'user', 'content': recognized_text})
 		conversation2.append({'role': 'user', 'content': recognized_text})
