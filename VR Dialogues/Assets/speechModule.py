@@ -50,18 +50,30 @@ def openFile(filepath):
 def getaudio():
 	recognizer = sr.Recognizer()
 	microphone = sr.Microphone()
+
+	recognizer.pause_threshold = 0.3
+	recognizer.non_speaking_duration = 0.3
+	recognizer.phrase_threshold = 0.1
+
 	with microphone as source:
-		recognizer.adjust_for_ambient_noise(source)
+		recognizer.adjust_for_ambient_noise(source, duration=0.5)
 		try:
 			audio = recognizer.listen(source, timeout=2)
+			recognized_text = recognizer.recognize_google(audio)
+			conversation1.append({'role': 'user', 'content': recognized_text})
+			conversation2.append({'role': 'user', 'content': recognized_text})
+			print("User:", recognized_text)
+			return recognized_text
+			
 		except sr.WaitTimeoutError: 
-			pass
+			return ""
+	
+		except sr.UnknownValueError:
+			return ""
 		
-		recognized_text = recognizer.recognize_google(audio)
-		conversation1.append({'role': 'user', 'content': recognized_text})
-		conversation2.append({'role': 'user', 'content': recognized_text})
-		print("User:", recognized_text)
-		return recognized_text
+		
+		
+
 
 def gpt3(messages, model='gpt-3.5-turbo', temperature=0.9, max_tokens=100, frequency_penalty=2.0, presence_penalty=2.0):
 	response = openai.ChatCompletion.create(
