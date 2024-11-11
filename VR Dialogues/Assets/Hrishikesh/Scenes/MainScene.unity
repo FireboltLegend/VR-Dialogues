@@ -2592,6 +2592,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speechText: {fileID: 155853075}
   filePath: 
+  boy: {fileID: 1931159436}
+  girl: {fileID: 368858822}
 --- !u!1 &169915498
 GameObject:
   m_ObjectHideFlags: 0
@@ -28038,6 +28040,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speechText: {fileID: 2031628773}
   filePath: 
+  boy: {fileID: 1931159436}
+  girl: {fileID: 368858822}
 --- !u!1 &2033369702
 GameObject:
   m_ObjectHideFlags: 0
@@ -28268,15 +28272,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.696
+      value: -0.947
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.11
+      value: 1.681
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.41
+      value: 17.859
       objectReference: {fileID: 0}
     - target: {fileID: 2514675399181695721, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_LocalRotation.w
