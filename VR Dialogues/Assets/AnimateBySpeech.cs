@@ -59,17 +59,17 @@ public class AnimateBySpeech : MonoBehaviour
                     animator.SetBool("Sad", true);
                     animator.SetTrigger("Crying");
                     break;
-                case string when nocap.Contains("i agree") || nocap.Contains("i concur") || nocap.Contains(" aye") || nocap.Contains("indeed") || nocap.Contains("sounds good") || nocap.Contains("okay"):
+                case string when (nocap.Contains("i agree") || nocap.Contains("i concur") || nocap.Contains(" aye") || nocap.Contains("indeed") || nocap.Contains("sounds good") || nocap.Contains("okay")) && nocap.Contains(avatarname + ":"):
                     animator.SetTrigger("Agreement");
                     break;
-                case string when nocap.Contains("doubt") || nocap.Contains("not sure") || nocap.Contains("maybe") || nocap.Contains("i don't think so") || nocap.Contains("i disagree"):
+                case string when (nocap.Contains("doubt") || nocap.Contains("not sure") || nocap.Contains("maybe") || nocap.Contains("i don't think so") || nocap.Contains("i disagree")) && nocap.Contains(avatarname + ":"):
                     animator.SetTrigger("Disagreement");
                     break;
-                case string when nocap.Contains("congratulations") || nocap.Contains("impressive") || nocap.Contains("congratulate"):
+                case string when (nocap.Contains("congratulations") || nocap.Contains("impressive") || nocap.Contains("congratulate")) && nocap.Contains(avatarname + ":"):
                     animator.SetTrigger("Applause");
                     animator.SetBool("Happy", true);
                     break;
-                case string when nocap.Contains(" hmm") || nocap.Contains("i'm thinking") || nocap.Contains("i wonder") || nocap.Contains(" hm"):
+                case string when (nocap.Contains(" hmm") || nocap.Contains("i'm thinking") || nocap.Contains("i wonder") || nocap.Contains(" hm")) && nocap.Contains(avatarname + ":"):
                     animator.SetTrigger("Thinking");
                     break;
                 case string when nocap.Contains("say something!"):
