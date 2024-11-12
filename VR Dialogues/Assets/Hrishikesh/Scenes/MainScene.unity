@@ -39808,6 +39808,30 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Clothes
       objectReference: {fileID: 0}
+    - target: {fileID: 2589696622327483028, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9902012
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589696622327483028, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.13964832
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589696622327483028, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589696622327483028, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589696622327483028, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 16.055
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589696622327483028, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3494749824729546606, guid: 2091a47cb40804bf6a3c88edbec29924, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
