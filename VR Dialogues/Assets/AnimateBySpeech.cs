@@ -1,0 +1,70 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+public class AnimateBySpeech : MonoBehaviour
+{
+    [SerializeField] private Animator animator;
+    [SerializeField] private string filePath;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        filePath = Path.Combine(Application.dataPath, "speaker.txt");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        animator = this.gameObject.GetComponentInChildren<Animator>();
+        if (File.Exists(filePath))
+        {
+            string speech = File.ReadAllText(filePath);
+            string nocap = speech.ToLower();
+            switch (nocap)
+            {
+                case string when nocap.Contains("happy") || nocap.Contains("good") || nocap.Contains("excellent") || nocap.Contains("nice!") || nocap.Contains("cool!") || nocap.Contains("perfect!"):
+                    animator.SetBool("Happy", true);
+                    break;
+                case string when nocap.Contains("...") || nocap.Contains("oh,") || nocap.Contains("oh.") || nocap.Contains("no") || nocap.Contains("low-key"):
+                    animator.SetBool("Happy", false);
+                    break;
+                case string when nocap.Contains("sorry") || nocap.Contains("sad") || nocap.Contains("sad") || nocap.Contains("shame") || nocap.Contains("oh..."):
+                    animator.SetBool("Sad", true);
+                    break;
+                case string when nocap.Contains("alright") || nocap.Contains("thank you") || nocap.Contains("thank goodness") || nocap.Contains("thanks") || nocap.Contains("cool") || nocap.Contains("chill"):
+                    animator.SetBool("Sad", false);
+                    break;
+                case string when nocap.Contains("wow") || nocap.Contains("surprising") || nocap.Contains("surprised") || nocap.Contains("oh!") || nocap.Contains("ahh!"):
+                    animator.SetBool("Shocked", true);
+                    break;
+                case string when nocap.Contains("mad") || nocap.Contains("angry") || nocap.Contains("i can't stand"):
+                    animator.SetBool("Mad", true);
+                    animator.SetTrigger("Angry");
+                    break;
+                case string when nocap.Contains("chill") || nocap.Contains("relax") || nocap.Contains("low-key") || nocap.Contains("phew") || nocap.Contains("relieved"):
+                    animator.SetBool("Mad", false);
+                    break;
+                case string when nocap.Contains("Horrible") || nocap.Contains("so sorry") || nocap.Contains("terrible") || nocap.Contains("tired of pretending"):
+                    animator.SetBool("Sad", true);
+                    animator.SetTrigger("Crying");
+                    break;
+                case string when nocap.Contains("i agree") || nocap.Contains("i concur") || nocap.Contains("aye") || nocap.Contains("indeed") || nocap.Contains("sounds good") || nocap.Contains("okay"):
+                    animator.SetTrigger("Agreement");
+                    break;
+                case string when nocap.Contains("doubt") || nocap.Contains("not sure") || nocap.Contains("maybe") || nocap.Contains("i don't think so") || nocap.Contains("i disagree"):
+                    animator.SetTrigger("Disagreement");
+                    break;
+                case string when nocap.Contains("congratulations") || nocap.Contains("impressive") || nocap.Contains("congratulate"):
+                    animator.SetTrigger("Applause");
+                    animator.SetBool("Happy", true);
+                    break;
+                default:
+                    animator.SetBool("Shocked", false);
+                    break;
+
+            }
+        }
+    }
+}
