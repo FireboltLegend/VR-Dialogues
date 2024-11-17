@@ -1,13 +1,11 @@
 # VR-Dialogues: Navigating Conversations with Virtual Agents
 _By Alen Jo, Evan Olson, Hrishikesh Srirangam, Aastha Sharma, Yadiel Valentin Rios, Abbas Khawaja_
 
-(INSERT POSTER HERE)
-
 # Introduction
 Virtual Reality (VR) has significantly changed how users engage with digital spaces. However, many existing systems focus on one-on-one conversations, failing to address the complexity of multi-agent interactions (Josyula et al., 2024). We introduce VR Dialogues, an immersive VR conversational system that generates realistic, dynamic interactions between a user and two virtual agents. By integrating an LLM, lifelike avatars, and immersive environments, VR Dialogues enhances the virtual reality experience, offering a more collaborative and synergistic form of interaction. This system brings a new level of immersion and interactivity to VR environments, demonstrating the potential for scalable, multi-agent conversations.
 
 # Architecture
-(INSERT ARCHITECTURE DIAGRAM HERE)
+![architectureFlowChart](https://github.com/user-attachments/assets/aee01fa0-2678-43ca-b91f-aa1fd6343caa)
 
 The design goal embodies user comfort and control with a seamless user experience and a robust backend. This comfort is what allows the user to enjoy their experience and stimulates more intrigue. To begin, the user enters the game scene facing the agents. The agents will greet the user and start the conversation (e.g., Figure 1). A Speech-To-Text model will process the user’s responses, which feeds the text into an OpenAI Large Language Model (LLM) to generate the agent response. The LLM has multiple custom prompts that allow users to enjoy multiple personalities. In conjunction with these responses, the animations employ advanced lip-syncing techniques to make these agents more lifelike.
 
@@ -25,8 +23,8 @@ The design goal embodies user comfort and control with a seamless user experienc
 **Wardrobe**: To allow users to customize the agents, we designed a system to alter the appearance and behavior of each agent (e.g., Figure 6). Pressing a trigger moves objects in the scene out of the way, and the agents will pause in place. When an outfit touches an agent, their appearance and speech behavior will change. Pressing a button on the wardrobe reverts the scene to its default state.
 
 # Results and Analysis
+![Results](https://github.com/user-attachments/assets/56bed391-1a48-46af-82e8-97c671a3a73f)
 
-(INSERT RESULTS HERE)
 
 In our pilot study evaluating social presence, users rated four questions on a 1–7 Likert Scale (e.g., Figure 7). Results were generally positive: users felt included in conversations and comfortable in the virtual environment with the virtual agents. Users found the interaction somewhat realistic, but perceived agents less as real people.
 
