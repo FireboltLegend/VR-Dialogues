@@ -37,7 +37,7 @@ The design goal embodies user comfort and control with a seamless user experienc
   </tr>
 </table>
 
-**Environment**: To suit various preferences, we included a park environment in addition to a more enclosed office environment (Riches et al., 2019). We implemented an elevator system to seamlessly transition between these environments (e.g., Figure 5). This is accomplished with buttons that are activated with the user’s hands. The elevator is teleported to the corresponding environment, along with the user, which hides any jarring transitions from the user.
+**Environment**: To suit various preferences, we included a park environment in addition to a more enclosed office environment (Riches et al., 2019). We implemented an elevator system to seamlessly transition between these environments (e.g., Figure 5). This is accomplished with buttons that are activated with the user’s hands. When a button is pressed, the door closes, and the elevator is teleported to the corresponding environment, along with the user. Then, the door reopens, revealing the new environment. This method of transporting the user hides any jarring transitions from the user. Additionally, we added interactable elements to the scenes to enhance the user's sense of presence within the scene. For example, the items on the desk in the office can be moved, shattered, or toggled. The park scene contains a fountain that summons a wardrobe from above when the user puts their hand in the water.
 
 <table>
   <tr>
