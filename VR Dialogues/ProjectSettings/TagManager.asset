@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Clothes
+  - Avatar
+  - Locomotion
+  - LocoButton
+  - LocoText
+  - PassThroughButton
+  - PassThrough
+  - SamplesInfoPanel
+  - Wardobe
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -11,10 +21,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Terrain
+  - Background Person
+  - Portal
+  - Wardrobe
   - 
   - 
   - 
