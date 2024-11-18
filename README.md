@@ -17,6 +17,113 @@ The design goal embodies user comfort and control with a seamless user experienc
 # Components
 **Response Generation**: We use GPT-3.5 to generate contextually relevant responses based on user input. In our VR environment, the avatars "Kirtana" and "Ezio" engage in a three-way dialogue with the user, managed by a Python script that syncs with Unity for real-time interaction (e.g., Figure 2). The avatars also have interchangeable personality traits for an adaptive and engaging experience.
 
+***Response generation pipeline***
+1. Microphone Input
+```py
+    audio_data = sd.rec(int(duration * 44100), samplerate=44100, channels=1, dtype='int16')
+    sd.wait()  # Wait until the recording is finished
+    with wave.open(filename, 'wb') as wf:
+        wf.setnchannels(1)  # Mono
+        wf.setsampwidth(2)  # 16 bits
+        wf.setframerate(44100)
+        wf.writeframes(audio_data.tobytes())
+```
+Take in a sound device and instantiate input properties, such as the sample rate at 44100 Hz, mono-channel, and 16-bit audio blocks. 44100 Hz comes from a fantastic theorem (google the Nyquist-Shannon sampling principle) that captures frequencies up to 22 kHz (above the upper limit for human hearing). Therefore, to add cushioning for human hearing, double it. A mono-channel configuration allows us to make the audio file small for more straightforward encoding and decoding. Finally, 16-bit is lossless or allows for leeway of better speech recognition and toying around with loudness in certain audio blocks. 
+
+We then use a context manager to encode <--> decode the microphone audio and write as bytes into a WAVE file. WAVE files are made purely using raw bytes, which means they have pure sound quality (excellent for transcription).
+
+2. Speech-To-Text Transcriber
+```py
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio = recognizer.listen(source, timeout=2)
+```
+Instantiate a Speech Recognition object that includes the microphone array to take in audio input continuously until the recognition model detects speech from `py recognizer.recognize_google(audio)`. Since speech recognition is susceptible to errors, there are also three defined Exception classes:
+```py
+        except sr.UnknownValueError:
+            print("Sorry, I could not understand the audio.")
+            return ""
+        except sr.RequestError as e:
+            print(f"Could not request results from Google Speech Recognition service; {e}")
+            return ""
+        except sr.WaitTimeoutError:
+            return ""
+```
+`UnknownValueError` - failure in transcribing the user audio, which this error is harmless and warrants no response.
+`RequestError` - failure in fetching the transcription service through its internal API
+`WaitTimeOutError` - reached the silence detection threshold that prematurely clips the microphone input
+
+3. OpenAI LLM Intermediary
+```py
+            # Append user input to both conversations
+            conversation1.append({'role': 'user', 'content': user_input})
+            conversation2.append({'role': 'user', 'content': user_input})
+
+            # Randomly select an agent to respond
+            agentSelected = random.randint(1, 2)
+
+            # Get the appropriate response from OpenAI
+            response = (gpt3(conversation1) if agentSelected == 1 else gpt3(conversation2))
+```
+Once the speech-to-text extracts the appropriate transcription, feed it into a list of JSON objects fed into the OpenAI API. To prevent monotonicity in the agent, randomize the agent to give the user comfort in speaking to different people rather than a single person. Check the following for how we invoke the OpenAI LLM:
+```py
+        response = openai.ChatCompletion.create(
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            frequency_penalty=frequency_penalty,
+            presence_penalty=presence_penalty
+        )
+        response_text = response['choices'][0]['message']['content'].strip()
+        return response_text
+```
+To get an appropriate response from OpenAI's ChatGPT model, we need to invoke a ChatCompletion function that allows for selecting the model (i.e., GPT 3.5), the messages (List of JSON objects), temperature (model's creativity), max_tokens (how many characters allowed for response), frequency penalty (prevents repeating the exact phrases or words), and presence penalty (be more diverse in the conversation).
+
+All of these parameters make agent responses genuine and realistic, and the successful generation returns as plaintext. Of course, there will be errors encountered (like invalid API requests), which are handled like so.
+```py
+    except Exception as e:
+        print(f"Error calling OpenAI API: {e}")
+        return "I'm having trouble responding right now."
+```
+
+4. Text-to-Speech Transcriber
+For Kitana:
+```py
+        text_to_wav("en-US-Standard-H", response, "girlAudio")  # Female voice for Kitana
+        conversation1.append({'role': 'system', 'content': response})
+        conversation2.append({'role': 'user', 'content': f'Kitana said "{response}"'})
+        with open("sync.txt", "a") as sync_file:
+            sync_file.write("a1\n")
+```
+
+With Kitana, we invoke a text_to_wav function that takes the standard US English locale, the response, and then the audio name. The response manipulates the conversation lists that pass as JSON objects for the system (OpenAI's LLM) and user (agent). Finally, write a sync file that tells the TTS module it's ready to play the audio!
+
+```py
+        text_to_wav("en-US-Standard-J", response, "boyAudio")  # Male voice for Ezio
+        conversation1.append({'role': 'user', 'content': f'Ezio said "{response}"'})
+        conversation2.append({'role': 'system', 'content': response})
+        with open("sync.txt", "a") as sync_file:
+            sync_file.write("a2\n")
+```
+
+However, notice the Ezio code block. The difference derives from which role goes first. In Kitana, it's the LLM response and then the agent response. However, Ezio is the agent response, followed by the LLM response. This design choice allows for a two-way conversation (alludes to the next section) between the two agents and the user, creating a social ambiance!
+
+5. Two-way conversation between the agents
+```py
+            agent_count = 0
+            while agent_count < 3:
+                agentSelected = 2 if agentSelected == 1 else 1  # Switch agent
+                response = (gpt3(conversation1) if agentSelected == 1 else gpt3(conversation2))
+                tts(response, agentSelected)
+                agent_count += 1
+```
+
+Remember how we want to avoid monotonicity (or redundancy rather) for one agent speaking the entire time? This allows variance in which the agent speaks first and gives that social creativity! It's not enough to personalize the LLM models to provide human-like responses; we need to "physically" mimic the social interaction seen routinely.
+
+
+
 **Avatars and Animations**: Our agents’ avatars were designed with Ready Player Me and animated using Mixamo and custom Blender animations (e.g., Figure 3 \& 4). This approach enhances avatar liveliness, promoting user social presence (Qazi \& Qazi, 2023). Animations and expressions are dynamically adjusted based on speech sentiment, enabling natural interactions. Each agent (Ezio and Kirtana) has 8 avatars each. Upon colliding with the respective clothing item in the wardrobe corresponding to some avatar, their speech prompt will be adjusted to a new personality and the skin child that matches the clothing will be set to active while the previously active skin child will be set to inactive. With this active-inactive infrastructure in each avatar's children, many avatars can be present in the scene with all their components without any conflict.
 
 <table>
