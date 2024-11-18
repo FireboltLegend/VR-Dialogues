@@ -208,7 +208,49 @@ private void Update()
   </tr>
 </table>
 
-**Wardrobe**: To allow users to customize the agents, we designed a system to alter the appearance and behavior of each agent (e.g., Figure 6). Pressing either the fountain in the park scene or the button on the desk in the office scene moves objects in the scene out of the way, and the agents stop speaking. The users then grabs one of the eight outfits and drags it towards either agent to change their personality as well as their speaking behavior. This happens through a numeric system. Each outfit and agent appearance has a number component that will be used to match both components together. When the outfit touches an agent, the agent appearance currently selected will be set unactive and the one with the number component matching the outfit touching it will be set active. The text prompt will change based on its index in the array it's contained in. Then, the outfit returns to its original position on the wardrobe. The wardrobe can be sent away by pressing the button on it and the scene will revert to how it was before.
+Wardrobe: To allow users to customize the agents, we designed a system to alter the appearance and behavior of each agent (e.g., Figure 6). Pressing either the fountain in the park scene or the button on the desk in the office scene moves objects in the scene out of the way, and the agents stop speaking. The users then grabs one of the eight outfits and drags it towards either agent to change their personality as well as their speaking behavior. This happens through a numeric system. Each outfit and agent appearance has a number component that will be used to match both components together. When the outfit touches an agent, the agent appearance currently selected will be set unactive and the one with the number component matching the outfit touching it will be set active. The text prompt will change based on its index in the array it's contained in. 
+This is the main loop that is triggered when an outfit touches an agent:
+```cs
+void ChangeSkin()
+    {
+        if (currentNum != 0)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.GetComponent<AvatarComponent>().num == currentNum)
+                {
+                    child.gameObject.SetActive(true);
+                    currentNum = child.gameObject.GetComponent<AvatarComponent>().num;
+                    File.WriteAllText(AssetDatabase.GetAssetPath(chatPrompt), prompts[currentNum - 1]);
+                    SetOthersInactive(currentNum);
+                    if (pythonProcess != null && !pythonProcess.HasExited)
+                    {
+                         pythonProcess.Kill();
+                         pythonProcess.Dispose();
+                    }
+                    break;
+                }
+            }
+
+        }
+    }
+```
+Then, the outfit returns to its original position on the wardrobe. The wardrobe can be sent away by pressing the button on it and the scene will revert to how it was before.
+```cs
+private void Update()
+    {
+        if (moveToPosition2)
+        {
+            for (int i = 0; i < propDatas.Length; i++)
+                propDatas[i].prop.position = Vector3.Lerp(propDatas[i].prop.position, propDatas[i].position2.position, propDatas[i].speed2);
+        }
+        else
+        {
+            for (int i = 0; i < propDatas.Length; i++)
+                propDatas[i].prop.position = Vector3.Lerp(propDatas[i].prop.position, propDatas[i].position1.position, propDatas[i].speed1);
+        }
+    }
+```
 
 # Results and Analysis
 ![Results](https://github.com/user-attachments/assets/56bed391-1a48-46af-82e8-97c671a3a73f)
