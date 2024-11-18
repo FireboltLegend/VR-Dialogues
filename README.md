@@ -212,44 +212,44 @@ Wardrobe: To allow users to customize the agents, we designed a system to alter 
 This is the main loop that is triggered when an outfit touches an agent:
 ```cs
 void ChangeSkin()
+{
+    if (currentNum != 0)
     {
-        if (currentNum != 0)
+        foreach (Transform child in transform)
         {
-            foreach (Transform child in transform)
+            if (child.gameObject.GetComponent<AvatarComponent>().num == currentNum)
             {
-                if (child.gameObject.GetComponent<AvatarComponent>().num == currentNum)
+                child.gameObject.SetActive(true);
+                currentNum = child.gameObject.GetComponent<AvatarComponent>().num;
+                File.WriteAllText(AssetDatabase.GetAssetPath(chatPrompt), prompts[currentNum - 1]);
+                SetOthersInactive(currentNum);
+                if (pythonProcess != null && !pythonProcess.HasExited)
                 {
-                    child.gameObject.SetActive(true);
-                    currentNum = child.gameObject.GetComponent<AvatarComponent>().num;
-                    File.WriteAllText(AssetDatabase.GetAssetPath(chatPrompt), prompts[currentNum - 1]);
-                    SetOthersInactive(currentNum);
-                    if (pythonProcess != null && !pythonProcess.HasExited)
-                    {
-                         pythonProcess.Kill();
-                         pythonProcess.Dispose();
-                    }
-                    break;
+                    pythonProcess.Kill();
+                    pythonProcess.Dispose();
                 }
+                break;
             }
-
         }
+
     }
+}
 ```
 Then, the outfit returns to its original position on the wardrobe. The wardrobe can be sent away by pressing the button on it and the scene will revert to how it was before.
 ```cs
 private void Update()
+{
+    if (moveToPosition2)
     {
-        if (moveToPosition2)
-        {
-            for (int i = 0; i < propDatas.Length; i++)
-                propDatas[i].prop.position = Vector3.Lerp(propDatas[i].prop.position, propDatas[i].position2.position, propDatas[i].speed2);
-        }
-        else
-        {
-            for (int i = 0; i < propDatas.Length; i++)
-                propDatas[i].prop.position = Vector3.Lerp(propDatas[i].prop.position, propDatas[i].position1.position, propDatas[i].speed1);
-        }
+        for (int i = 0; i < propDatas.Length; i++)
+            propDatas[i].prop.position = Vector3.Lerp(propDatas[i].prop.position, propDatas[i].position2.position, propDatas[i].speed2);
     }
+    else
+    {
+        for (int i = 0; i < propDatas.Length; i++)
+            propDatas[i].prop.position = Vector3.Lerp(propDatas[i].prop.position, propDatas[i].position1.position, propDatas[i].speed1);
+    }
+}
 ```
 
 # Results and Analysis
