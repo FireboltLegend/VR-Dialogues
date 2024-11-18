@@ -54,7 +54,7 @@ The design goal embodies user comfort and control with a seamless user experienc
   </tr>
 </table>
 
-**Wardrobe**: To allow users to customize the agents, we designed a system to alter the appearance and behavior of each agent (e.g., Figure 6). Pressing a trigger moves objects in the scene out of the way, and the agents will pause in place. When an outfit touches an agent, their appearance and speech behavior will change. Pressing a button on the wardrobe reverts the scene to its default state.
+**Wardrobe**: To allow users to customize the agents, we designed a system to alter the appearance and behavior of each agent (e.g., Figure 6). Pressing either the fountain in the park scene or the button on the desk in the office scene moves objects in the scene out of the way, and the agents stop speaking. The users then grabs one of the eight outfits and drags it towards either agent to change their personality as well as their speaking behavior. This happens through a numeric system. Each outfit and agent appearance has a number component that will be used to match both components together. When the outfit touches an agent, the agent appearance currently selected will be set unactive and the one with the number component matching the outfit touching it will be set active. The text prompt will change based on its index in the array it's contained in. Then, the outfit returns to its original position on the wardrobe. The wardrobe can be sent away by pressing the button on it and the scene will revert to how it was before.
 
 # Results and Analysis
 ![Results](https://github.com/user-attachments/assets/56bed391-1a48-46af-82e8-97c671a3a73f)
