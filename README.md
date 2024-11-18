@@ -145,7 +145,53 @@ Remember how we want to avoid monotonicity (or redundancy rather) for one agent 
   </tr>
 </table>
 
-**Environment**: To suit various preferences, we included a park environment in addition to a more enclosed office environment (Riches et al., 2019). We implemented an elevator system to seamlessly transition between these environments (e.g., Figure 5). This is accomplished with buttons that are activated with the user’s hands. When a button is pressed, the door closes, and the elevator is teleported to the corresponding environment, along with the user. Then, the door reopens, revealing the new environment. This method of transporting the user hides any jarring transitions from the user. Additionally, we added interactable elements to the scenes to enhance the user's sense of presence within the scene. For example, the items on the desk in the office can be moved, shattered, or toggled. The park scene contains a fountain that summons a wardrobe from above when the user puts their hand in the water.
+**Environment**: To suit various preferences, we included a park environment in addition to a more enclosed office environment (Riches et al., 2019). We implemented an elevator system to seamlessly transition between these environments (e.g., Figure 5). This is accomplished with buttons that are activated with the user’s hands. When a button is pressed, the door closes, and the elevator is teleported to the corresponding environment, along with the user. Then, the door reopens, revealing the new environment. This method of transporting the user hides any jarring transitions from the user. Additionally, we added interactable elements to the scenes to enhance the user's sense of presence within the scene. For example, the items on the desk in the office can be moved, shattered, or toggled. The park scene contains a fountain that summons a wardrobe from above when the user puts their hand in the water. To add further detail to the park scene, we added several people jogging around. This is acheived using a script on each background person. When the scene starts, a NavMeshAgent and Animator are initialized for the person, and a coroutine is started.
+
+```cs
+void Start()
+{
+    agent = GetComponent<NavMeshAgent>();
+    animator = GetComponentInChildren<Animator>();
+    StartCoroutine(SetNewDestination());
+}
+```
+
+Inside the coroutine, a random position near the person is selected, and a ray is shot towards the ground from here. This is the target position where the person will run to next.
+
+```cs
+IEnumerator SetNewDestination()
+{
+    while (true)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + new Vector3(Random.Range(-15, 15), 50, Random.Range(-15, 15)), Vector3.down, out hit))
+              target = hit.point;
+    }
+...
+```
+
+Then, if the person is already at its previous target or 10 seconds have passed, the person's NavMeshAgent will set the new target as its destination, and the person will start to run towards it. This process is repeated every 4-6 seconds.
+
+```cs
+if (agent.remainingDistance < 0.2f || timer > 10)
+{
+    agent.SetDestination(target);
+    timer = 0;
+}
+yield return new WaitForSeconds(Random.Range(4f, 6f));
+```
+
+To determine the animation of the person, the person's speed is fed into its Animator every frame, and if it exceeds a certain threshold, the person will use a running animation. Otherwise, it will use an idle animation.
+
+```cs
+private void Update()
+{
+    if (animator != null)
+        animator.SetFloat("MoveSpeed", (transform.position - previousPosition).magnitude / Time.deltaTime);
+    timer += Time.deltaTime;
+    previousPosition = transform.position;
+}
+```
 
 <table>
   <tr>
