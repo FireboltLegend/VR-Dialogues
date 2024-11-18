@@ -345,12 +345,7 @@ private void Update()
 **Future Directions:**  
 - **Emphasize iterative testing:** Address weaknesses in conversation and agent realism by iteratively testing new features and gathering user input.  
 - **Focus on personalization:** Adapt conversations and agent behaviors to better match individual user expectations.  
-- **Maintain strengths:** Preserve the high levels of Inclusion and Comfort as foundational pillars while working on other areas.  
-
----
-
-**Final Notes:**  
-The study reveals promising results in fostering social presence, with strong ratings in Inclusion and Comfort. However, addressing the gaps in Conversation and Agent Realism will be crucial to creating a more immersive and lifelike virtual environment. These findings provide actionable insights for future improvements in virtual agent development.  
+ 
 
 
 # Conclusion
