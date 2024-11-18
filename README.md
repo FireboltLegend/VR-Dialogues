@@ -122,7 +122,6 @@ while agent_count < 3:
 
 Remember how we want to avoid monotonicity (or redundancy rather) for one agent speaking the entire time? This allows variance in which the agent speaks first and gives that social creativity! It's not enough to personalize the LLM models to provide human-like responses; we need to "physically" mimic the social interaction seen routinely.
 
-<br><br><br>
 **Avatars and Animations**: Our agents’ avatars were designed with Ready Player Me and animated using Mixamo and custom Blender animations (e.g., Figure 3 \& 4). This approach enhances avatar liveliness, promoting user social presence (Qazi \& Qazi, 2023). Animations and expressions are dynamically adjusted based on speech sentiment, enabling natural interactions. Each agent (Ezio and Kirtana) has 8 avatars each. Upon colliding with the respective clothing item in the wardrobe corresponding to some avatar, their speech prompt will be adjusted to a new personality and the skin child that matches the clothing will be set to active while the previously active skin child will be set to inactive. With this active-inactive infrastructure in each avatar's children, many avatars can be present in the scene with all their components without any conflict.
 
 <table>
