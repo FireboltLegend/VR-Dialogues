@@ -8,10 +8,10 @@ import wave
 from google.cloud import texttospeech
 
 # Set up OpenAI API key
-openai.api_key = "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"
+openai.api_key = "YOUR_OPENAI_KEY"
 
 # Set up Google Cloud Text-to-Speech API key
-os.environ["GOOGLE_API_KEY"] = "AIzaSyC125Gb92Jb5ImLGQGNyf9dIC3QJhXAKiY"
+os.environ["GOOGLE_API_KEY"] = "GOOGLE_API_KEY"
 
 # Initialize Pygame mixer
 pygame.mixer.init(frequency=22050, size=-16, channels=2)
