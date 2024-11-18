@@ -168,7 +168,102 @@ Remember how we want to avoid monotonicity (or redundancy rather) for one agent 
 ![Results](https://github.com/user-attachments/assets/56bed391-1a48-46af-82e8-97c671a3a73f)
 <br> _Figure 7. Reported Social Presence Values of Participants_
 
-In our pilot study evaluating social presence, users rated four questions on a 1–7 Likert Scale (e.g., Figure 7). Results were generally positive: users felt included in conversations and comfortable in the virtual environment with the virtual agents. Users found the interaction somewhat realistic, but perceived agents less as real people.
+### Detailed Metric Analysis
+
+#### 1. Inclusion
+**Summary:** Users rated their sense of inclusion in conversations with virtual agents highly.  
+**Statistical Breakdown:**  
+- **Median:** 6.0 (The middle 50% of responses clustered around this high score.)  
+- **Mean:** ~6.0 (In line with the median, indicating symmetry in the ratings.)  
+- **IQR:** 1.0 (Tightly concentrated ratings between 5.5–6.5.)  
+- **Range:** 5.0–7.0 (A narrow overall range, with no outliers.)  
+
+**Insights:**  
+- The narrow spread and high median suggest that nearly all participants felt engaged and part of the interactions.  
+- High inclusion is a critical success factor in virtual agent design, as it reflects users feeling acknowledged and integrated into the conversational flow.  
+
+**Implications:**  
+- This aspect of the system is strong, and developers can build on this to ensure users continue to feel valued and included.  
+
+---
+
+#### 2. Conversation Realism
+**Summary:** Users gave more moderate ratings to the realism of conversations, reflecting mixed opinions.  
+**Statistical Breakdown:**  
+- **Median:** 5.0 (Reflects that about half the participants rated this moderately.)  
+- **Mean:** ~5.2 (Slightly higher than the median, reflecting a positive skew.)  
+- **IQR:** 2.0 (Responses varied more significantly, between 4.0–6.0.)  
+- **Range:** 2.0–7.0 (Wide overall range, with the lowest ratings being 2.0.)  
+
+**Insights:**  
+- While the median indicates users were generally satisfied with conversation realism, the wider range shows disparity in user experience.  
+- Lower ratings (e.g., 2.0) highlight that some participants found the conversations artificial or lacking authenticity.  
+
+**Implications:**  
+- Developers should prioritize making conversations more dynamic and natural to bridge this gap in perception.  
+- AI improvements, such as nuanced emotional responses or better understanding of context, could elevate the sense of realism.  
+
+---
+
+#### 3. Agent Realism
+**Summary:** Agent realism had the lowest scores overall, reflecting a key area for improvement.  
+**Statistical Breakdown:**  
+- **Median:** 4.0 (A low central score compared to other metrics.)  
+- **Mean:** ~4.3 (Close to the median, suggesting consistency in feedback.)  
+- **IQR:** 3.0 (Wide spread of ratings, from 3.0–6.0.)  
+- **Range:** 2.0–7.0 (Largest spread among all categories, with extreme high and low ratings.)  
+
+**Insights:**  
+- Users perceived the agents as less lifelike, with some finding them significantly unrealistic (lowest rating of 2.0).  
+- The ratings' variability indicates that while some users appreciated the agents’ realism, others were dissatisfied.  
+
+**Implications:**  
+- Enhancing agent realism could involve improving visual design, body language, and responsiveness to mimic human-like interactions.  
+- High variability also suggests that user expectations or prior experiences may influence their perception of realism. Tailored calibration based on user preferences could address this.  
+
+---
+
+#### 4. Comfort
+**Summary:** Comfort was rated very positively, with only minor exceptions.  
+**Statistical Breakdown:**  
+- **Median:** 6.0 (Indicating most users felt comfortable overall.)  
+- **Mean:** ~6.1 (Slightly above the median, reflecting overall satisfaction.)  
+- **IQR:** 1.5 (Concentrated ratings between 5.5–7.0.)  
+- **Range:** 2.0–7.0 (Outlier of 2.0 indicates discomfort for one user.)  
+
+**Insights:**  
+- High comfort scores indicate users felt at ease in the virtual environment, with only one notable outlier experiencing significant discomfort.  
+- The positive sentiment here shows that the environment successfully supports user engagement and reduces friction.  
+
+**Implications:**  
+- Addressing outliers (e.g., participants who feel uncomfortable) can involve refining elements like interface usability or reducing cognitive load during interactions.  
+- Maintaining comfort is critical as it directly affects user satisfaction and willingness to engage further.  
+
+---
+
+### Holistic Findings and Recommendations  
+
+**Positive Outcomes:**  
+- Inclusion and Comfort were rated highly, indicating that users felt welcomed and at ease while interacting with virtual agents.  
+- These areas of strength suggest that the virtual environment is designed to foster a sense of engagement and ease of use.  
+
+**Areas for Growth:**  
+- Conversation Realism received moderate ratings, and the large variability suggests that some users find it less convincing. Improving conversational dynamics and personalization could enhance the experience.  
+- Agent Realism was the weakest category, showing the most substantial room for improvement. Upgrades to visuals, expressions, and interaction quality could elevate the perception of agents as "real people."  
+
+**Outliers:**  
+- The lower range ratings in Conversation Realism and Comfort indicate that specific users had negative experiences. Collecting qualitative feedback could help identify exact pain points.  
+
+**Future Directions:**  
+- **Emphasize iterative testing:** Address weaknesses in conversation and agent realism by iteratively testing new features and gathering user input.  
+- **Focus on personalization:** Adapt conversations and agent behaviors to better match individual user expectations.  
+- **Maintain strengths:** Preserve the high levels of Inclusion and Comfort as foundational pillars while working on other areas.  
+
+---
+
+**Final Notes:**  
+The study reveals promising results in fostering social presence, with strong ratings in Inclusion and Comfort. However, addressing the gaps in Conversation and Agent Realism will be crucial to creating a more immersive and lifelike virtual environment. These findings provide actionable insights for future improvements in virtual agent development.  
+
 
 # Conclusion
 Our pilot study shows that users felt a positive social presence when interacting with two embodied conversational agents in VR. Though focused on two agents, this study lays the groundwork for exploring multiple agents engaging users in VR. Our findings suggest that VR developers incorporating multiple agents can enhance users' sense of social presence.
